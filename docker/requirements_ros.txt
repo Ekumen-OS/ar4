@@ -1,0 +1,8 @@
+ros-humble-joint-state-publisher-gui
+ros-humble-control-msgs
+ros-humble-ros2-control
+ros-humble-ros2-controllers
+ros-humble-gazebo-ros2-control
+ros-humble-ign-ros2-control
+ros-humble-rqt-joint-trajectory-controller
+ros-humble-moveit
