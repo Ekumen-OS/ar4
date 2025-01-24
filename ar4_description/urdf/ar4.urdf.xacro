@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="package_name" value="ar4_description"/>
+
+  <xacro:include filename="$(find ${package_name})/urdf/include/common_macros.urdf.xacro" />
+  <xacro:property name="robot_properties_yaml_dir" value="$(find ${package_name})/config/link_properties.yaml" />
+  <xacro:property name="robot_properties" value="${xacro.load_yaml(robot_properties_yaml_dir)}"/>
+  <xacro:property name="robot_parameters_yaml_dir" value="$(find ${package_name})/config/ar4.yaml" />
+  <xacro:property name="robot_parameters" value="${xacro.load_yaml(robot_parameters_yaml_dir)}"/>
+
+  <xacro:link link_name="base_link"
+              inertial="${robot_properties['base_link']['inertial']}"
+              visual="${robot_properties['base_link']['visual']}"
+              collision="${robot_properties['base_link']['collision']}">
+              <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <xacro:link link_name="link_1"
+              inertial="${robot_properties['link_1']['inertial']}"
+              visual="${robot_properties['link_1']['visual']}"
+              collision="${robot_properties['link_1']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <joint name="joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-170.0 / 180.0 * pi}" upper="${170.0 / 180.0 * pi}" effort="0" velocity="0.5"/>
+  </joint>
+
+  <xacro:link link_name="link_2"
+              inertial="${robot_properties['link_2']['inertial']}"
+              visual="${robot_properties['link_2']['visual']}"
+              collision="${robot_properties['link_2']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <joint name="joint_2" type="revolute">
+    <origin rpy="-1.5708 0 0" xyz="0.0642 0 0.16977"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-42.0 / 180.0 * pi}" upper="${90.0 / 180.0 * pi}" effort="0.5" velocity="0.5"/>
+  </joint>
+
+  <xacro:link link_name="link_3"
+              inertial="${robot_properties['link_3']['inertial']}"
+              visual="${robot_properties['link_3']['visual']}"
+              collision="${robot_properties['link_3']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <joint name="joint_3" type="revolute">
+    <origin rpy="0 0 -1.5708" xyz="0 -0.305 0"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-89.0 / 180.0 * pi}" upper="${52.0 / 180.0 * pi}" effort="0" velocity="0.5"/>
+  </joint>
+
+  <xacro:link link_name="link_4"
+              inertial="${robot_properties['link_4']['inertial']}"
+              visual="${robot_properties['link_4']['visual']}"
+              collision="${robot_properties['link_4']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <joint name="joint_4" type="revolute">
+    <origin rpy="-1.5708 0 0" xyz="0 0 0.0"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-1 * robot_parameters['j4_limit']}" upper="${robot_parameters['j4_limit']}" effort="0" velocity="0.5"/>
+  </joint>
+
+  <xacro:link link_name="link_5"
+              inertial="${robot_properties['link_5']['inertial']}"
+              visual="${robot_properties['link_5']['visual']}"
+              collision="${robot_properties['link_5']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <joint name="joint_5" type="revolute">
+    <origin rpy="1.5708 0 0" xyz="0 0 0.22263"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-105.0 / 180.0 * pi}" upper="${105.0 / 180.0 * pi}" effort="0" velocity="1.0"/>
+  </joint>
+
+  <xacro:link link_name="link_6"
+              inertial="${robot_properties['link_6']['inertial']}"
+              visual="${robot_properties['link_6']['visual']}"
+              collision="${robot_properties['link_6']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:link>
+  <joint name="joint_6" type="revolute">
+    <origin rpy="0 -1.5708 0" xyz="-${robot_parameters['l6_length']} 0 0"/>
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-1.0 * robot_parameters['j6_limit']}" upper="${robot_parameters['j6_limit']}" effort="0" velocity="1.0"/>
+  </joint>
+</robot>
