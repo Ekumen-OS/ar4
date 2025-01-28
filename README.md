@@ -24,40 +24,28 @@ It is a requirement to have `docker engine` already installed in the host machin
 
 * See [Docker Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 
-For NVIDIA GPU support, `nvidia-container-toolkit` should be installed. *Skip this step if you don't have an NVIDIA graphics card*
-
+For NVIDIA GPU support, `nvidia-container-toolkit` should be installed.
 
 * Make sure you have the drivers installed:
-  ```sh
-  nvidia-smi
-  ```
+
+```sh
+nvidia-smi
+```
+
 * See [NVIDIA Container Toolkit Installation Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 
 #### Building image and running container
 
-- Build the docker image whose name is `ar4_ws_ubuntu_jammy`:
+Build and run the dev container:
 
-  ```sh
-    ./docker/build.sh
-  ```
+```sh
+./docker/run.sh
+```
 
-You can also try to set a specific image name:
+#### Joining an open session
 
+To join a running instance of the container:
 
-  ```sh
-    ./docker/build.sh -i my_fancy_image_name
-  ```
-
-- Run a docker container from `ar4_ws_ubuntu_jammy` called `ar4_ws_jammy`:
-
-
-  ```sh
-    ./docker/run.sh
-  ```
-
-- **IMPORTANT**: If you are using nvidia drivers add the `--use_nvidia` flag:
-
-
-  ```sh
-    ./docker/run.sh --use_nvidia
-  ```
+```
+./docker/join.sh
+```
