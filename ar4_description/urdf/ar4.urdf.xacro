@@ -25,7 +25,7 @@
     <parent link="base_link"/>
     <child link="link_1"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-170.0 / 180.0 * pi}" upper="${170.0 / 180.0 * pi}" effort="0" velocity="0.5"/>
+    <limit lower="${-170.0 / 180.0 * pi}" upper="${170.0 / 180.0 * pi}" effort="100" velocity="0.5"/>
   </joint>
 
   <xacro:link link_name="link_2"
@@ -39,7 +39,7 @@
     <parent link="link_1"/>
     <child link="link_2"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-42.0 / 180.0 * pi}" upper="${90.0 / 180.0 * pi}" effort="0.5" velocity="0.5"/>
+    <limit lower="${-42.0 / 180.0 * pi}" upper="${90.0 / 180.0 * pi}" effort="100" velocity="0.5"/>
   </joint>
 
   <xacro:link link_name="link_3"
@@ -53,7 +53,7 @@
     <parent link="link_2"/>
     <child link="link_3"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-89.0 / 180.0 * pi}" upper="${52.0 / 180.0 * pi}" effort="0" velocity="0.5"/>
+    <limit lower="${-89.0 / 180.0 * pi}" upper="${52.0 / 180.0 * pi}" effort="100" velocity="0.5"/>
   </joint>
 
   <xacro:link link_name="link_4"
@@ -67,7 +67,7 @@
     <parent link="link_3"/>
     <child link="link_4"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-1 * robot_parameters['j4_limit']}" upper="${robot_parameters['j4_limit']}" effort="0" velocity="0.5"/>
+    <limit lower="${-1 * robot_parameters['j4_limit']}" upper="${robot_parameters['j4_limit']}" effort="100" velocity="0.5"/>
   </joint>
 
   <xacro:link link_name="link_5"
@@ -81,7 +81,7 @@
     <parent link="link_4"/>
     <child link="link_5"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-105.0 / 180.0 * pi}" upper="${105.0 / 180.0 * pi}" effort="0" velocity="1.0"/>
+    <limit lower="${-105.0 / 180.0 * pi}" upper="${105.0 / 180.0 * pi}" effort="100" velocity="1.0"/>
   </joint>
 
   <xacro:link link_name="link_6"
@@ -95,6 +95,6 @@
     <parent link="link_5"/>
     <child link="link_6"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-1.0 * robot_parameters['j6_limit']}" upper="${robot_parameters['j6_limit']}" effort="0" velocity="1.0"/>
+    <limit lower="${-1.0 * robot_parameters['j6_limit']}" upper="${robot_parameters['j6_limit']}" effort="100" velocity="1.0"/>
   </joint>
 </robot>
