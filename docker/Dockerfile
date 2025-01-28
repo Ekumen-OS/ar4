@@ -2,55 +2,38 @@ FROM osrf/ros:humble-desktop-full
 
 # Arguments for building
 ARG USERID
-ARG USER
+ARG USERNAME
 
 # Install base system dependencies and development dependencies.
-RUN apt update && apt install -y sudo openssh-server software-properties-common \
-   debian-keyring debian-archive-keyring apt-utils python3-pip bash-completion tmux
-
-# Install clang.
-RUN apt update && apt install -y clang lldb lld
-
-# Setup environment.
-ENV TERM linux
-ENV DEBIAN_FRONTEND noninteractive
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-RUN apt install -y locales
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-        apt-utils \
-        curl \
-        software-properties-common \
-        wget \
-    && \
-    apt-get clean && \
-    apt-get autoremove && \
-    apt-get autoclean
-
-# Copy installation scripts, and perform the dependency installation.
-COPY docker/install.sh .
-COPY docker/requirements_ros.txt .
-RUN ./install.sh
-RUN rm install.sh requirements_ros.txt
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt update && apt install -y \
+    apt-utils \
+    bash-completion \
+    clang \
+    debian-archive-keyring \
+    debian-keyring \
+    lldb \
+    lld \
+    python3-pip \
+    software-properties-common \
+    sudo \
+    tmux \
+    openssh-server
 
 # Create a user with passwordless sudo.
-RUN adduser --uid $USERID --gecos "AR4 Developer" --disabled-password $USER
-RUN adduser $USER sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN echo "export QT_X11_NO_MITSHM=1" >> /home/$USER/.bashrc
-
-RUN apt-get update
+RUN adduser --uid $USERID --gecos "AR4 Developer" --disabled-password $USERNAME && \
+    adduser $USERNAME sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Switch to your user.
-USER $USER
+USER $USERNAME
 
-# Creates the src folder of the workspace.
-RUN mkdir -p /home/$USER/ws/src
+RUN --mount=type=bind,source=.,target=/tmp/ws \
+    . /opt/ros/humble/setup.sh && \
+    rosdep update && \
+    rosdep install --from-paths /tmp/ws --ignore-src -r -y
 
 # Configure the workspace.
-WORKDIR /home/$USER/ws
+WORKDIR /home/$USERNAME/workspace
 
 CMD ["/bin/bash"]
