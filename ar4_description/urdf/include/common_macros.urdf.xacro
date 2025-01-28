@@ -1,23 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<!-- ===================== Arm link xacro ================================== -->
+
   <xacro:macro name="link" params="link_name *origin inertial visual collision">
     <link name="${link_name}">
       <xacro:insert_block name="origin"/>
-      <inertial>
-        <origin rpy="${inertial['origin']['dr']}
-                     ${inertial['origin']['dp']}
-                     ${inertial['origin']['dY']}"
-                xyz="${inertial['origin']['dx']}
-                     ${inertial['origin']['dy']}
-                     ${inertial['origin']['dz']}"/>
-        <mass value="${inertial['mass']}"/>
-        <inertia ixx="${inertial['inertia']['ixx']}"
-                 ixy="${inertial['inertia']['ixy']}"
-                 ixz="${inertial['inertia']['ixz']}"
-                 iyy="${inertial['inertia']['iyy']}"
-                 iyz="${inertial['inertia']['iyz']}"
-                 izz="${inertial['inertia']['izz']}"/>
-      </inertial>
+      <xacro:box_inertia m="${inertial['mass']}"
+                         x="${inertial['size']['dx']}"
+                         y="${inertial['size']['dy']}"
+                         z="${inertial['size']['dz']}"
+                         o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
+                         o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
+      </xacro:box_inertia>
       <visual>
         <origin rpy="${visual['origin']['dr']}
                      ${visual['origin']['dp']}
@@ -45,4 +39,26 @@
       </collision>
     </link>
   </xacro:macro>
+
+<!-- ===================== Box inertia xacro ==================================
+
+  params:
+  - m [float]: link mass;
+  - x [float]: link dimension on the X-axis;
+  - y [float]: link dimension on the Y-axis;
+  - z [float]: link dimension on the Z-axis;
+  - o_xyz [string]: position offset
+  - o_rpy [string]: rotation offset
+-->
+
+ <xacro:macro name="box_inertia" params="m x y z o_xyz:='0.0 0.0 0.0' o_rpy:='0.0 0.0 0.0'">
+    <inertial>
+      <mass value="${m}"/>
+      <inertia ixx="${m / 12.0 * (y*y + z*z)}" ixy="0.0" ixz="0.0"
+               iyy="${m / 12.0 * (x*x + z*z)}" iyz="0.0"
+               izz="${m / 12.0 * (x*x + y*y)}"/>
+      <origin xyz="${o_xyz}" rpy="${o_rpy}" />
+    </inertial>
+  </xacro:macro>
+
 </robot>

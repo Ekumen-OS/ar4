@@ -32,21 +32,18 @@
 #
 base_link:
   inertial:
+    size:
+      dx: 0.24
+      dy: 0.1
+      dz: 0.05
     origin:
-      dx: -4.6941E-06
-      dy: 0.054174
-      dz: 0.038824
+      dx: -0.05
+      dy: 0.0
+      dz: 0.02
       dr: 0.0
       dp: 0.0
       dY: 0.0
     mass: 0.7102
-    inertia:
-      ixx: 0.0039943
-      ixy: 3.697E-07
-      ixz: -5.7364E-08
-      iyy: 0.0014946
-      iyz: -0.00036051
-      izz: 0.0042554
   visual:
     origin:
       dx: 0.0
@@ -66,21 +63,18 @@ base_link:
 
 link_1:
   inertial:
-    origin:
-      dx: -0.022706
-      dy: 0.04294
-      dz: -0.12205
-      dr: 0.0
-      dp: 0.0
-      dY: 0.0
+    size:
+      dx: 0.1
+      dy: 0.1
+      dz: 0.2
     mass: 0.88065
-    inertia:
-      ixx: 0.0034
-      ixy: 0.00042296
-      ixz: -0.00089231
-      iyy: 0.0041778
-      iyz: 0.0010848
-      izz: 0.0027077
+    origin:
+      dx: 0.04
+      dy: -0.01
+      dz: 0.1
+      dr: 0.610865
+      dp: 0.418879
+      dY: 0.0
   visual:
     origin:
       dx: 0.0
@@ -100,21 +94,18 @@ link_1:
 
 link_2:
   inertial:
+    size:
+      dx: 0.1
+      dy: 0.36
+      dz: 0.1
+    mass: 0.57738
     origin:
-      dx: 0.064818
-      dy: -0.11189
-      dz: -0.038671
+      dx: 0.0
+      dy: -0.15
+      dz: 0.03
       dr: 0.0
       dp: 0.0
       dY: 0.0
-    mass: 0.57738
-    inertia:
-      ixx: 0.0047312
-      ixy: 0.0022624
-      ixz: 0.00032144
-      iyy: 0.0020836
-      iyz: -0.00056569
-      izz: 0.0056129
   visual:
     origin:
       dx: 0.0
@@ -134,21 +125,18 @@ link_2:
 
 link_3:
   inertial:
+    size:
+      dx: 0.1
+      dy: 0.12
+      dz: 0.05
+    mass: 0.1787
     origin:
-      dx: -0.00029765
-      dy: -0.023661
-      dz: -0.0019125
+      dx: -0.01
+      dy: 0.0
+      dz: 0.0
       dr: 0.0
       dp: 0.0
       dY: 0.0
-    mass: 0.1787
-    inertia:
-      ixx: 0.0001685
-      ixy: -2.7713E-05
-      ixz: 5.6885E-06
-      iyy: 0.00012865
-      iyz: 2.9256E-05
-      izz: 0.00020744
   visual:
     origin:
       dx: 0.0
@@ -168,21 +156,18 @@ link_3:
 
 link_4:
   inertial:
+    size:
+      dx: 0.06
+      dy: 0.06
+      dz: 0.32
+    mass: 0.34936
     origin:
-      dx: -0.0016798
-      dy: 0.00057319
-      dz: -0.074404
+      dx: 0.0
+      dy: 0.0
+      dz: 0.08
       dr: 0.0
       dp: 0.0
       dY: 0.0
-    mass: 0.34936
-    inertia:
-      ixx: 0.0030532
-      ixy: -1.8615E-05
-      ixz: -7.0047E-05
-      iyy: 0.0031033
-      iyz: 2.3301E-05
-      izz: 0.00022264
   visual:
     origin:
       dx: 0.0
@@ -202,21 +187,18 @@ link_4:
 
 link_5:
   inertial:
+    size:
+      dx: 0.1
+      dy: 0.04
+      dz: 0.08
+    mass: 0.11562
     origin:
-      dx: 0.0015066
-      dy: -1.3102E-05
-      dz: -0.012585
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
       dr: 0.0
       dp: 0.0
       dY: 0.0
-    mass: 0.11562
-    inertia:
-      ixx: 5.5035E-05
-      ixy: -1.019E-08
-      ixz: -2.6243E-06
-      iyy: 8.2921E-05
-      iyz: 1.4437E-08
-      izz: 5.2518E-05
   visual:
     origin:
       dx: 0.0
@@ -236,21 +218,18 @@ link_5:
 
 link_6:
   inertial:
+    size:
+      dx: 0.04
+      dy: 0.02
+      dz: 0.02
+    mass: 0.013863
     origin:
-      dx: 2.9287E-10
-      dy: -1.6472E-09
-      dz: 0.0091432
+      dx: 0.0
+      dy: 0.0
+      dz: -0.01
       dr: 0.0
       dp: 0.0
       dY: 0.0
-    mass: 0.013863
-    inertia:
-      ixx: 1.3596E-06
-      ixy: 3.0585E-13
-      ixz: 5.7102E-14
-      iyy: 1.7157E-06
-      iyz: 6.3369E-09
-      izz: 2.4332E-06
   visual:
     origin:
       dx: 0.0
