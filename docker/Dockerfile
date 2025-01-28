@@ -1,56 +1,44 @@
 FROM osrf/ros:humble-desktop-full
 
-# Arguments for building
-ARG USERID
-ARG USER
+# Install base system dependencies and development dependencies
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt update && apt install -y \
+    apt-utils \
+    bash-completion \
+    clang \
+    debian-archive-keyring \
+    debian-keyring \
+    python3-pip \
+    software-properties-common \
+    sudo \
+    tmux \
+    openssh-server
 
-# Install base system dependencies and development dependencies.
-RUN apt update && apt install -y sudo openssh-server software-properties-common \
-   debian-keyring debian-archive-keyring apt-utils python3-pip bash-completion tmux
+# Set user and fixuid configuration
+ARG USER=developer
+ARG GROUP=ekumen
+ARG UID=1000
+ARG GID=1000
 
-# Install clang.
-RUN apt update && apt install -y clang lldb lld
+RUN addgroup --gid $GID $GROUP \
+    && adduser --uid $UID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
+    && adduser $USER sudo \
+    && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/$USER
 
-# Setup environment.
-ENV TERM linux
-ENV DEBIAN_FRONTEND noninteractive
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-RUN apt install -y locales
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
+RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-0.6.0-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
+    chown root:root /usr/local/bin/fixuid && \
+    chmod 4755 /usr/local/bin/fixuid && \
+    mkdir -p /etc/fixuid && \
+    printf "user: $USER\ngroup: $GROUP\n" > /etc/fixuid/config.yml
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-        apt-utils \
-        curl \
-        software-properties-common \
-        wget \
-    && \
-    apt-get clean && \
-    apt-get autoremove && \
-    apt-get autoclean
-
-# Copy installation scripts, and perform the dependency installation.
-COPY docker/install.sh .
-COPY docker/requirements_ros.txt .
-RUN ./install.sh
-RUN rm install.sh requirements_ros.txt
-
-# Create a user with passwordless sudo.
-RUN adduser --uid $USERID --gecos "AR4 Developer" --disabled-password $USER
-RUN adduser $USER sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN echo "export QT_X11_NO_MITSHM=1" >> /home/$USER/.bashrc
-
-RUN apt-get update
-
-# Switch to your user.
 USER $USER
 
-# Creates the src folder of the workspace.
-RUN mkdir -p /home/$USER/ws/src
+# Install ros dependencies
+RUN --mount=type=bind,source=.,target=/tmp/ws \
+    . /opt/ros/humble/setup.sh && \
+    rosdep update && \
+    rosdep install --from-paths /tmp/ws --ignore-src -r -y
 
-# Configure the workspace.
-WORKDIR /home/$USER/ws
-
-CMD ["/bin/bash"]
+WORKDIR /workspace
+ENV SHELL /bin/bash
+ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh", "/bin/bash"]
