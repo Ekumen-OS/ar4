@@ -41,11 +41,3 @@ Build and run the dev container:
 ```sh
 ./docker/run.sh
 ```
-
-#### Joining an open session
-
-To join a running instance of the container:
-
-```
-./docker/join.sh
-```
