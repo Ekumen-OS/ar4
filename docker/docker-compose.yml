@@ -7,22 +7,17 @@ services:
         USERID: $USERID
         USERNAME: $USERNAME
     image: ar4_gazebo
-
     container_name: ar4_gazebo
-
+    hostname: ar4_gazebo
     runtime: nvidia
     stdin_open: true
     tty: true
-
     environment:
       DISPLAY: $DISPLAY
       XAUTHORITY: /tmp/.docker.xauth
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: all
-
     volumes:
       - ../:/home/${USERNAME}/workspace
       - /tmp/.X11-unix/:/tmp/.X11-unix/
       - /tmp/.docker.xauth:/tmp/.docker.xauth
-
-    network_mode: host
