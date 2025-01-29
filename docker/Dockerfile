@@ -1,10 +1,6 @@
 FROM osrf/ros:humble-desktop-full
 
-# Arguments for building
-ARG USERID
-ARG USERNAME
-
-# Install base system dependencies and development dependencies.
+# Install base system dependencies and development dependencies
 RUN --mount=type=cache,target=/var/cache/apt \
     apt update && apt install -y \
     apt-utils \
@@ -18,20 +14,31 @@ RUN --mount=type=cache,target=/var/cache/apt \
     tmux \
     openssh-server
 
-# Create a user with passwordless sudo.
-RUN adduser --uid $USERID --gecos "AR4 Developer" --disabled-password $USERNAME && \
-    adduser $USERNAME sudo && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# Set user and fixuid configuration
+ARG USER=developer
+ARG GROUP=ekumen
+ARG UID=1000
+ARG GID=1000
 
-# Switch to your user.
-USER $USERNAME
+RUN addgroup --gid $GID $GROUP \
+    && adduser --uid $UID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
+    && adduser $USER sudo \
+    && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/$USER
 
+RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-0.6.0-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
+    chown root:root /usr/local/bin/fixuid && \
+    chmod 4755 /usr/local/bin/fixuid && \
+    mkdir -p /etc/fixuid && \
+    printf "user: $USER\ngroup: $GROUP\n" > /etc/fixuid/config.yml
+
+USER $USER
+
+# Install ros dependencies
 RUN --mount=type=bind,source=.,target=/tmp/ws \
     . /opt/ros/humble/setup.sh && \
     rosdep update && \
     rosdep install --from-paths /tmp/ws --ignore-src -r -y
 
-# Configure the workspace.
-WORKDIR /home/$USERNAME/workspace
-
-CMD ["/bin/bash"]
+WORKDIR /workspace
+ENV SHELL /bin/bash
+ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh", "/bin/bash"]

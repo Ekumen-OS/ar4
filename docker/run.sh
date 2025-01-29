@@ -33,7 +33,4 @@ done
 
 cd $(dirname $0)
 
-export USERNAME=$(whoami)
-export USERID=$(id -u)
-
-docker compose run --rm -w /home/$USERNAME/workspace ${BUILD:+--build} $SERVICE
+docker compose run --rm ${BUILD:+--build} $SERVICE
