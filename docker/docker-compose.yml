@@ -6,7 +6,6 @@ services:
     image: ar4_gazebo
     container_name: ar4_gazebo
     hostname: ar4_gazebo
-    runtime: nvidia
     stdin_open: true
     tty: true
     environment:

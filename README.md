@@ -15,29 +15,23 @@ The Annin Robotics AR4 robot is a 6DOF desktop size industrial robot that is a f
 
 ## Installation
 
-
 ### Docker
 
 #### Prerequisites
 
-It is a requirement to have `docker engine` already installed in the host machine.
+It is a requirement to have `docker engine` with the `docker compose plugin` already installed in the host machine.
 
 * See [Docker Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 
-For NVIDIA GPU support, `nvidia-container-toolkit` should be installed.
+#### Building and running the ar4 dev container
 
-* Make sure you have the drivers installed:
-
-```sh
-nvidia-smi
+Build and/or run the container
+```bash
+./docker/run.sh
 ```
 
-* See [NVIDIA Container Toolkit Installation Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+Force rebuilding the image
 
-#### Building image and running container
-
-Build and run the dev container:
-
-```sh
-./docker/run.sh
+```bash
+./docker/run.sh --build
 ```
