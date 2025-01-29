@@ -12,8 +12,6 @@ RUN --mount=type=cache,target=/var/cache/apt \
     clang \
     debian-archive-keyring \
     debian-keyring \
-    lldb \
-    lld \
     python3-pip \
     software-properties-common \
     sudo \
