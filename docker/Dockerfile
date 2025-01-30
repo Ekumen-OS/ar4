@@ -40,5 +40,7 @@ RUN --mount=type=bind,source=.,target=/tmp/ws \
     rosdep install --from-paths /tmp/ws --ignore-src -r -y
 
 WORKDIR /workspace
+RUN mkdir -p /home/$USER/workspace/src/ar4
+
 ENV SHELL /bin/bash
 ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh", "/bin/bash"]

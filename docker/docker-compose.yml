@@ -13,10 +13,12 @@ services:
     tty: true
     environment:
       DISPLAY: $DISPLAY
+      QT_X11_NO_MITSHM: 1
       XAUTHORITY: /tmp/.docker.xauth
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: all
     volumes:
-      - ../:/workspace
+      - ../:/workspace/src/ar4
       - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - ~/.Xauthority:/root/.Xauthority
       - /tmp/.docker.xauth:/tmp/.docker.xauth
