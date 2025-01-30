@@ -4,9 +4,9 @@
   <version>1.0.0</version>
   <description>AR4 ROS 2 control package</description>
 
-  <author email="wagnermarcos@ekumenlabs.com">Marcos Wagner</author>
-  <maintainer email="wagnermarcos@ekumenlabs.com">Marcos Wagner</maintainer>
-  <maintainer email="franco.c@ekumenlabs.com">Franco Cipollone</maintainer>
+  <author email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</author>
+  <maintainer email="steven.desvars@creativa77.com.ar">Steven Desvars</maintainer>
+  <maintainer email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</maintainer>
 
   <license>BSD</license>
 
