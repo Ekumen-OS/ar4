@@ -33,8 +33,9 @@ RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-
 
 USER $USER
 
-# Install ros dependencies
+# Install ros dependencies, updating the apt cache is necessary.
 RUN --mount=type=bind,source=.,target=/tmp/ws \
+    sudo apt-get update && \
     . /opt/ros/humble/setup.sh && \
     rosdep update && \
     rosdep install --from-paths /tmp/ws --ignore-src -r -y
