@@ -6,6 +6,12 @@ The Annin Robotics AR4 robot is a 6DOF desktop size industrial robot that is a f
   <img src="docs/ar4.png" width=500 />
 </p>
 
+## Licenses
+
+All packages from this repository are distrubuted with BSD 3-Clause License except for:
+
+- [`ar4_description`](./ar4_description): Which is based on [/ycheng517/ar4_ros_driver](https://github.com/ycheng517/ar4_ros_driver/tree/main/annin_ar4_description) and has MIT License.
+
 ## Package Summary
 
 - [`ar4_control`](./ar4_control): Contains the configuration for the simulation ros2_control controller.
