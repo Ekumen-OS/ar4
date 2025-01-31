@@ -35,3 +35,60 @@ Force rebuilding the image
 ```bash
 ./docker/run.sh --build
 ```
+
+## Build the packages and run the simulation
+
+Build the packages
+
+  ```
+    colcon build
+  ```
+
+Source the built packages
+
+  ```
+    source install/setup.bash
+  ```
+
+### Launch the simulation
+
+After building and sourcing the packages, run the Gazebo simulation
+
+  ```
+    ros2 launch ar4_gazebo ar4_in_empty_world.launch.py
+  ```
+
+![Ar4 Gazebo](docs/ar4.png)
+
+
+To use Gazebo with ROS running the bridge:
+
+  ```
+    ros2 launch ar4_gazebo gz_ros_bridge.launch.py
+  ```
+
+### Controlling the arm with Moveit
+
+To plan and command the arm to execute a motion launch the `demo.launch.py`:
+
+  ```
+    ros2 launch ar4_moveit_config demo.launch.py
+  ```
+
+You should see RViz showing the robot visualization and the MotionPlanning panel at the left.
+
+There are two ways of selecting a target position for the arm, both through RViz:
+
+Selecting a random valid position or moving the end effector to a desired position.
+
+### Selecting random valid position
+This will select a random position for the arm that would not cause a collision with itself or objects around it, calculated from the semantic information of the robot.
+
+https://github.com/user-attachments/assets/be9406d2-6589-456c-8ae6-edbbe067b701
+
+
+### Moving end effector to a desired position
+This allows you to select a goal position for the end effector, which is currently the last link in the arm as no gripper is being used. This is done by dragging and dropping where the end effector should move to.
+
+https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf
+

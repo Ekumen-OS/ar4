@@ -1,0 +1,26 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: ar4_gazebo
+    relative_path: urdf/ar4_gazebo.urdf.xacro
+  srdf:
+    relative_path: config/ar4.srdf
+  package_settings:
+    author_name: Santiago Lopez
+    author_email: santiago.mendez@creativa77.com.ar
+    generated_timestamp: 1738012897
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+      

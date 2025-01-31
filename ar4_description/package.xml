@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ar4_description</name>
+  <version>1.0.0</version>
+  <description>AR4 robot description</description>
+  <author email="steven.desvars@creativa77.com.ar">Steven Desvars</author>
+  <maintainer email="steven.desvars@creativa77.com.ar">Steven Desvars</maintainer>
+  <maintainer email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
