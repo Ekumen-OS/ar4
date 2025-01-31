@@ -17,11 +17,11 @@ RUN --mount=type=cache,target=/var/cache/apt \
 # Set user and fixuid configuration
 ARG USER=developer
 ARG GROUP=ekumen
-ARG UID=1000
-ARG GID=1000
+ARG USERID=1000
+ARG GROUPID=1000
 
-RUN addgroup --gid $GID $GROUP \
-    && adduser --uid $UID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
+RUN addgroup --gid $GROUPID $GROUP \
+    && adduser --uid $USERID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
     && adduser $USER sudo \
     && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/$USER
 
