@@ -1,0 +1,21 @@
+services:
+  ar4_gazebo:
+    build:
+      dockerfile: docker/Dockerfile
+      context: ../
+      args:
+        USERID: ${USERID}
+        GROUPID: ${GROUPID}
+    image: ar4_gazebo
+    container_name: ar4_gazebo
+    hostname: ar4_gazebo
+    stdin_open: true
+    tty: true
+    environment:
+      DISPLAY: $DISPLAY
+      QT_X11_NO_MITSHM: 1
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+    volumes:
+      - ../:/workspace/src/ar4
+      - /tmp/.X11-unix/:/tmp/.X11-unix/

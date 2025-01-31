@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Defines the Lewis component tag. -->
+  <xacro:arg name="use_gazebo_ros_control" default="true"/>
+
+  <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro" />.
+  <xacro:if value="$(arg use_gazebo_ros_control)">
+    <xacro:include filename="$(find ar4_gazebo)/urdf/ar4.ros2_control.xacro" />
+  </xacro:if>
+  <link name="world" />
+
+  <joint name="joint_world" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <gazebo reference="base_link">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="link_1">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="link_2">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="link_3">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="link_4">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="link_5">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+  <gazebo reference="link_6">
+      <selfCollide>true</selfCollide>
+  </gazebo>
+</robot>

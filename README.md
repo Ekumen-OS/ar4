@@ -15,49 +15,86 @@ The Annin Robotics AR4 robot is a 6DOF desktop size industrial robot that is a f
 
 ## Installation
 
-
 ### Docker
 
 #### Prerequisites
 
-It is a requirement to have `docker engine` already installed in the host machine.
+It is a requirement to have `docker engine` with the `docker compose plugin` already installed in the host machine.
 
 * See [Docker Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 
-For NVIDIA GPU support, `nvidia-container-toolkit` should be installed. *Skip this step if you don't have an NVIDIA graphics card*
+#### Building and running the ar4 dev container
+
+Build and/or run the container
+```bash
+./docker/run.sh
+```
+
+Force rebuilding the image
+
+```bash
+./docker/run.sh --build
+```
+
+## Build the packages and run the simulation
+
+Build the packages
+
+```
+colcon build
+```
+
+Source the built packages
+
+```
+source install/setup.bash
+```
+
+### Launch the simulation
+
+After building and sourcing the packages, run the Gazebo simulation
+
+```
+ros2 launch ar4_gazebo ar4_in_empty_world.launch.py
+```
+
+![Ar4 Gazebo](docs/ar4.png)
 
 
-* Make sure you have the drivers installed:
-  ```sh
-  nvidia-smi
-  ```
-* See [NVIDIA Container Toolkit Installation Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+To use Gazebo with ROS running the bridge:
 
-#### Building image and running container
+```
+ros2 launch ar4_gazebo gz_ros_bridge.launch.py
+```
 
-- Build the docker image whose name is `ar4_ws_ubuntu_jammy`:
+### Controlling the arm with Moveit
 
-  ```sh
-    ./docker/build.sh
-  ```
+To plan and command the arm to execute a motion launch the `demo.launch.py`:
 
-You can also try to set a specific image name:
+```
+ros2 launch ar4_moveit_config demo.launch.py
+```
 
+You should see RViz showing the robot visualization and the MotionPlanning panel at the left.
 
-  ```sh
-    ./docker/build.sh -i my_fancy_image_name
-  ```
+There are two ways of selecting a target position for the arm, both through RViz:
 
-- Run a docker container from `ar4_ws_ubuntu_jammy` called `ar4_ws_jammy`:
+Selecting a random valid position or moving the end effector to a desired position.
 
+### Selecting random valid position
+This will select a random position for the arm that would not cause a collision with itself or objects around it, calculated from the semantic information of the robot.
 
-  ```sh
-    ./docker/run.sh
-  ```
-
-- **IMPORTANT**: If you are using nvidia drivers add the `--use_nvidia` flag:
+https://github.com/user-attachments/assets/be9406d2-6589-456c-8ae6-edbbe067b701
 
 
-  ```sh
-    ./docker/run.sh --use_nvidia
-  ```
+### Moving end effector to a desired position
+This allows you to select a goal position for the end effector, which is currently the last link in the arm as no gripper is being used. This is done by dragging and dropping where the end effector should move to.
+
+https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf
+
+
+## Licenses
+
+All packages in this repository except for `ar4_description` are distributed under a **BSD 3-Clause** License.
+
+`ar4_description` is a derivative work from the [ar4_ros_driver](https://github.com/ycheng517/ar4_ros_driver/tree/main/annin_ar4_description) repository, which is distributed under a **MIT License**.

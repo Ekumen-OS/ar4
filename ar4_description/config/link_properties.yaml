@@ -1,0 +1,248 @@
+# Physical properties of the arm.
+#
+#                       <- Place for end effector.
+#              link_6
+#                |      <- joint_6
+#              link_5
+#                |      <- joint_5
+#              link_4
+#                |      <- joint_4
+#              link_3
+#                |      <- joint_3
+#              link_2
+#                |      <- joint_2
+#              link_1
+#                |      <- joint_1
+# __________ base_link ___________
+#                                   _____________________________
+#                          link_3  /    \                   /    \----__
+#                                 | (·)  |   link_4        | (·)  |   |_|  link_6 (holder for end effector)
+#                                /-\____/ __________________\____/----
+#                               /      /                          /\
+#                              /      /                           ||
+#                    link_2   /      /                          link_5
+#                            /      /
+#                           /___   /
+#                          /    \_/
+#                  link_1 || (·) ||
+#                         |\____/|
+#                 ________|_____ |_
+#                 |                |   base_link
+#             ____|________________|______
+#
+base_link:
+  inertial:
+    size:
+      dx: 0.24
+      dy: 0.1
+      dz: 0.05
+    origin:
+      dx: -0.05
+      dy: 0.0
+      dz: 0.02
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+    mass: 0.7102
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 1.5708
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 1.5708
+
+link_1:
+  inertial:
+    size:
+      dx: 0.1
+      dy: 0.1
+      dz: 0.2
+    mass: 0.88065
+    origin:
+      dx: 0.04
+      dy: -0.01
+      dz: 0.1
+      dr: 0.610865
+      dp: 0.418879
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 3.1415
+      dp: 0.0
+      dY: 1.5708
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 3.1415
+      dp: 0.0
+      dY: 1.5708
+
+link_2:
+  inertial:
+    size:
+      dx: 0.1
+      dy: 0.36
+      dz: 0.1
+    mass: 0.57738
+    origin:
+      dx: 0.0
+      dy: -0.15
+      dz: 0.03
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 3.1415
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 3.1415
+      dY: 0.0
+
+link_3:
+  inertial:
+    size:
+      dx: 0.1
+      dy: 0.12
+      dz: 0.05
+    mass: 0.1787
+    origin:
+      dx: -0.01
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 3.1415
+      dp: 0.0
+      dY: 1.5708
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 3.1415
+      dp: 0.0
+      dY: 1.5708
+
+link_4:
+  inertial:
+    size:
+      dx: 0.06
+      dy: 0.06
+      dz: 0.32
+    mass: 0.34936
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.08
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 3.1415
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 3.1415
+      dY: 0.0
+
+link_5:
+  inertial:
+    size:
+      dx: 0.1
+      dy: 0.04
+      dz: 0.08
+    mass: 0.11562
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: -1.5708
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: -1.5708
+      dY: 0.0
+
+link_6:
+  inertial:
+    size:
+      dx: 0.04
+      dy: 0.02
+      dz: 0.02
+    mass: 0.013863
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: -0.01
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
