@@ -33,4 +33,7 @@ done
 
 cd $(dirname $0)
 
+export USERID=$(id -u)
+export GROUPID=$(id -g)
+
 docker compose run --rm ${BUILD:+--build} $SERVICE
