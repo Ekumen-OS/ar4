@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ar4_isaac</name>
+  <version>0.0.1</version>
+  <description>
+    Launch Isaac simulation with Ar4 robot.
+  </description>
+  <author email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</author>
+  <maintainer email="steven.desvars@creativa77.com.ar">Steven Desvars</maintainer>
+  <maintainer email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</maintainer>
+  <license file="LICENSE">BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>ar4_description</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

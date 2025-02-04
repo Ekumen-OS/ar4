@@ -12,6 +12,7 @@ The Annin Robotics AR4 robot is a 6DOF desktop size industrial robot that is a f
 - [`ar4_gazebo`](./ar4_gazebo): Gazebo simulation for the ar4 arm.
 - [`ar4_description`](./ar4_description): Contains the URDF of the arm.
 - [`ar4_moveit_config`](./ar4_moveit_config): Contains configuration and launch files to run and command the arm.
+- [`ar4_isaac`](./ar4_isaac): Isaac simulation for the ar4 arm.
 
 ## Installation
 
