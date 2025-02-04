@@ -1,7 +1,27 @@
 # Description
 An Isaac simulation of the AR4 Package.
 
-### Update the robot in Isaac
+## Prerequirements
+
+Running the `nvidia` isaac simulation requires:
+
+  - Minimum specs (See: [Isaac Sim System Requirements](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/requirements.html#system-requirements)
+  - [Installing the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+
+## Run the simulation container
+
+```
+docker/run.sh -s ar4_isaac
+```
+
+## Launch the simulation
+```
+# From the container
+./src/ar4/ar4_isaac/launch.sh
+```
+![AR4 in isaac_sim](docs/isaac_sim.png)
+
+## Update the robot usda model
 
 If changes were made in the [ar4.urdf.xacro](../ar4_description/urdf/ar4.urdf.xacro), a new robot model for Isaac needs to be created.
 
@@ -22,6 +42,6 @@ xacro ar4.urdf.xacro > ar4.urdf
 
 - Import the URDF to Isaac following [these instructions](https://docs.omniverse.nvidia.com/isaacsim/latest/advanced_tutorials/tutorial_advanced_import_urdf.html)
 
-### Load the robot
+## Manually load the robot
 
 Open the `ar4.usda` file with Isaac
