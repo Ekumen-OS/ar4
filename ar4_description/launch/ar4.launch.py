@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+# Copyright 2025 Ekumen, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 # Launch file for the AR4 arm simulation.
 
 import os
@@ -16,54 +31,61 @@ from launch.substitutions import LaunchConfiguration
 
 # Declare the arguments for the LaunchDescription, visible with --show-args
 ARGUMENTS = [
-    DeclareLaunchArgument('rviz', default_value='true',
-                          description='Start RViz.'),
-    DeclareLaunchArgument('rsp', default_value='true',
-                          description='Run robot state publisher node.'),
-    DeclareLaunchArgument('jsp', default_value='true',
-                          description='Run joint state publisher node.'),
+    DeclareLaunchArgument('rviz', default_value='true', description='Start RViz.'),
+    DeclareLaunchArgument(
+        'rsp', default_value='true', description='Run robot state publisher node.'
+    ),
+    DeclareLaunchArgument(
+        'jsp', default_value='true', description='Run joint state publisher node.'
+    ),
 ]
 
 # Get the path of the necessary packages
 pkg_ar4_description = get_package_share_directory('ar4_description')
-ar4_urdf_file = xacro.process_file(os.path.join(pkg_ar4_description, 'urdf', 'ar4.urdf.xacro')).toprettyxml(indent='  ')
+ar4_urdf_file = xacro.process_file(
+    os.path.join(pkg_ar4_description, 'urdf', 'ar4.urdf.xacro')
+).toprettyxml(indent='  ')
 
 description_launch_file = PathJoinSubstitution(
-    [pkg_ar4_description, 'launch', 'rviz2.launch.py'])
+    [pkg_ar4_description, 'launch', 'rviz2.launch.py']
+)
 
 
 # Declare nodes
 def declare_nodes():
-  # Robot state publisher
-  rsp = Node(package='robot_state_publisher',
-              executable='robot_state_publisher',
-              namespace='ar4',
-              output='both',
-              parameters=[{'robot_description': ar4_urdf_file}],
-              condition=IfCondition(LaunchConfiguration('rsp'))
-  )
-  # Joint state publisher
-  jsp = Node(
-      package='joint_state_publisher_gui',
-      executable='joint_state_publisher_gui',
-      namespace='ar4',
-      name='joint_state_publisher_gui',
-      condition=IfCondition(LaunchConfiguration('jsp'))
-  )
+    # Robot state publisher
+    rsp = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        namespace='ar4',
+        output='both',
+        parameters=[{'robot_description': ar4_urdf_file}],
+        condition=IfCondition(LaunchConfiguration('rsp')),
+    )
+    # Joint state publisher
+    jsp = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        namespace='ar4',
+        name='joint_state_publisher_gui',
+        condition=IfCondition(LaunchConfiguration('jsp')),
+    )
 
-  # RViz
-  rviz = Node(
-      package='rviz2',
-      executable='rviz2',
-      arguments=['-d', os.path.join(pkg_ar4_description, 'config', 'ar4_vis.rviz')],
-      condition=IfCondition(LaunchConfiguration('rviz'))
-  )
-  return rsp, jsp, rviz
+    # RViz
+    rviz = Node(
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', os.path.join(pkg_ar4_description, 'config', 'ar4_vis.rviz')],
+        condition=IfCondition(LaunchConfiguration('rviz')),
+    )
+    return rsp, jsp, rviz
+
 
 # Includes
 robot_description = IncludeLaunchDescription(
     PythonLaunchDescriptionSource([description_launch_file])
-    )
+)
+
 
 def generate_launch_description():
     ld = LaunchDescription(ARGUMENTS)

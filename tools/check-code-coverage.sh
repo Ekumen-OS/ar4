@@ -1,4 +1,6 @@
-# Copyright 2025 Ekumen, Inc.
+#!/bin/bash
+
+# Copyright 2024 Ekumen, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.7)
-project(ar4_gazebo)
+# Enforce code coverage limits
 
-find_package(ament_cmake REQUIRED)
+[[ -z "${WITHIN_DEV}" ]] && echo -e "\033[1;33mWARNING: Try running this script inside the development container if you experience any issues.\033[0m"
 
-install(DIRECTORY config launch urdf DESTINATION share/${PROJECT_NAME}/)
+set -o errexit
 
-ament_package()
+gcovr --fail-under-line 95 -j -u -f 'src/beluga/.*' -e '.*/test/.*cpp' build/
+# NOTE: Enable Python code coverage checks when attained
+# (cd coveragepy && python3 -m coverage report --fail-under=95)

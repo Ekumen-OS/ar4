@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+# Copyright 2025 Ekumen, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -15,15 +30,21 @@ pkg_ar4_description = get_package_share_directory('ar4_description')
 pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
 pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
+
 def get_robot_description(use_ros_control):
     # Parse robot description from xacro
-    robot_description_file = os.path.join(pkg_ar4_gazebo, 'urdf', 'ar4_gazebo.urdf.xacro')
-    robot_description_config = xacro.process_file(robot_description_file,
+    robot_description_file = os.path.join(
+        pkg_ar4_gazebo, 'urdf', 'ar4_gazebo.urdf.xacro'
+    )
+    robot_description_config = xacro.process_file(
+        robot_description_file,
         mappings={
             'use_gazebo_ros_control': use_ros_control,
-        },)
+        },
+    )
     robot_description = robot_description_config.toprettyxml(indent='  ')
-    # Passing absolute path to the robot description due to Gazebo issues finding ar4_description pkg path.
+    # Passing absolute path to the robot description due to Gazebo issues finding
+    # ar4_description pkg path.
     robot_description = robot_description.replace(
         'package://ar4_description/', f'file://{pkg_ar4_description}/'
     )
@@ -31,14 +52,21 @@ def get_robot_description(use_ros_control):
 
 
 def generate_launch_description():
-    """Nodes launched:
-        robot_state_publisher
-        robot_state_publisher_control
-        jsp_gui
-        spawn
+    """Nodes launched.
+
+    robot_state_publisher
+    robot_state_publisher_control
+    jsp_gui
+    spawn.
     """
-    rsp_arg = DeclareLaunchArgument('rsp', default_value='false', description='Run robot state publisher node.')
-    jsp_gui_arg = DeclareLaunchArgument('jsp_gui', default_value='false', description='Run joint state publisher gui node.')
+    rsp_arg = DeclareLaunchArgument(
+        'rsp', default_value='false', description='Run robot state publisher node.'
+    )
+    jsp_gui_arg = DeclareLaunchArgument(
+        'jsp_gui',
+        default_value='false',
+        description='Run joint state publisher gui node.',
+    )
     use_ros_control = LaunchConfiguration('use_ros_control')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
@@ -81,7 +109,7 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
             }
         ],
-        condition=IfCondition(use_ros_control)
+        condition=IfCondition(use_ros_control),
     )
 
     # Joint state publisher
@@ -103,25 +131,39 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         arguments=[
-            '-name', 'ar4',
-            '-topic', 'robot_description',
+            '-name',
+            'ar4',
+            '-topic',
+            'robot_description',
         ],
         output='screen',
     )
 
     load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'joint_state_broadcaster'],
+        cmd=[
+            'ros2',
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
+            'joint_state_broadcaster',
+        ],
         output='screen',
-        condition=IfCondition(use_ros_control)
+        condition=IfCondition(use_ros_control),
     )
 
     load_joint_trajectory_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'arm_controller'],
+        cmd=[
+            'ros2',
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
+            'arm_controller',
+        ],
         output='screen',
-        condition=IfCondition(use_ros_control)
+        condition=IfCondition(use_ros_control),
     )
-
 
     ld = LaunchDescription(
         [
@@ -138,7 +180,6 @@ def generate_launch_description():
                     on_exit=[load_joint_trajectory_controller],
                 )
             ),
-
             # Arguments and Nodes
             declare_use_ros_control,
             jsp_gui_arg,

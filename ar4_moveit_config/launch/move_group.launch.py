@@ -1,3 +1,17 @@
+# Copyright 2025 Ekumen, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import os
 from moveit_configs_utils import MoveItConfigsBuilder
 
@@ -15,8 +29,11 @@ from moveit_configs_utils.launch_utils import (
     DeclareBooleanLaunchArg,
 )
 
+
 def generate_launch_description():
-    moveit_config = MoveItConfigsBuilder("ar4", package_name="ar4_moveit_config").to_moveit_configs()
+    moveit_config = MoveItConfigsBuilder(
+        "ar4", package_name="ar4_moveit_config"
+    ).to_moveit_configs()
 
     ld = LaunchDescription()
 
@@ -41,14 +58,16 @@ def generate_launch_description():
     move_group_configuration = {
         "publish_robot_description_semantic": True,
         "allow_trajectory_execution": LaunchConfiguration("allow_trajectory_execution"),
-        # Note: Wrapping the following values is necessary so that the parameter value can be the empty string
+        # Note: Wrapping the following values is necessary so that the parameter
+        # value can be the empty string
         "capabilities": ParameterValue(
             LaunchConfiguration("capabilities"), value_type=str
         ),
         "disable_capabilities": ParameterValue(
             LaunchConfiguration("disable_capabilities"), value_type=str
         ),
-        # Publish the planning scene of the physical robot so that rviz plugin can know actual robot
+        # Publish the planning scene of the physical robot so that the rviz plugin can
+        # know the actual robot
         "publish_planning_scene": should_publish,
         "publish_geometry_updates": should_publish,
         "publish_state_updates": should_publish,
