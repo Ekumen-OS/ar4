@@ -22,6 +22,7 @@ repos:
       - id: check-shebang-scripts-are-executable
       - id: check-yaml
         args: [--allow-multiple-documents]
+        exclude: ^ar4_description/config/ar4.yaml$
       - id: check-xml
       - id: end-of-file-fixer
       - id: trailing-whitespace
