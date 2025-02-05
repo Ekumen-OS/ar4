@@ -19,3 +19,8 @@ services:
     volumes:
       - ../:/workspace/src/ar4
       - /tmp/.X11-unix/:/tmp/.X11-unix/
+    # Uncomment the lines below if you want to connect the real robot.
+    # devices:
+    #   - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
+    # group_add:
+    #   - "dialout" # Group required for accesing /dev/ttyACM0
