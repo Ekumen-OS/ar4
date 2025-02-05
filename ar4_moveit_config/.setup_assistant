@@ -23,4 +23,3 @@ moveit_setup_assistant_config:
     state:
       - position
       - velocity
-      
