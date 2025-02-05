@@ -29,7 +29,6 @@ It is a requirement to have `docker engine` with the `docker compose plugin` alr
 - Connect the device to the computer before running the container.
 - Uncoment the comented lines in [docker-compose.yml](./docker/docker-compose.yml) to give the container access to the teensy.
 
-
 Build and/or run the container
 ```bash
 ./docker/run.sh
