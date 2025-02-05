@@ -30,14 +30,13 @@
 
 """launch file for integrating Gazebo with MoveIt for the AR4 robot."""
 
-import launch
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.actions import GroupAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import LaunchConfiguration
-import os
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.conditions import IfCondition
 
 
 def generate_launch_description():
@@ -55,13 +54,13 @@ def generate_launch_description():
     # Launch ar4_in_empty_world.launch.py
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [
-                os.path.join(
-                    FindPackageShare(ar4_gazebo_pkg).find(ar4_gazebo_pkg),
+            PathJoinSubstitution(
+                [
+                    FindPackageShare(ar4_gazebo_pkg),
                     'launch',
                     'ar4_in_empty_world.launch.py',
-                )
-            ]
+                ]
+            )
         )
     )
 
@@ -70,32 +69,37 @@ def generate_launch_description():
         [
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    [
-                        os.path.join(
-                            FindPackageShare(ar4_gazebo_pkg).find(ar4_gazebo_pkg),
+                    PathJoinSubstitution(
+                        [
+                            FindPackageShare(ar4_gazebo_pkg),
                             'launch',
                             'gz_ros_bridge.launch.py',
-                        )
-                    ]
+                        ]
+                    )
                 )
             )
         ],
-        condition=launch.conditions.IfCondition(use_ros_bridge),
+        condition=IfCondition(use_ros_bridge),
     )
 
     # Launch demo.launch.py
     moveit_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [
-                os.path.join(
-                    FindPackageShare(ar4_moveit_config_pkg).find(ar4_moveit_config_pkg),
+            PathJoinSubstitution(
+                [
+                    FindPackageShare(ar4_moveit_config_pkg),
                     'launch',
                     'demo.launch.py',
-                )
-            ]
+                ]
+            )
         )
     )
 
     return LaunchDescription(
-        [declare_use_ros_bridge, gazebo_launch, gz_ros_bridge_launch, moveit_launch]
+        [
+            declare_use_ros_bridge,
+            gazebo_launch,
+            gz_ros_bridge_launch,
+            moveit_launch,
+        ]
     )
