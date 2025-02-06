@@ -12,6 +12,7 @@ The [Annin Robotics AR4](https://www.anninrobotics.com/) robot is a 6DOF desktop
 - [`ar4_description`](./ar4_description): Contains the URDF of the arm.
 - [`ar4_hardware_interface`](./ar4_hardware_interface): Contains the software required to connect the computer with the real robot.
 - [`ar4_moveit_config`](./ar4_moveit_config): Contains configuration and launch files to run and command the arm.
+- [`ar4_isaac`](./ar4_isaac): Isaac simulation for the ar4 arm.
 
 ## Installation
 
@@ -76,14 +77,20 @@ There are two ways of selecting a target position for the arm using `RViz`:
 ####  1. Selecting random valid position
 This will select a random position for the arm that would not cause a collision with itself or objects around it, calculated from the semantic information of the robot.
 
-[Random valid position video](https://github.com/user-attachments/assets/be9406d2-6589-456c-8ae6-edbbe067b701)
+[Random valid position video](https://github.com/user-attachments/assets/ec926968-8952-4ccf-ba63-5423e94f61cd)
 
 
 ####  2. Moving end effector to a desired position
 This allows you to select a goal position for the end effector, which is currently the last link in the arm as no gripper is being used. This is done by dragging and dropping where the end effector should move to.
 
-[User selected position video](https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf)
+[User selected position video](https://github.com/user-attachments/assets/04dbb11c-bca4-4c05-95ae-251d70f41931)
 
+
+## Isaac sim
+
+![Ar4 Isaac](docs/ar4_isaac.png)
+
+See: [Isaac Sim Instructions](ar4_isaac/README.md)
 
 ## Licenses
 

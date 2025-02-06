@@ -1,0 +1,127 @@
+FROM osrf/ros:humble-desktop-full AS cacher
+
+WORKDIR /ws/src
+
+COPY . ar4/
+
+RUN mkdir -p /tmp/ws/src \
+ && find ./ -name "package.xml" | xargs cp --parents -t /tmp/ws/src \
+ && find ./ -name "COLCON_IGNORE" | xargs cp --parents -t /tmp/ws/src \
+ || true
+
+ FROM nvcr.io/nvidia/isaac-sim:4.2.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Add ROS 2 key
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# Install base system dependencies and development dependencies
+RUN apt update  \
+ && apt install --no-install-recommends -y \
+    apt-utils \
+    bash-completion \
+    build-essential \
+    curl \
+    debian-archive-keyring \
+    debian-keyring \
+    gdb \
+    git \
+    gnupg2 \
+    gpg-agent \
+    locales \
+    lsb-release \
+    mercurial \
+    openssh-server \
+    python-is-python3 \
+    python3-colcon-common-extensions \
+    python3-pip \
+    python3-rosdep \
+    python3-setuptools \
+    python3.10 \
+    screen \
+    software-properties-common \
+    sudo \
+    tmux \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install python dependencies
+RUN pip install --no-cache-dir --extra-index-url https://pypi.nvidia.com \
+    isaacsim-app==4.2.0.2 \
+    isaacsim-asset==4.2.0.2 \
+    isaacsim-code-editor==4.2.0.2 \
+    isaacsim-core==4.2.0.2 \
+    isaacsim-cortex==4.2.0.2 \
+    isaacsim-extscache-kit==4.2.0.2 \
+    isaacsim-extscache-kit-sdk==4.2.0.2 \
+    isaacsim-extscache-physics==4.2.0.2 \
+    isaacsim-gui==4.2.0.2 \
+    isaacsim-kernel==4.2.0.2 \
+    isaacsim-replicator==4.2.0.2 \
+    isaacsim-rl==4.2.0.2 \
+    isaacsim-robot==4.2.0.2 \
+    isaacsim-robot-motion==4.2.0.2 \
+    isaacsim-robot-setup==4.2.0.2 \
+    isaacsim-ros2==4.2.0.2 \
+    isaacsim-sensor==4.2.0.2 \
+    isaacsim-template==4.2.0.2 \
+    isaacsim-utils==4.2.0.2 \
+    nest-asyncio
+
+# Ensure cache folder is created, and symlink it to an easier to mount folder for persistence
+RUN mkdir -p /usr/local/lib/python3.10/dist-packages/omni/cache \
+ && ln -s /usr/local/lib/python3.10/dist-packages/omni/cache /root/.isaac-sim-cache
+
+
+# Install ROS 2
+RUN apt update \
+ && apt install --no-install-recommends -y \
+    ros-humble-ros-base \
+ && rm -rf /var/lib/apt/lists/*
+
+ARG USER=developer
+ARG GROUP=developer
+
+ARG USERID=1000
+ARG GROUPID=1000
+
+ENV USER $USER
+ENV GROUP $GROUP
+
+RUN userdel ubuntu
+
+RUN addgroup --gid $GROUPID $GROUP \
+ && adduser --uid $USERID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
+ && adduser $USER sudo \
+ && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/$USER
+
+RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-0.6.0-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - \
+ && chown root:root /usr/local/bin/fixuid \
+ && chmod 4755 /usr/local/bin/fixuid \
+ && mkdir -p /etc/fixuid \
+ && printf "user: $USER\ngroup: $GROUP\n" > /etc/fixuid/config.yml
+
+USER $USER
+
+ENV USER_WS /workspace
+RUN sudo mkdir -p $USER_WS/src && sudo chown -R $USER:$GROUP $USER_WS
+
+WORKDIR $USER_WS
+
+#
+# Install ROS project dependencies by copying the package.xml files (but not the source code,
+# to avoid rebuilding the workspace every time the source code changes) and running rosdep install
+COPY --from=cacher --chown=$USER:$GROUP /tmp/ws/ $USER_WS/
+RUN sudo apt update \
+ && . /opt/ros/humble/setup.sh \
+ && sudo rosdep init \
+ && rosdep update \
+ && rosdep install -i -y -r --from-path src \
+ && sudo rm -rf /var/lib/apt/lists/*
+
+ENV WITHIN_DEV 1
+
+CMD ["/bin/bash"]
+COPY --link docker/isaac_entrypoint.sh /.isaac_entrypoint.sh
+ENTRYPOINT ["fixuid", "-q", "/.isaac_entrypoint.sh"]
