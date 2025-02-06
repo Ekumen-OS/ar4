@@ -50,36 +50,37 @@ Source the built packages
 source install/setup.bash
 ```
 
+---
+
 ### Launch the simulation
 
-After building and sourcing the packages, run the Gazebo simulation
+After building and sourcing the packages, run the Gazebo simulation:
 
 ```
-ros2 launch ar4_gazebo ar4_in_empty_world.launch.py
+ros2 launch ar4_gazebo gazebo_moveit.launch.py
 ```
 
 ![Ar4 Gazebo](docs/ar4.png)
 
+By default, this will launch the simulation with the ROS bridge enabled.
 
-To use Gazebo with ROS running the bridge:
 
-```
-ros2 launch ar4_gazebo gz_ros_bridge.launch.py
-```
 
-### Controlling the arm with Moveit
-
-To plan and command the arm to execute a motion launch the `demo.launch.py`:
+If you want to disable the ROS bridge, use:
 
 ```
-ros2 launch ar4_moveit_config demo.launch.py
+ros2 launch ar4_gazebo gazebo_moveit.launch.py use_ros_bridge:=false
 ```
 
-You should see RViz showing the robot visualization and the MotionPlanning panel at the left.
+### Controlling the arm with MoveIt
+
+To plan and command the arm to execute a motion, this launch file will also start MoveIt automatically. Once launched, you should see RViz showing the robot visualization and the MotionPlanning panel on the left.
 
 There are two ways of selecting a target position for the arm, both through RViz:
+- Selecting a random valid position.
+- Moving the end effector to a desired position.
 
-Selecting a random valid position or moving the end effector to a desired position.
+---
 
 ### Selecting random valid position
 This will select a random position for the arm that would not cause a collision with itself or objects around it, calculated from the semantic information of the robot.
