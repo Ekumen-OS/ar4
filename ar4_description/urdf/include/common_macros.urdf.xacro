@@ -29,7 +29,7 @@
       <origin rpy="${visual['origin']['dr']} ${visual['origin']['dp']} ${visual['origin']['dY']}"
               xyz="${visual['origin']['dx']} ${visual['origin']['dy']} ${visual['origin']['dz']}"/>
       <geometry>
-         <mesh filename="file://$(find ar4_description)/meshes/${mesh}.stl"/>
+         <mesh filename="file://$(find ar4_description)/meshes/ar4/${mesh}.stl"/>
       </geometry>
       <material name="${material}"/>
     </visual>
@@ -38,7 +38,7 @@
       <origin rpy="${collision['origin']['dr']} ${collision['origin']['dp']} ${collision['origin']['dY']}"
               xyz="${collision['origin']['dx']} ${collision['origin']['dy']} ${collision['origin']['dz']}"/>
       <geometry>
-        <mesh filename="file://$(find ar4_description)/meshes/${mesh}.stl"/>
+        <mesh filename="file://$(find ar4_description)/meshes/ar4/${mesh}.stl"/>
       </geometry>
     </collision>
 
