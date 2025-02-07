@@ -8,7 +8,7 @@ controller_manager:
 
 
     gripper_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
+      type: joint_trajectory_controller/GripperActionController
 
 
     joint_state_broadcaster:
@@ -32,8 +32,3 @@ gripper_controller:
   ros__parameters:
     joints:
       - gripper_jaw1_joint
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
