@@ -1,0 +1,79 @@
+FROM nvcr.io/nvidia/isaac-sim:4.2.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Add ROS 2 key
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# Install base system dependencies and development dependencies
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    apt-utils \
+    bash-completion \
+    build-essential \
+    curl \
+    debian-archive-keyring \
+    debian-keyring \
+    gdb \
+    git \
+    gnupg2 \
+    gpg-agent \
+    locales \
+    lsb-release \
+    mercurial \
+    openssh-server \
+    python-is-python3 \
+    python3-colcon-common-extensions \
+    python3-pip \
+    python3-rosdep \
+    python3-setuptools \
+    python3.10 \
+    software-properties-common \
+    sudo \
+    tmux && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install python dependencies
+RUN pip install --no-cache-dir --extra-index-url https://pypi.nvidia.com \
+    isaacsim-app==4.2.0.2 \
+    isaacsim-asset==4.2.0.2 \
+    isaacsim-code-editor==4.2.0.2 \
+    isaacsim-core==4.2.0.2 \
+    isaacsim-cortex==4.2.0.2 \
+    isaacsim-extscache-kit==4.2.0.2 \
+    isaacsim-extscache-kit-sdk==4.2.0.2 \
+    isaacsim-extscache-physics==4.2.0.2 \
+    isaacsim-gui==4.2.0.2 \
+    isaacsim-kernel==4.2.0.2 \
+    isaacsim-replicator==4.2.0.2 \
+    isaacsim-rl==4.2.0.2 \
+    isaacsim-robot==4.2.0.2 \
+    isaacsim-robot-motion==4.2.0.2 \
+    isaacsim-robot-setup==4.2.0.2 \
+    isaacsim-ros2==4.2.0.2 \
+    isaacsim-sensor==4.2.0.2 \
+    isaacsim-template==4.2.0.2 \
+    isaacsim-utils==4.2.0.2 \
+    nest-asyncio
+
+# Ensure cache folder is created, and symlink it to an easier to mount folder for persistance
+RUN mkdir -p /usr/local/lib/python3.10/dist-packages/omni/cache && \
+    ln -s /usr/local/lib/python3.10/dist-packages/omni/cache /root/.isaac-sim-cache
+
+# Install ROS 2
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    ros-humble-desktop
+
+# Install ros dependencies, updating the apt cache is necessary.
+RUN --mount=type=bind,source=.,target=/tmp/ws \
+    rosdep init && \
+    apt-get update && \
+    . /opt/ros/humble/setup.sh && \
+    rosdep update && \
+    rosdep install --from-paths /tmp/ws --ignore-src -r -y
+
+WORKDIR /workspace
+
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["/bin/bash"]

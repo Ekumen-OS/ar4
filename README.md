@@ -86,6 +86,10 @@ This allows you to select a goal position for the end effector, which is current
 [User selected position video](https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf)
 
 
+## Isaac sim
+
+See: [Isaac Sim Instructions](ar4_isaac/README.md)
+
 ## Licenses
 
 All packages in this repository except for `ar4_description` and `ar4_hardware_interface` are distributed under a **BSD 3-Clause** License.
