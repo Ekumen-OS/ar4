@@ -2,6 +2,8 @@
 <robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="package_name" value="ar4_description"/>
 
+  <xacro:arg name="include_gripper" default="true"/>
+
   <xacro:include filename="$(find ${package_name})/urdf/include/common_macros.urdf.xacro" />
   <xacro:property name="robot_properties_yaml_dir" value="$(find ${package_name})/config/link_properties.yaml" />
   <xacro:property name="robot_properties" value="${xacro.load_yaml(robot_properties_yaml_dir)}"/>
@@ -97,4 +99,10 @@
     <axis xyz="0 0 1"/>
     <limit lower="${-1.0 * robot_parameters['j6_limit']}" upper="${robot_parameters['j6_limit']}" effort="100" velocity="1.0"/>
   </joint>
+
+  <xacro:if value="$(arg include_gripper)">
+    <xacro:include filename="$(find ${package_name})/urdf/include/ar_gripper_macro.xacro" />
+    <xacro:ar_gripper parent="link_6" />
+  </xacro:if>
+
 </robot>
