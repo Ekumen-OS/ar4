@@ -108,3 +108,33 @@ https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf
 All packages in this repository except for `ar4_description` are distributed under a **BSD 3-Clause** License.
 
 `ar4_description` is a derivative work from the [ar4_ros_driver](https://github.com/ycheng517/ar4_ros_driver/tree/main/annin_ar4_description) repository, which is distributed under a **MIT License**.
+
+---
+# Using pre-commit
+
+Pre-commit is a tool that allows git's pre-commit hook integrate with various code linters and formatters.
+
+To install `pre-commit`, run
+```sh
+pip install pre-commit
+```
+
+To automatically run it on each commit, from repository's root:
+```sh
+pre-commit install
+```
+
+And that's it! Every time you commit, `pre-commit` will trigger and let you know if everything goes well.
+If the checks fail, the commit won't be created, and you'll have to fix the issue (some of them are automatically fixed by `pre-commit`), STAGE the changes, and try again.
+
+To manually run `pre-commit` on the staged changes, one can run:
+```sh
+pre-commit run
+```
+
+Or to change the whole codebase
+```sh
+pre-commit run --all-files
+```
+
+**Note**: `pre-commit` only runs on staged changes by default.
