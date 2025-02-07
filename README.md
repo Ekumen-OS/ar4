@@ -24,7 +24,7 @@ It is a requirement to have `docker engine` with the `docker compose plugin` alr
 
 * See [Docker Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 
-#### Building and running the ar4 dev container
+#### Building and running the ar4 gazebo dev container
 
 Build and/or run the container
 ```bash
@@ -37,7 +37,7 @@ Force rebuilding the image
 ./docker/run.sh --build
 ```
 
-## Build the packages and run the simulation
+## Build the packages and run the gazebo simulation
 
 Build the packages
 
@@ -51,7 +51,7 @@ Source the built packages
 source install/setup.bash
 ```
 
-### Launch the simulation
+### Launch the gazebo simulation
 
 After building and sourcing the packages, run the Gazebo simulation
 
@@ -93,6 +93,10 @@ This allows you to select a goal position for the end effector, which is current
 
 https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf
 
+
+## Isaac sim
+
+See: [Isaac Sim Instructions](ar4_isaac/README.md)
 
 ## Licenses
 
