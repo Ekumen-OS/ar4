@@ -130,13 +130,13 @@ if __name__ == "__main__":
         "--physics_dt",
         type=float,
         default=1.0 / 120.0,
-        help="Physics timestep rate in hertz",
+        help="Physics timestep in seconds",
     )
     parser.add_argument(
         "--rendering_dt",
         type=float,
         default=1.0 / 30.0,
-        help="Rendering timestep rate in hertz",
+        help="Rendering timestep in seconds",
     )
     parser.add_argument(
         "--stage_units_per_meter",
