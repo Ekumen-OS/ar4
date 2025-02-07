@@ -25,9 +25,18 @@ It is a requirement to have `docker engine` with the `docker compose plugin` alr
 
 #### Building and running the ar4 dev container
 
-Build and/or run the container
+
+Build and/or run the container for Gazebo simulation
 ```bash
 ./docker/run.sh
+```
+
+Build and/or run the container for the real robot:
+
+1. Connect the teensy usb to the computer
+2. Run:
+```bash
+./docker/run.sh -s ar4_hardware
 ```
 
 Force rebuilding the image
