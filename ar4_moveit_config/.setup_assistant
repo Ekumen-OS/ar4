@@ -7,7 +7,7 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: Santiago Lopez
     author_email: santiago.mendez@creativa77.com.ar
-    generated_timestamp: 1738012897
+    generated_timestamp: 1738942244
   control_xacro:
     command:
       - position
