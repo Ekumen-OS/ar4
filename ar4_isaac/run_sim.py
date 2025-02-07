@@ -41,7 +41,7 @@ from pathlib import Path
 from isaacsim import SimulationApp
 
 # Note(Fran): There are many imports inside each of the functions,
-# this is required becasue the simulation app must be created first
+# this is required because the simulation app must be created first
 
 
 def create_simulation_context(
