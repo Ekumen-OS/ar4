@@ -34,7 +34,7 @@ Build and/or run the container for Gazebo simulation
 Build and/or run the container for the real robot:
 
 1. Connect the teensy usb to the computer
-2. Run: 
+2. Run:
 ```bash
 ./docker/run.sh -s ar4_hardware
 ```
