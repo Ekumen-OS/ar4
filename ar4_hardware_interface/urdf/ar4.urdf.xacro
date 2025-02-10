@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="ar4">
+  <xacro:arg name="serial_port" default="/dev/ttyACM0"/>
+  <xacro:arg name="arduino_serial_port" default="/dev/ttyUSB0"/>
+  <xacro:arg name="calibrate" default="True"/>
+  <xacro:arg name="include_gripper" default="false"/>
+  <xacro:arg name="ar_model" default="ar4"/>
+  <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro"/>
+  <xacro:include filename="$(find ar4_hardware_interface)/urdf/ar4.ros2_control_hardware.xacro"/>
+
+  <link name="world" />
+  <joint name="base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="world"/>
+      <child link="base_link" />
+    </joint>
+
+  <xacro:ar_ros2_control
+    name="ar4"
+    plugin_name="ar4_hardware_interface/ARHardwareInterface"
+    serial_port="$(arg serial_port)"
+    calibrate="$(arg calibrate)"
+    joint_offset_parameters_file="$(find ar4_hardware_interface)/config/joint_offsets/ar4.yaml"
+  />
+
+</robot>

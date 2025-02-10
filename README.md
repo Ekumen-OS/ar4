@@ -10,6 +10,7 @@ The Annin Robotics AR4 robot is a 6DOF desktop size industrial robot that is a f
 
 - [`ar4_gazebo`](./ar4_gazebo): Gazebo simulation for the ar4 arm.
 - [`ar4_description`](./ar4_description): Contains the URDF of the arm.
+- [`ar4_hardware_interface`](./ar4_hardware_interface): Contains the software required to connect the computer with the real robot.
 - [`ar4_moveit_config`](./ar4_moveit_config): Contains configuration and launch files to run and command the arm.
 
 ## Installation
@@ -28,14 +29,6 @@ It is a requirement to have `docker engine` with the `docker compose plugin` alr
 Build and/or run the container for Gazebo simulation
 ```bash
 ./docker/run.sh
-```
-
-Build and/or run the container for the real robot:
-
-1. Connect the teensy usb to the computer
-2. Run:
-```bash
-./docker/run.sh -s ar4_hardware
 ```
 
 Force rebuilding the image
@@ -101,6 +94,10 @@ This allows you to select a goal position for the end effector, which is current
 
 https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf
 
+
+## Real robot
+
+See: [Hardware Interface Instructions](ar4_hardware_interface/README.md)
 
 ## Licenses
 
