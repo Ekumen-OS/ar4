@@ -74,6 +74,10 @@
 
 over "ar4"
 {
+    quatd xformOp:orient = (1, 0, 0, 0)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
     def OmniGraph "tf"
     {
         token evaluationMode = "Automatic"
@@ -137,7 +141,7 @@ over "ar4"
             custom string inputs:qosProfile
             custom uint64 inputs:queueSize
             custom bool inputs:staticPublisher
-            custom rel inputs:targetPrims = </ar4> (
+            custom rel inputs:targetPrims = </ar4/base_link> (
                 customData = {
                     dictionary omni = {
                         dictionary graph = {
@@ -314,6 +318,133 @@ over "ar4"
             int node:typeVersion = 1
             uniform token ui:nodegraph:node:expansionState = "open"
             uniform float2 ui:nodegraph:node:pos = (792.1969, 525.1658)
+        }
+    }
+
+    over "base_link"
+    {
+        over "joint_1"
+        {
+            float state:angular:physics:position = 0
+            float state:angular:physics:velocity = 0
+        }
+    }
+
+    over "link_1"
+    {
+        over "joint_2"
+        {
+            float state:angular:physics:position = 0
+            float state:angular:physics:velocity = 0
+        }
+    }
+
+    over "link_2"
+    {
+        over "joint_3"
+        {
+            float state:angular:physics:position = 0
+            float state:angular:physics:velocity = 0
+        }
+    }
+
+    over "link_3"
+    {
+        over "joint_4"
+        {
+            float state:angular:physics:position = 0
+            float state:angular:physics:velocity = 0
+        }
+    }
+
+    over "link_4"
+    {
+        over "joint_5"
+        {
+            float state:angular:physics:position = 0
+            float state:angular:physics:velocity = 0
+        }
+    }
+
+    over "link_5"
+    {
+        over "joint_6"
+        {
+            float state:angular:physics:position = 0
+            float state:angular:physics:velocity = 0
+        }
+    }
+
+    over "link_6"
+    {
+    }
+
+    def OmniGraph "rtf"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "Shared"
+        int2 fileFormatVersion = (1, 9)
+        token pipelineStage = "pipelineStageSimulation"
+
+        def OmniGraphNode "on_playback_tick" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 2
+            custom double outputs:deltaSeconds
+            custom double outputs:frame
+            custom uint outputs:tick (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom double outputs:time
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (145.6546, 110.12289)
+        }
+
+        def OmniGraphNode "isaac_real_time_factor" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            token node:type = "omni.isaac.core_nodes.IsaacRealTimeFactor"
+            int node:typeVersion = 1
+            custom float outputs:rtf
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (133.97614, 267.92398)
+        }
+
+        def OmniGraphNode "ros2_publisher" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uint64 inputs:context
+            custom float inputs:data
+            prepend float inputs:data.connect = </ar4/rtf/isaac_real_time_factor.outputs:rtf>
+            custom uint inputs:execIn (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            prepend uint inputs:execIn.connect = </ar4/rtf/on_playback_tick.outputs:tick>
+            custom string inputs:messageName = "Float32"
+            custom string inputs:messagePackage = "std_msgs"
+            custom string inputs:messageSubfolder
+            custom string inputs:nodeNamespace
+            custom string inputs:qosProfile
+            custom uint64 inputs:queueSize
+            custom string inputs:topicName = "real_time_factor"
+            token node:type = "omni.isaac.ros2_bridge.ROS2Publisher"
+            int node:typeVersion = 1
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (644.88495, 127.31221)
         }
     }
 }
