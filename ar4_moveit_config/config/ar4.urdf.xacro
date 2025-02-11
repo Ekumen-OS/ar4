@@ -3,7 +3,7 @@
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
     <!-- Import ar4 urdf file -->
-    <xacro:include filename="$(find ar4_gazebo)/urdf/ar4_gazebo.urdf.xacro" />
+    <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro" />
 
     <!-- Import control_xacro -->
     <xacro:include filename="ar4.ros2_control.xacro" />
