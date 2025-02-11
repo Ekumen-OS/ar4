@@ -31,12 +31,10 @@
 """launch file for integrating Gazebo with MoveIt for the AR4 robot."""
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
-from launch.actions import GroupAction
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.conditions import IfCondition
+from launch.substitutions import PathJoinSubstitution
 
 
 def generate_launch_description():
@@ -44,14 +42,6 @@ def generate_launch_description():
     ar4_gazebo_pkg = 'ar4_gazebo'
     ar4_moveit_config_pkg = 'ar4_moveit_config'
 
-    # Declare launch argument for enabling/disabling the ros bridge
-    use_ros_bridge = LaunchConfiguration('use_ros_bridge')
-
-    declare_use_ros_bridge = DeclareLaunchArgument(
-        'use_ros_bridge', default_value='true', description='Enable ROS bridge'
-    )
-
-    # Launch ar4_in_empty_world.launch.py
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
@@ -64,25 +54,6 @@ def generate_launch_description():
         )
     )
 
-    # Launch gz_ros_bridge.launch.py only if use_ros_bridge is true
-    gz_ros_bridge_launch = GroupAction(
-        [
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    PathJoinSubstitution(
-                        [
-                            FindPackageShare(ar4_gazebo_pkg),
-                            'launch',
-                            'gz_ros_bridge.launch.py',
-                        ]
-                    )
-                )
-            )
-        ],
-        condition=IfCondition(use_ros_bridge),
-    )
-
-    # Launch demo.launch.py
     moveit_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
@@ -95,11 +66,8 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        [
-            declare_use_ros_bridge,
-            gazebo_launch,
-            gz_ros_bridge_launch,
-            moveit_launch,
-        ]
-    )
+    ld = LaunchDescription()
+    ld.add_action(gazebo_launch)
+    ld.add_action(moveit_launch)
+
+    return ld

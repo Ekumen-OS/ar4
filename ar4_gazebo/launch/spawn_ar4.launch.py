@@ -34,44 +34,98 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration
+import xacro
 
-
+pkg_ar4_description = get_package_share_directory('ar4_description')
 pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
-pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+
+
+def get_robot_description():
+    robot_description_file = os.path.join(
+        pkg_ar4_gazebo, 'urdf', 'ar4_gazebo.urdf.xacro'
+    )
+
+    return xacro.process_file(
+        robot_description_file,
+    ).toprettyxml(indent='  ')
 
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
+
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        'use_sim_time',
+        name='use_sim_time',
         default_value='true',
         description='Use simulation (Gazebo) clock if true',
     )
 
-    # Launch ar4 robot
-    ar4_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ar4_gazebo, 'launch', 'spawn_ar4.launch.py')
-        ),
-        launch_arguments={
-            'use_sim_time': use_sim_time,
-        }.items(),
+    load_joint_state_broadcaster = ExecuteProcess(
+        cmd=[
+            'ros2',
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
+            'joint_state_broadcaster',
+        ],
+        output='screen',
     )
 
-    # Launch gazebo empty world
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')
-        ),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items(),
+    load_joint_trajectory_controller = ExecuteProcess(
+        cmd=[
+            'ros2',
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
+            'arm_controller',
+        ],
+        output='screen',
+    )
+
+    robot_state_publisher_control = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='both',
+        parameters=[
+            {
+                'robot_description': get_robot_description(),
+                'use_sim_time': use_sim_time,
+            }
+        ],
+    )
+
+    node_spawn = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-name',
+            'ar4',
+            '-topic',
+            'robot_description',
+        ],
+        output='screen',
     )
 
     ld = LaunchDescription()
+    ld.add_action(
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=node_spawn,
+                on_exit=[
+                    load_joint_state_broadcaster,
+                    load_joint_trajectory_controller,
+                ],
+            )
+        )
+    )
     ld.add_action(declare_use_sim_time_cmd)
-    ld.add_action(ar4_launch)
-    ld.add_action(gazebo)
+    ld.add_action(node_spawn)
+    ld.add_action(robot_state_publisher_control)
 
     return ld
