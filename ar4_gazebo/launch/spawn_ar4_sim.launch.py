@@ -41,11 +41,8 @@ from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration, PythonExpression
 import xacro
 
-
 pkg_ar4_description = get_package_share_directory('ar4_description')
 pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
-pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-
 
 def get_robot_description(use_ros_control):
     # Parse robot description from xacro
@@ -66,93 +63,20 @@ def get_robot_description(use_ros_control):
     )
     return robot_description
 
-
 def generate_launch_description():
-    """Nodes launched.
-
-    robot_state_publisher
-    robot_state_publisher_control
-    jsp_gui
-    spawn.
-    """
-    rsp_arg = DeclareLaunchArgument(
-        'rsp', default_value='false', description='Run robot state publisher node.'
-    )
-    jsp_gui_arg = DeclareLaunchArgument(
-        'jsp_gui',
-        default_value='false',
-        description='Run joint state publisher gui node.',
-    )
     use_ros_control = LaunchConfiguration('use_ros_control')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
-    declare_use_ros_control = DeclareLaunchArgument(
+    declare_use_ros_control_cmd = DeclareLaunchArgument(
         name='use_ros_control',
         default_value='true',
         description='True to use the gazebo_ros_control plugin',
     )
 
-    use_sim_time_argument = DeclareLaunchArgument(
-        'use_sim_time',
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        name='use_sim_time',
         default_value='true',
         description='Use simulation (Gazebo) clock if true',
-    )
-
-    # Robot state publisher
-    robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='both',
-        parameters=[
-            {
-                'robot_description': get_robot_description('false'),
-                'use_sim_time': use_sim_time,
-            }
-        ],
-        condition=IfCondition(PythonExpression(["'", use_ros_control, "' == 'false'"])),
-    )
-
-    # Robot state publisher
-    robot_state_publisher_control = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='both',
-        parameters=[
-            {
-                'robot_description': get_robot_description('true'),
-                'use_sim_time': use_sim_time,
-            }
-        ],
-        condition=IfCondition(use_ros_control),
-    )
-
-    # Joint state publisher
-    jsp_gui = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        namespace='ar4',
-        name='joint_state_publisher_gui',
-        condition=IfCondition(LaunchConfiguration('jsp_gui')),
-        parameters=[
-            {
-                'use_sim_time': use_sim_time,
-            }
-        ],
-    )
-
-    # Spawn
-    spawn = Node(
-        package='ros_gz_sim',
-        executable='create',
-        arguments=[
-            '-name',
-            'ar4',
-            '-topic',
-            'robot_description',
-        ],
-        output='screen',
     )
 
     load_joint_state_broadcaster = ExecuteProcess(
@@ -181,31 +105,45 @@ def generate_launch_description():
         condition=IfCondition(use_ros_control),
     )
 
-    ld = LaunchDescription(
-        [
-            # # Arguments and Nodes
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=spawn,
-                    on_exit=[load_joint_state_broadcaster],
-                )
-            ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=load_joint_state_broadcaster,
-                    on_exit=[load_joint_trajectory_controller],
-                )
-            ),
-            # Arguments and Nodes
-            declare_use_ros_control,
-            jsp_gui_arg,
-            rsp_arg,
-            jsp_gui,
-            robot_state_publisher,
-            robot_state_publisher_control,
-            spawn,
-            use_sim_time_argument,
-        ]
+    robot_state_publisher_control = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='both',
+        parameters=[
+            {
+                'robot_description': get_robot_description('true'),
+                'use_sim_time': use_sim_time,
+            }
+        ],
+        condition=IfCondition(use_ros_control),
     )
+
+    # Spawn
+    node_spawn = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-name',
+            'ar4',
+            '-topic',
+            'robot_description',
+        ],
+        output='screen',
+    )
+
+    ld = LaunchDescription()
+    ld.add_action(
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=node_spawn,
+                on_exit=[load_joint_state_broadcaster, load_joint_trajectory_controller],
+            )
+        )
+    )
+    ld.add_action(declare_use_ros_control_cmd)
+    ld.add_action(declare_use_sim_time_cmd)
+    ld.add_action(node_spawn)
+    ld.add_action(robot_state_publisher_control)
 
     return ld

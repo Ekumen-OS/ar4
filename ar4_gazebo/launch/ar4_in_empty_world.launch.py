@@ -41,17 +41,13 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
 
-pkg_ar4_description = get_package_share_directory('ar4_description')
 pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
 pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
-    rviz_arg = DeclareLaunchArgument(
-        'rviz', default_value='false', description='Start RViz.'
-    )
-    use_sim_time_arg = DeclareLaunchArgument(
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
         description='Use simulation (Gazebo) clock if true',
@@ -75,22 +71,12 @@ def generate_launch_description():
         launch_arguments={'gz_args': '-r empty.sdf'}.items(),
     )
 
-    # RViz
-    rviz = Node(
-        package='rviz2',
-        executable='rviz2',
-        arguments=['-d', os.path.join(pkg_ar4_description, 'config', 'ar4_vis.rviz')],
-        condition=IfCondition(LaunchConfiguration('rviz')),
-    )
-
     ld = LaunchDescription(
         [
             # Arguments and Nodes
-            rviz_arg,
-            use_sim_time_arg,
+            declare_use_sim_time_cmd,
             ar4_launch,
             gazebo,
-            rviz,
         ]
     )
 
