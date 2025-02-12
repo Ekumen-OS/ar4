@@ -39,7 +39,7 @@
 
     <gazebo>
       <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-        <parameters>$(find ar4_control)/config/ar4_controllers.yaml</parameters>
+        <parameters>$(find ar4_moveit_config)/config/ros2_controllers.yaml</parameters>
       </plugin>
     </gazebo>
 

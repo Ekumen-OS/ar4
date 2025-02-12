@@ -1,7 +1,7 @@
 moveit_setup_assistant_config:
   urdf:
-    package: ar4_gazebo
-    relative_path: urdf/ar4_gazebo.urdf.xacro
+    package: ar4_description
+    relative_path: urdf/ar4_description.urdf.xacro
   srdf:
     relative_path: config/ar4.srdf
   package_settings:
