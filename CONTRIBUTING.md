@@ -26,4 +26,3 @@ Or to make a pass to the whole codebase
 ```sh
 pre-commit run --all-files
 ```
-

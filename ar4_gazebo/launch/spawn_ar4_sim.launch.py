@@ -44,6 +44,7 @@ import xacro
 pkg_ar4_description = get_package_share_directory('ar4_description')
 pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
 
+
 def get_robot_description(use_ros_control):
     # Parse robot description from xacro
     robot_description_file = os.path.join(
@@ -62,6 +63,7 @@ def get_robot_description(use_ros_control):
         'package://ar4_description/', f'file://{pkg_ar4_description}/'
     )
     return robot_description
+
 
 def generate_launch_description():
     use_ros_control = LaunchConfiguration('use_ros_control')
@@ -137,7 +139,10 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=node_spawn,
-                on_exit=[load_joint_state_broadcaster, load_joint_trajectory_controller],
+                on_exit=[
+                    load_joint_state_broadcaster,
+                    load_joint_trajectory_controller,
+                ],
             )
         )
     )
