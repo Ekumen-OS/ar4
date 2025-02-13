@@ -101,9 +101,9 @@ See: [Hardware Interface Instructions](ar4_hardware_interface/README.md)
 
 ## Licenses
 
-All packages in this repository except for `ar4_description` are distributed under a **BSD 3-Clause** License.
+All packages in this repository except for `ar4_description` and `ar4_hardware_interface` are distributed under a **BSD 3-Clause** License.
 
-`ar4_description` is a derivative work from the [ar4_ros_driver](https://github.com/ycheng517/ar4_ros_driver/tree/main/annin_ar4_description) repository, which is distributed under a **MIT License**.
+`ar4_description` and `ar4_hardware_interface` are a derivative work from the [ar4_ros_driver](https://github.com/ycheng517/ar4_ros_driver/tree/main) repository, which is distributed under a **MIT License**.
 
 ---
 # Using pre-commit

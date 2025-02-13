@@ -44,22 +44,13 @@ def generate_launch_description():
     robot_description = {"robot_description": ParameterValue(robot_description_content)}
 
     joint_controllers_cfg = PathJoinSubstitution(
-        [FindPackageShare("ar4_hardware_interface"), "config", "controllers.yaml"]
-    )
-
-    update_rate_config_file = PathJoinSubstitution(
-        [
-            FindPackageShare("ar4_hardware_interface"),
-            "config",
-            "controller_update_rate.yaml",
-        ]
+        [FindPackageShare("ar4_moveit_config"), "config", "ros2_controllers.yaml"]
     )
 
     controller_manager_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[
-            update_rate_config_file,
             robot_description,
             ParameterFile(joint_controllers_cfg, allow_substs=True),
         ],

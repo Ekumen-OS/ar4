@@ -25,6 +25,10 @@ MoveIt. Open a new terminal and run:
 ros2 launch ar4_moveit_config demo.launch.py
 ```
 
+## AR4 Gripper
+
+**Important Note:** The gripper is still a WIP and might not work
+
 ## Position Controller
 
 The hardware_interface implements a Position Joint Trajectory Controller from
