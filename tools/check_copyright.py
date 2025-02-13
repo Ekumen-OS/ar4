@@ -209,8 +209,10 @@ def main(argv=None) -> int:
     # Whether any of the files need to be fixed.
     need_fix: bool = False
 
+    excluded_pkgs = ['ar4_description', 'ar4_hardware_interface']
+
     for path in args.paths:
-        if 'ar4_description' in str(path):
+        if any(excluded_pkg in str(path) for excluded_pkg in excluded_pkgs):
             continue
         checker = FileContentChecker(path)
         match = checker.search_copyright()

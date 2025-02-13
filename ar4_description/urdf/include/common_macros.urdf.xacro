@@ -40,16 +40,15 @@
     </link>
   </xacro:macro>
 
-<!-- ===================== Box inertia xacro ==================================
-
-  params:
-  - m [float]: link mass;
-  - x [float]: link dimension on the X-axis;
-  - y [float]: link dimension on the Y-axis;
-  - z [float]: link dimension on the Z-axis;
-  - o_xyz [string]: position offset
-  - o_rpy [string]: rotation offset
--->
+<!-- ===================== Box inertia xacro ================================== -->
+<!-- params -->
+<!-- - m [float] link mass; -->
+<!-- - x [float] link dimension on the X-axis; -->
+<!-- - y [float] link dimension on the Y-axis; -->
+<!-- - z [float] link dimension on the Z-axis; -->
+<!-- - o_xyz [string] position offset -->
+<!-- - o_rpy [string] rotation offset -->
+<!-- ========================================================================== -->
 
  <xacro:macro name="box_inertia" params="m x y z o_xyz:='0.0 0.0 0.0' o_rpy:='0.0 0.0 0.0'">
     <inertial>
