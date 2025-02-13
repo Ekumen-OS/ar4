@@ -1,33 +1,3 @@
-# BSD 3-Clause License
-#
-# Copyright 2025 Ekumen, Inc.
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#
-# 1. Redistributions of source code must retain the above copyright notice, this
-#    list of conditions and the following disclaimer.
-#
-# 2. Redistributions in binary form must reproduce the above copyright notice,
-#    this list of conditions and the following disclaimer in the documentation
-#    and/or other materials provided with the distribution.
-#
-# 3. Neither the name of the copyright holder nor the names of its
-#    contributors may be used to endorse or promote products derived from
-#    this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterValue
 from launch_ros.parameter_descriptions import ParameterFile
@@ -43,7 +13,7 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 def generate_launch_description():
     serial_port = LaunchConfiguration("serial_port")
     calibrate = LaunchConfiguration("calibrate")
-    include_gripper = LaunchConfiguration("include_gripper")
+    # include_gripper = LaunchConfiguration("include_gripper")
     arduino_serial_port = LaunchConfiguration("arduino_serial_port")
     ar_model_config = LaunchConfiguration("ar_model")
 
@@ -64,9 +34,9 @@ def generate_launch_description():
             "calibrate:=",
             calibrate,
             " ",
-            "include_gripper:=",
-            include_gripper,
-            " ",
+            # "include_gripper:=",
+            # include_gripper,
+            # " ",
             "arduino_serial_port:=",
             arduino_serial_port,
         ]
@@ -156,14 +126,14 @@ def generate_launch_description():
             choices=["True", "False"],
         )
     )
-    ld.add_action(
-        DeclareLaunchArgument(
-            "include_gripper",
-            default_value="True",
-            description="Run the servo gripper",
-            choices=["True", "False"],
-        )
-    )
+    # ld.add_action(
+    #     DeclareLaunchArgument(
+    #         "include_gripper",
+    #         default_value="True",
+    #         description="Run the servo gripper",
+    #         choices=["True", "False"],
+    #     )
+    # )
     ld.add_action(
         DeclareLaunchArgument(
             "arduino_serial_port",

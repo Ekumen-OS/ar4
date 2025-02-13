@@ -16,7 +16,7 @@ This module contains the hardware interface for the AR4 robot.
 Hardware:
 
 ```
-ros2 launch ar4_hardware_interface ar4_hardware.launch.py calibrate:=True include_gripper:=False
+ros2 launch ar4_hardware_interface ar4_hardware.launch.py calibrate:=True
 ```
 
 MoveIt. Open a new terminal and run:
