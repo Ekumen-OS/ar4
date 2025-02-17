@@ -32,12 +32,9 @@ Build and run the container for the use case you are intrested in
 
 #### Hardware
 
-> Prerequiste: Connect the teensy via USB to your computer
-```bash
-./docker/run.sh -s ar4_hardware
-```
+* [Hardware Interface Instructions](ar4_hardware_interface/README.md)
 
-## Build the packages and run the simulation
+## Build the packages
 
 Build the packages
 
@@ -87,10 +84,6 @@ This allows you to select a goal position for the end effector, which is current
 
 [User selected position video](https://github.com/user-attachments/assets/a3057320-02ba-4898-8c07-b08d86ec0dcf)
 
-
-## Real robot
-
-See: [Hardware Interface Instructions](ar4_hardware_interface/README.md)
 
 ## Licenses
 
