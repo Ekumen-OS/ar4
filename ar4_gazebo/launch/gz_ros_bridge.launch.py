@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # BSD 3-Clause License
 #
 # Copyright 2025 Ekumen, Inc.
@@ -28,59 +30,32 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""launch file for integrating Gazebo with MoveIt for the AR4 robot."""
 
+import os
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import PathJoinSubstitution
+from launch.actions import ExecuteProcess
 
 
 def generate_launch_description():
-    """Launch the AR4 robot in Gazebo and MoveIt."""
-    ar4_gazebo_pkg = FindPackageShare('ar4_gazebo')
-    ar4_moveit_config_pkg = FindPackageShare('ar4_moveit_config')
+    pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
+    bridge_config_file_path = os.path.join(pkg_ar4_gazebo, 'config', 'bridge.yaml')
 
-    ros_gz_bridge = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution(
-                [
-                    ar4_gazebo_pkg,
-                    'launch',
-                    'gz_ros_bridge.launch.py',
-                ]
-            )
-        )
-    )
-
-    gazebo_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution(
-                [
-                    ar4_gazebo_pkg,
-                    'launch',
-                    'ar4_in_empty_world.launch.py',
-                ]
-            )
-        )
-    )
-
-    moveit_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution(
-                [
-                    ar4_moveit_config_pkg,
-                    'launch',
-                    'demo.launch.py',
-                ]
-            )
-        )
+    bridge_process = ExecuteProcess(
+        cmd=[
+            'ros2',
+            'run',
+            'ros_gz_bridge',
+            'parameter_bridge',
+            '--ros-args',
+            '-p',
+            f'config_file:={bridge_config_file_path}',
+        ],
+        shell=True,
+        output='screen',
     )
 
     ld = LaunchDescription()
-    ld.add_action(gazebo_launch)
-    ld.add_action(moveit_launch)
-    ld.add_action(ros_gz_bridge)
+    ld.add_action(bridge_process)
 
     return ld
