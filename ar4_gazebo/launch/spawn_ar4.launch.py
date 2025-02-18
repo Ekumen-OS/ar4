@@ -100,7 +100,7 @@ def generate_launch_description():
         ],
     )
 
-    node_spawn = Node(
+    gz_spawn = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=[
@@ -116,7 +116,7 @@ def generate_launch_description():
     ld.add_action(
         RegisterEventHandler(
             OnProcessExit(
-                target_action=node_spawn,
+                target_action=gz_spawn,
                 on_exit=[
                     load_joint_state_broadcaster,
                     load_joint_trajectory_controller,
@@ -125,7 +125,7 @@ def generate_launch_description():
         )
     )
     ld.add_action(declare_use_sim_time_cmd)
-    ld.add_action(node_spawn)
+    ld.add_action(gz_spawn)
     ld.add_action(robot_state_publisher_control)
 
     return ld
