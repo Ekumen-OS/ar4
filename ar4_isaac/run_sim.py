@@ -61,6 +61,31 @@ def create_simulation_context(
     return simulation_context
 
 
+def create_world(
+    _: SimulationApp,
+    physics_dt: float,
+    rendering_dt: float,
+    stage_units_per_meter: float,
+):
+    from omni.isaac.core import World
+
+    world = World(
+        physics_dt=physics_dt,
+        rendering_dt=rendering_dt,
+        stage_units_in_meters=stage_units_per_meter,
+    )
+    world.reset()
+    return world
+
+
+def set_rate(_: SimulationApp, sim_dt: float):
+    from omni.isaac.cortex.tools import SteadyRate
+
+    rate_hz = 1.0 / sim_dt
+    rate = SteadyRate(rate_hz)
+    return rate
+
+
 def enable_ros2_ext(_: SimulationApp):
     from omni.isaac.core.utils.extensions import enable_extension
 
@@ -106,10 +131,20 @@ def main(args):
 
     open_stage(simulation_app, args.stage_path)
 
+    world = create_world(
+        simulation_app, args.physics_dt, args.rendering_dt, args.stage_units_per_meter
+    )
+
     spawn_ar4(simulation_app, args.robot_model_path)
 
-    while True:
-        simulation_app.update()
+    rate = set_rate(simulation_app, args.sim_dt)
+
+    while simulation_app.is_running():
+        world.step()
+        rate.sleep()
+
+    world.stop()
+    simulation_app.close()
 
 
 if __name__ == "__main__":
@@ -117,7 +152,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--stage_path",
         type=Path,
-        default=Path(__file__).parent / "stages/empty_stage.usd",
+        default=Path(__file__).parent / "stages/empty_stage.usda",
         help="Path to the stage to open",
     )
     parser.add_argument(
@@ -125,6 +160,12 @@ if __name__ == "__main__":
         type=Path,
         default=Path(__file__).parent / "usda/ar4.usda",
         help="Path to the USD robot model file",
+    )
+    parser.add_argument(
+        "--sim_dt",
+        type=float,
+        default=1.0 / 30.0,
+        help="Simulation timestep in seconds",
     )
     parser.add_argument(
         "--physics_dt",
