@@ -23,7 +23,7 @@ See: [Docker Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 
 ### Running the dev container
 
-Build and run the container for the use case you are intrested in
+Build and run the container for the use case you are interested in
 
 #### Gazebo
 ```bash
