@@ -3,7 +3,7 @@
 This module contains the hardware interface for the AR4 robot.
 
 
-## Docker
+## Initial Set-up
 
 1. Connect the teensy usb to the computer
 2. Run:
@@ -11,23 +11,20 @@ This module contains the hardware interface for the AR4 robot.
 ./docker/run.sh -s ar4_hardware
 ```
 
-## Launch the robot
-
-Hardware:
+## Run the hardware interface
 
 ```
 ros2 launch ar4_hardware_interface ar4_hardware.launch.py calibrate:=True
 ```
 
-MoveIt. Open a new terminal and run:
-
+## Launch moveit
 ```
 ros2 launch ar4_moveit_config demo.launch.py
 ```
 
 ## AR4 Gripper
 
-**Important Note:** The gripper is still a WIP and might not work
+**Important Note:** The gripper is still WIP and might not work
 
 ## Position Controller
 

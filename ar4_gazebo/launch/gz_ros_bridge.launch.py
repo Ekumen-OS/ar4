@@ -39,9 +39,7 @@ from launch.actions import ExecuteProcess
 
 def generate_launch_description():
     pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
-    bridge_config_file_path = os.path.join(
-        pkg_ar4_gazebo, 'config', 'bridge_config.yaml'
-    )
+    bridge_config_file_path = os.path.join(pkg_ar4_gazebo, 'config', 'bridge.yaml')
 
     bridge_process = ExecuteProcess(
         cmd=[
@@ -57,4 +55,7 @@ def generate_launch_description():
         output='screen',
     )
 
-    return LaunchDescription([bridge_process])
+    ld = LaunchDescription()
+    ld.add_action(bridge_process)
+
+    return ld
