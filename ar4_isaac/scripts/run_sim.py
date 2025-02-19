@@ -30,7 +30,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Run Sim
+"""Run Sim.
+
 This script runs a simulation in isaac sim with ROS2 enabled.
 It spawns an AR4 robot in the simulation.
 """
@@ -42,23 +43,6 @@ from isaacsim import SimulationApp
 
 # Note(Fran): There are many imports inside each of the functions,
 # this is required because the simulation app must be created first
-
-
-def create_simulation_context(
-    _: SimulationApp,
-    physics_dt: float,
-    rendering_dt: float,
-    stage_units_per_meter: float,
-):
-    from omni.isaac.core import SimulationContext
-
-    simulation_context = SimulationContext(
-        physics_dt=physics_dt,
-        rendering_dt=rendering_dt,
-        stage_units_in_meters=stage_units_per_meter,
-    )
-    simulation_context.initialize_physics()
-    return simulation_context
 
 
 def create_world(
@@ -124,10 +108,6 @@ def main(args):
     simulation_app = SimulationApp(config, "")
 
     enable_ros2_ext(simulation_app)
-
-    sim_context = create_simulation_context(
-        simulation_app, args.physics_dt, args.rendering_dt, args.stage_units_per_meter
-    )
 
     open_stage(simulation_app, args.stage_path)
 
