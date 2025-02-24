@@ -2,43 +2,56 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 <!-- ===================== Arm link xacro ================================== -->
 
-  <xacro:macro name="link" params="link_name *origin inertial visual collision">
-    <link name="${link_name}">
-      <xacro:insert_block name="origin"/>
-      <xacro:box_inertia m="${inertial['mass']}"
-                         x="${inertial['size']['dx']}"
-                         y="${inertial['size']['dy']}"
-                         z="${inertial['size']['dz']}"
-                         o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
-                         o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
-      </xacro:box_inertia>
-      <visual>
-        <origin rpy="${visual['origin']['dr']}
-                     ${visual['origin']['dp']}
-                     ${visual['origin']['dY']}"
-                xyz="${visual['origin']['dx']}
-                     ${visual['origin']['dy']}
-                     ${visual['origin']['dz']}"/>
-        <geometry>
-           <mesh filename="file://$(find ar4_description)/meshes/${link_name}.STL"/>
-        </geometry>
-        <material name="">
-          <color rgba="1 1 0 1"/>
-        </material>
-      </visual>
-      <collision>
-        <origin rpy="${collision['origin']['dr']}
-                     ${collision['origin']['dp']}
-                     ${collision['origin']['dY']}"
-                xyz="${collision['origin']['dx']}
-                     ${collision['origin']['dy']}
-                     ${collision['origin']['dz']}"/>
-        <geometry>
-          <mesh filename="file://$(find ar4_description)/meshes/${link_name}.STL"/>
-        </geometry>
-      </collision>
-    </link>
-  </xacro:macro>
+<xacro:include filename="$(find ${package_name})/urdf/include/materials.xacro" />
+<xacro:macro name="link" params="link_name *origin inertial visual collision mesh_files:=^ mesh_materials:=^">
+  <link name="${link_name}">
+    <xacro:insert_block name="origin"/>
+
+    <xacro:box_inertia m="${inertial['mass']}"
+                       x="${inertial['size']['dx']}"
+                       y="${inertial['size']['dy']}"
+                       z="${inertial['size']['dz']}"
+                       o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
+                       o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
+    </xacro:box_inertia>
+
+    <!-- Recursively process each mesh -->
+    <xacro:property name="mesh_list" value="${mesh_files}" />
+    <xacro:property name="mesh_materials_list" value="${mesh_materials}" />
+    <xacro:mesh_loop mesh_list="${mesh_list}" mesh_materials="${mesh_materials_list}" visual="${visual}" collision="${collision}" />
+  </link>
+</xacro:macro>
+
+<!-- Recursive macro to iterate over meshes -->
+<xacro:macro name="mesh_loop" params="mesh_list:=^ mesh_materials:=^ visual collision">
+  <xacro:if value="${mesh_list}">
+    <!-- Pop the first mesh from the list -->
+    <xacro:property name="mesh_file" value="${mesh_list.pop(0)}"/>
+    <xacro:property name="mesh_material" value="${mesh_materials.pop(0)}"/>
+
+    <visual>
+      <origin rpy="${visual['origin']['dr']} ${visual['origin']['dp']} ${visual['origin']['dY']}"
+              xyz="${visual['origin']['dx']} ${visual['origin']['dy']} ${visual['origin']['dz']}"/>
+      <geometry>
+         <mesh filename="file://$(find ar4_description)/new_meshes/${mesh_file}.stl"/>
+      </geometry>
+      <material name="${mesh_material}"/>
+    </visual>
+
+    <collision>
+      <origin rpy="${collision['origin']['dr']} ${collision['origin']['dp']} ${collision['origin']['dY']}"
+              xyz="${collision['origin']['dx']} ${collision['origin']['dy']} ${collision['origin']['dz']}"/>
+      <geometry>
+        <mesh filename="file://$(find ar4_description)/new_meshes/${mesh_file}.stl"/>
+      </geometry>
+    </collision>
+
+    <!-- Recursive call to process the remaining list -->
+    <xacro:mesh_loop mesh_list="${mesh_list}" visual="${visual}" collision="${collision}" />
+  </xacro:if>
+</xacro:macro>
+
+
 
 <!-- ===================== Box inertia xacro ================================== -->
 <!-- params -->
