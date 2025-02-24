@@ -45,8 +45,6 @@ def generate_launch_description():
         cmd=[
             '/isaac-sim/python.sh',
             run_sim_path,
-            '--stage_path',
-            os.path.join(pkg_andino_isaac_path, 'stages', 'empty_stage.usda'),
             '--robot_model_path',
             os.path.join(pkg_andino_isaac_path, 'usda', 'ar4.usda'),
         ],

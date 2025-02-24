@@ -51,14 +51,17 @@ def create_world(
     rendering_dt: float,
     stage_units_per_meter: float,
 ):
+    """Create a world with a ground plane and a dome light."""
     from omni.isaac.core import World
+    import omni.isaac.core.utils.prims as prims_utils
 
     world = World(
         physics_dt=physics_dt,
         rendering_dt=rendering_dt,
         stage_units_in_meters=stage_units_per_meter,
     )
-    world.reset()
+    world.scene.add_default_ground_plane()
+    prims_utils.create_prim("/World/Light/Dome", "DomeLight", translation=(0, 0, 10.0))
     return world
 
 
@@ -74,15 +77,6 @@ def enable_ros2_ext(_: SimulationApp):
     from omni.isaac.core.utils.extensions import enable_extension
 
     enable_extension("omni.isaac.ros2_bridge")
-
-
-def open_stage(_: SimulationApp, stage_path: Path):
-    import omni.usd
-    from omni.kit.viewport.menubar.lighting import actions
-    from omni.isaac.core.utils.stage import open_stage
-
-    open_stage(str(stage_path.absolute()))
-    actions._set_lighting_mode("stage", usd_context=omni.usd.get_context())
 
 
 def spawn_ar4(_: SimulationApp, robot_model_path: Path):
@@ -109,7 +103,12 @@ def main(args):
 
     enable_ros2_ext(simulation_app)
 
-    open_stage(simulation_app, args.stage_path)
+    assert (
+        args.physics_dt <= args.rendering_dt
+    ), "Physics dt must be less than rendering dt"
+    assert (
+        args.rendering_dt % args.physics_dt == 0
+    ), "Rendering dt must be a multiple of physics dt"
 
     world = create_world(
         simulation_app, args.physics_dt, args.rendering_dt, args.stage_units_per_meter
@@ -117,6 +116,7 @@ def main(args):
 
     spawn_ar4(simulation_app, args.robot_model_path)
 
+    # Keep the RTF at 1.0
     rate = set_rate(simulation_app, args.sim_dt)
 
     while simulation_app.is_running():
@@ -129,12 +129,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Isaac Sim")
-    parser.add_argument(
-        "--stage_path",
-        type=Path,
-        default=Path(__file__).parent / "stages/empty_stage.usda",
-        help="Path to the stage to open",
-    )
     parser.add_argument(
         "--robot_model_path",
         type=Path,

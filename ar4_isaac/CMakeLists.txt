@@ -36,7 +36,6 @@ find_package(ament_cmake REQUIRED)
 install(
   DIRECTORY launch
             scripts
-            stages
             usda
   DESTINATION share/${PROJECT_NAME}/)
 
