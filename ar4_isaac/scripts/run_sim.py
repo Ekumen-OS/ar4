@@ -102,6 +102,9 @@ def main(args):
     simulation_app = SimulationApp(config, "")
 
     enable_ros2_ext(simulation_app)
+    # Update once to prevent a SIGSEV
+    # See: https://forums.developer.nvidia.com/t/seg-fault-when-activating-ros2-bridge-in-python/324908/3
+    simulation_app.update()
 
     assert (
         args.physics_dt <= args.rendering_dt
@@ -119,6 +122,7 @@ def main(args):
     # Keep the RTF at 1.0
     rate = set_rate(simulation_app, args.sim_dt)
 
+    world.play()
     while simulation_app.is_running():
         world.step()
         rate.sleep()
