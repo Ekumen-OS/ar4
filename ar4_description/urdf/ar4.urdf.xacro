@@ -11,13 +11,17 @@
   <xacro:link link_name="base_link"
               inertial="${robot_properties['base_link']['inertial']}"
               visual="${robot_properties['base_link']['visual']}"
-              collision="${robot_properties['base_link']['collision']}">
+              collision="${robot_properties['base_link']['collision']}"
+              meshes="${['base_link', 'base_link_bottom', 'base_link_motor']}"
+              materials="${['grey', 'blue', 'black']}">
               <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <xacro:link link_name="link_1"
               inertial="${robot_properties['link_1']['inertial']}"
               visual="${robot_properties['link_1']['visual']}"
-              collision="${robot_properties['link_1']['collision']}">
+              collision="${robot_properties['link_1']['collision']}"
+              meshes="${['link_1', 'link_1_motor']}"
+              materials="${['grey', 'black']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <joint name="joint_1" type="revolute">
@@ -31,7 +35,9 @@
   <xacro:link link_name="link_2"
               inertial="${robot_properties['link_2']['inertial']}"
               visual="${robot_properties['link_2']['visual']}"
-              collision="${robot_properties['link_2']['collision']}">
+              collision="${robot_properties['link_2']['collision']}"
+              meshes="${['link_2', 'link_2_motor', 'link_2_cover', 'link_2_cover_logo']}"
+              materials="${['grey', 'black', 'white', 'blue']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <joint name="joint_2" type="revolute">
@@ -45,7 +51,9 @@
   <xacro:link link_name="link_3"
               inertial="${robot_properties['link_3']['inertial']}"
               visual="${robot_properties['link_3']['visual']}"
-              collision="${robot_properties['link_3']['collision']}">
+              collision="${robot_properties['link_3']['collision']}"
+              meshes="${['link_3', 'link_3_motor', 'link_3_misc']}"
+              materials="${['grey', 'black', 'black']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <joint name="joint_3" type="revolute">
@@ -59,7 +67,9 @@
   <xacro:link link_name="link_4"
               inertial="${robot_properties['link_4']['inertial']}"
               visual="${robot_properties['link_4']['visual']}"
-              collision="${robot_properties['link_4']['collision']}">
+              collision="${robot_properties['link_4']['collision']}"
+              meshes="${['link_4', 'link_4_motor']}"
+              materials="${['grey', 'black']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <joint name="joint_4" type="revolute">
@@ -73,7 +83,9 @@
   <xacro:link link_name="link_5"
               inertial="${robot_properties['link_5']['inertial']}"
               visual="${robot_properties['link_5']['visual']}"
-              collision="${robot_properties['link_5']['collision']}">
+              collision="${robot_properties['link_5']['collision']}"
+              meshes="${['link_5', 'link_5_motor']}"
+              materials="${['grey', 'black']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <joint name="joint_5" type="revolute">
@@ -87,7 +99,9 @@
   <xacro:link link_name="link_6"
               inertial="${robot_properties['link_6']['inertial']}"
               visual="${robot_properties['link_6']['visual']}"
-              collision="${robot_properties['link_6']['collision']}">
+              collision="${robot_properties['link_6']['collision']}"
+              meshes="${['link_6']}"
+              materials="${['grey']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
   <joint name="joint_6" type="revolute">
