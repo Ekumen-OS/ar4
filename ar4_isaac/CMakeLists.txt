@@ -36,6 +36,7 @@ find_package(ament_cmake REQUIRED)
 install(
   DIRECTORY launch
             scripts
+            urdf
             usda
   DESTINATION share/${PROJECT_NAME}/)
 
