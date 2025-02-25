@@ -14,10 +14,24 @@ Running the `nvidia` isaac simulation requires:
 docker/run.sh -s ar4_isaac
 ```
 
+## Build the packages
+
+Build the packages
+
+```
+source /opt/ros/humble/setup.bash
+colcon build
+```
+
+Source the built packages
+
+```
+source install/setup.bash
+```
+
 ## Launch the simulation
 ```
-# From the container
-./src/ar4/ar4_isaac/launch.sh
+ros2 launch ar4_isaac ar4_in_empty_world.launch.py
 ```
 ![AR4 in isaac_sim](docs/isaac_sim.png)
 
@@ -41,7 +55,3 @@ xacro ar4.urdf.xacro > ar4.urdf
 ```
 
 - Import the URDF to Isaac following [these instructions](https://docs.omniverse.nvidia.com/isaacsim/latest/advanced_tutorials/tutorial_advanced_import_urdf.html)
-
-## Manually load the robot
-
-Open the `ar4.usda` file with Isaac

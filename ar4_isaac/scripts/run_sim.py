@@ -30,7 +30,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Run Sim
+"""Run Sim.
+
 This script runs a simulation in isaac sim with ROS2 enabled.
 It spawns an AR4 robot in the simulation.
 """
@@ -44,37 +45,23 @@ from isaacsim import SimulationApp
 # this is required because the simulation app must be created first
 
 
-def create_simulation_context(
-    _: SimulationApp,
-    physics_dt: float,
-    rendering_dt: float,
-    stage_units_per_meter: float,
-):
-    from omni.isaac.core import SimulationContext
-
-    simulation_context = SimulationContext(
-        physics_dt=physics_dt,
-        rendering_dt=rendering_dt,
-        stage_units_in_meters=stage_units_per_meter,
-    )
-    simulation_context.initialize_physics()
-    return simulation_context
-
-
 def create_world(
     _: SimulationApp,
     physics_dt: float,
     rendering_dt: float,
     stage_units_per_meter: float,
 ):
+    """Create a world with a ground plane and a dome light."""
     from omni.isaac.core import World
+    import omni.isaac.core.utils.prims as prims_utils
 
     world = World(
         physics_dt=physics_dt,
         rendering_dt=rendering_dt,
         stage_units_in_meters=stage_units_per_meter,
     )
-    world.reset()
+    world.scene.add_default_ground_plane()
+    prims_utils.create_prim("/World/Light/Dome", "DomeLight", translation=(0, 0, 10.0))
     return world
 
 
@@ -90,15 +77,6 @@ def enable_ros2_ext(_: SimulationApp):
     from omni.isaac.core.utils.extensions import enable_extension
 
     enable_extension("omni.isaac.ros2_bridge")
-
-
-def open_stage(_: SimulationApp, stage_path: Path):
-    import omni.usd
-    from omni.kit.viewport.menubar.lighting import actions
-    from omni.isaac.core.utils.stage import open_stage
-
-    open_stage(str(stage_path.absolute()))
-    actions._set_lighting_mode("stage", usd_context=omni.usd.get_context())
 
 
 def spawn_ar4(_: SimulationApp, robot_model_path: Path):
@@ -124,12 +102,16 @@ def main(args):
     simulation_app = SimulationApp(config, "")
 
     enable_ros2_ext(simulation_app)
+    # Update once to prevent a SIGSEV
+    # See: https://forums.developer.nvidia.com/t/seg-fault-when-activating-ros2-bridge-in-python/324908/3
+    simulation_app.update()
 
-    sim_context = create_simulation_context(
-        simulation_app, args.physics_dt, args.rendering_dt, args.stage_units_per_meter
-    )
-
-    open_stage(simulation_app, args.stage_path)
+    assert (
+        args.physics_dt <= args.rendering_dt
+    ), "Physics dt must be less than rendering dt"
+    assert (
+        args.rendering_dt % args.physics_dt == 0
+    ), "Rendering dt must be a multiple of physics dt"
 
     world = create_world(
         simulation_app, args.physics_dt, args.rendering_dt, args.stage_units_per_meter
@@ -137,8 +119,10 @@ def main(args):
 
     spawn_ar4(simulation_app, args.robot_model_path)
 
+    # Keep the RTF at 1.0
     rate = set_rate(simulation_app, args.sim_dt)
 
+    world.play()
     while simulation_app.is_running():
         world.step()
         rate.sleep()
@@ -149,12 +133,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Isaac Sim")
-    parser.add_argument(
-        "--stage_path",
-        type=Path,
-        default=Path(__file__).parent / "stages/empty_stage.usda",
-        help="Path to the stage to open",
-    )
     parser.add_argument(
         "--robot_model_path",
         type=Path,

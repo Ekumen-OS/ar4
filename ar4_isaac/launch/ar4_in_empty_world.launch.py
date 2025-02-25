@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # BSD 3-Clause License
 #
 # Copyright 2025 Ekumen, Inc.
@@ -28,15 +30,29 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-cmake_minimum_required(VERSION 3.7)
-project(ar4_isaac)
 
-find_package(ament_cmake REQUIRED)
+import os
+from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import ExecuteProcess
 
-install(
-  DIRECTORY launch
-            scripts
-            usda
-  DESTINATION share/${PROJECT_NAME}/)
 
-ament_package()
+def generate_launch_description():
+    pkg_andino_isaac_path = get_package_share_directory('ar4_isaac')
+    run_sim_path = os.path.join(pkg_andino_isaac_path, 'scripts', 'run_sim.py')
+
+    isaac_process = ExecuteProcess(
+        cmd=[
+            '/isaac-sim/python.sh',
+            run_sim_path,
+            '--robot_model_path',
+            os.path.join(pkg_andino_isaac_path, 'usda', 'ar4.usda'),
+        ],
+        shell=True,
+        output='screen',
+    )
+
+    ld = LaunchDescription()
+    ld.add_action(isaac_process)
+
+    return ld
