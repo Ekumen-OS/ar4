@@ -3,9 +3,7 @@ services:
     build:
       dockerfile: docker/Dockerfile
       context: ../
-      args:
-        USERID: ${USERID}
-        GROUPID: ${GROUPID}
+    user: ${USERID}:${GROUPID}
     image: ar4_gazebo
     container_name: ar4_gazebo
     hostname: ar4_gazebo

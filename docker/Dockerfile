@@ -1,9 +1,7 @@
 FROM osrf/ros:humble-desktop-full
 
-# Install base system dependencies and development dependencies
-RUN --mount=type=cache,target=/var/cache/apt \
-    apt update \
- && apt install -y \
+RUN apt update \
+ && apt install --no-install-recommends -y \
     apt-utils \
     bash-completion \
     clang \
@@ -17,17 +15,16 @@ RUN --mount=type=cache,target=/var/cache/apt \
     screen \
     software-properties-common \
     sudo \
-    tmux
+    tmux \
+ && rm -rf /var/lib/apt/lists/*
 
-# Set user and fixuid configuration
-ARG USER=developer
-ARG GROUP=ekumen
+ARG UID=1000
+ARG GID=1000
+ARG USER=devel
+ARG GROUP=devel
 
-ARG USERID=1000
-ARG GROUPID=1000
-
-RUN addgroup --gid $GROUPID $GROUP \
- && adduser --uid $USERID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
+RUN addgroup --gid $GID $GROUP \
+ && adduser --uid $UID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
  && adduser $USER sudo \
  && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/$USER
 
@@ -39,12 +36,13 @@ RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-
 
 USER $USER
 
-# Install ros dependencies, updating the apt cache is necessary.
+# install the ros dependencies of the packages in the repository
 RUN --mount=type=bind,source=.,target=/tmp/ws \
-    sudo apt-get update \
+    sudo apt update \
  && . /opt/ros/humble/setup.sh \
  && rosdep update \
- && rosdep install --from-paths /tmp/ws --ignore-src -r -y
+ && rosdep install --from-paths /tmp/ws --ignore-src -y \
+ && sudo rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
 ENV SHELL /bin/bash
