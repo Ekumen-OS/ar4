@@ -73,7 +73,14 @@ For changes made to the robot's urdf or meshes to impact the Isaac Sim model it'
 
     ![Set Articulation Root](pics/set_articulation_root.png)
 
-12. Override the existing `ar4_layer.usda`
+12. Fix the base link
+
+    Add a FixedJoint to the base_link:
+
+    Right Click > Create > Physics > Joints > FixedJoint
+    ![Add Fixed Joint](pics/add_fixed_joint.png)
+
+13. Override the existing `ar4_layer.usda`
 
     Finally save your output as `usda` overriding the existing ar4_layer. (Note: Select the type to `*.usda`)
 
