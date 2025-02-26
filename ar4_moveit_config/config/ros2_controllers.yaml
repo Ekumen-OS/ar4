@@ -28,6 +28,7 @@ arm_controller:
       - position
     state_interfaces:
       - position
+      - velocity
     allow_partial_joints_goal: false
     constraints:
       stopped_velocity_tolerance: 0.02
@@ -42,7 +43,7 @@ arm_controller:
 # gripper_controller:
 #   ros__parameters:
 #     joint: gripper_jaw1_joint
-      - velocity
+
 gripper_controller:
   ros__parameters:
     joints:
