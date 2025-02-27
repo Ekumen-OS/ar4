@@ -20,7 +20,7 @@
                      ${visual['origin']['dy']}
                      ${visual['origin']['dz']}"/>
         <geometry>
-           <mesh filename="file://$(find ar4_description)/meshes/${link_name}.STL"/>
+           <mesh filename="file://$(find ar4_description)/meshes/ar4/${link_name}.STL"/>
         </geometry>
         <material name="">
           <color rgba="1 1 0 1"/>
@@ -34,7 +34,7 @@
                      ${collision['origin']['dy']}
                      ${collision['origin']['dz']}"/>
         <geometry>
-          <mesh filename="file://$(find ar4_description)/meshes/${link_name}.STL"/>
+          <mesh filename="file://$(find ar4_description)/meshes/ar4/${link_name}.STL"/>
         </geometry>
       </collision>
     </link>
