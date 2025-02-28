@@ -80,7 +80,19 @@ For changes made to the robot's urdf or meshes to impact the Isaac Sim model it'
     Right Click > Create > Physics > Joints > FixedJoint
     ![Add Fixed Joint](pics/add_fixed_joint.png)
 
-13. Override the existing `ar4_layer.usda`
+13. Update the `Maximum Joint Velocity` and the `Max Force` for each joint
+
+    These options are in the `Property` of each joint, under the `Raw USD Properties` and `Extra Properties`.
+    
+    The values used are `5000` for `Maximum Joint Velocity` and `3000` for `Max Force`.
+
+    ![Update Joint Velocity and Max Force](pics/update_joint.png)
+
+14. Use the [Gain Tuner](https://docs.omniverse.nvidia.com/isaacsim/latest/features/robots_simulation/ext_omni_isaac_gain_tuner.html) to tune the `Damping` and `Stiffness`
+
+    ![Gain Tuner Menu](pics/gain_tuner.png)
+
+15. Override the existing `ar4_layer.usda`
 
     Finally save your output as `usda` overriding the existing ar4_layer. (Note: Select the type to `*.usda`)
 
