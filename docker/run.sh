@@ -30,12 +30,8 @@ while [[ "$1" != "" ]]; do
     esac
 done
 
-
 cd $(dirname $0)
 
-export USERID=$(id -u)
-export GROUPID=$(id -g)
-
 xhost +
-docker compose run --rm ${BUILD:+--build} $SERVICE
+USERID=$(id -u) GROUPID=$(id -g) docker compose run --rm ${BUILD:+--build} $SERVICE
 xhost -

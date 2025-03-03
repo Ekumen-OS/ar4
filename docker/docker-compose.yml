@@ -3,25 +3,27 @@ services:
     build:
       dockerfile: docker/Dockerfile
       context: ../
-      args:
-        USERID: ${USERID}
-        GROUPID: ${GROUPID}
     image: ar4_gazebo
     container_name: ar4_gazebo
     hostname: ar4_gazebo
+    user: ${USERID}:${GROUPID}
     stdin_open: true
     tty: true
     environment:
-      DISPLAY: $DISPLAY
-      QT_X11_NO_MITSHM: 1
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
     volumes:
-      - ../:/workspace/src/ar4
+      - ../:/home/developer/ws/src/project
       - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - ar_persistence:/home/developer/ws/persistence
   ar4_hardware:
     extends: ar4_gazebo
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
     group_add:
       - "dialout" # Group required for accesing /dev/ttyACM0
+volumes:
+  ar_persistence:

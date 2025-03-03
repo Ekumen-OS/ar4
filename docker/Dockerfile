@@ -1,12 +1,23 @@
+FROM osrf/ros:humble-desktop-full AS cacher
+
+WORKDIR /ws/src
+
+COPY . project/
+
+RUN mkdir -p /tmp/ws/src \
+ && find ./ -name "package.xml" | xargs cp --parents -t /tmp/ws/src \
+ && find ./ -name "COLCON_IGNORE" | xargs cp --parents -t /tmp/ws/src \
+ || true
+
 FROM osrf/ros:humble-desktop-full
 
 # Install base system dependencies and development dependencies
-RUN --mount=type=cache,target=/var/cache/apt \
-    apt update \
+RUN apt update \
  && apt install -y \
     apt-utils \
     bash-completion \
     clang \
+    ccache \
     debian-archive-keyring \
     debian-keyring \
     gdb \
@@ -17,14 +28,17 @@ RUN --mount=type=cache,target=/var/cache/apt \
     screen \
     software-properties-common \
     sudo \
-    tmux
+    tmux \
+ && rm -rf /var/lib/apt/lists/*
 
-# Set user and fixuid configuration
 ARG USER=developer
-ARG GROUP=ekumen
+ARG GROUP=developer
 
 ARG USERID=1000
-ARG GROUPID=1000
+ARG GROUPID=1001
+
+ENV USER $USER
+ENV GROUP $GROUP
 
 RUN addgroup --gid $GROUPID $GROUP \
  && adduser --uid $USERID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
@@ -39,13 +53,35 @@ RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-
 
 USER $USER
 
-# Install ros dependencies, updating the apt cache is necessary.
-RUN --mount=type=bind,source=.,target=/tmp/ws \
-    sudo apt-get update \
+ENV USER_WS /home/${USER}/ws
+RUN mkdir -p $USER_WS/src
+
+WORKDIR $USER_WS
+
+#
+# install a colcon mixin that will use ccache for building C++ code
+RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml \
+ && colcon mixin update default
+COPY --chown=$USER:$GROUP docker/files/colcon_defaults.yaml /home/$USER/.colcon/defaults.yaml
+
+#
+# Install ROS project dependencies by copying the package.xml files (but not the source code,
+# to avoid rebuilding the workspace every time the source code changes) and running rosdep install
+COPY --from=cacher --chown=$USER:$GROUP /tmp/ws/ $USER_WS/
+RUN sudo apt update \
  && . /opt/ros/humble/setup.sh \
  && rosdep update \
- && rosdep install --from-paths /tmp/ws --ignore-src -r -y
+ && rosdep install -i -y --from-path src \
+ && sudo rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspace
-ENV SHELL /bin/bash
-ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh", "/bin/bash"]
+#
+# setup a bashrc so that an environment is sourced whenever the developer enters
+# the container by running or attaching to it
+COPY docker/files/developer_rc /home/developer/.developer_rc
+RUN mkdir -p $USER_WS/persistence \
+ && chmod 777 $USER_WS/persistence \
+ && echo "source /home/developer/.developer_rc" >> /home/developer/.bashrc
+
+ENV WITHIN_DEV 1
+
+ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh", "bash"]
