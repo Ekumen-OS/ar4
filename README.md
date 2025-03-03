@@ -39,7 +39,7 @@ Build and run the container for the use case you are interested in
 Build the packages
 
 ```
-colcon build
+colcon build --symlink-install
 ```
 
 Source the built packages
@@ -56,8 +56,8 @@ After building and sourcing the packages, run the specific launch file for your 
 
 #### Gazebo
 
-```
-ros2 launch ar4_gazebo moveit.launch.py
+```bash
+ros2 launch ar4_gazebo_bringup main.launch.py
 ```
 
 ![Ar4 Gazebo](docs/ar4.png)
