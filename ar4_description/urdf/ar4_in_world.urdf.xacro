@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot name="ar4_in_world" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- standing ar4 robot in world -->
+
+  <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro" />
+
+  <link name="world" />
+
+  <joint name="joint_world" type="fixed">
+    <parent link="world" />
+    <child link="base_link" />
+    <origin xyz="0 0 0" rpy="0 0 ${-pi/2}" />
+  </joint>
+
+</robot>
