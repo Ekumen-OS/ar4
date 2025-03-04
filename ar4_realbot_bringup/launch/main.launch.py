@@ -31,7 +31,6 @@
 """launch file for integrating Gazebo with MoveIt for the AR4 robot."""
 
 from launch import LaunchDescription
-from launch_ros.actions import SetParameter
 from launch_ros.substitutions import FindPackageShare
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -39,8 +38,6 @@ from launch.substitutions import PathJoinSubstitution
 
 
 def generate_launch_description():
-    use_sim_time_param = SetParameter(name="use_sim_time", value=True)
-
     common_stack_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
@@ -67,7 +64,6 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            use_sim_time_param,
             common_stack_include,
             real_hardware_include,
         ]
