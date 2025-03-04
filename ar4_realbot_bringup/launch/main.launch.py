@@ -39,7 +39,6 @@ from launch.substitutions import PathJoinSubstitution
 
 
 def generate_launch_description():
-    """Launch the AR4 robot in Gazebo and MoveIt."""
     use_sim_time_param = SetParameter(name="use_sim_time", value=True)
 
     common_stack_include = IncludeLaunchDescription(
