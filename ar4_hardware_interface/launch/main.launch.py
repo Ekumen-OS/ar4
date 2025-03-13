@@ -69,18 +69,18 @@ def generate_launch_description():
         ],
     )
 
-    # gripper_controller_spawner = Node(
-    #     package="controller_manager",
-    #     executable="spawner",
-    #     arguments=[
-    #         "gripper_controller",
-    #         "-c",
-    #         "/controller_manager",
-    #         "--controller-manager-timeout",
-    #         "60",
-    #     ],
-    #     condition=IfCondition(include_gripper),
-    # )
+    gripper_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "gripper_controller",
+            "-c",
+            "/controller_manager",
+            "--controller-manager-timeout",
+            "60",
+        ],
+        condition=IfCondition(include_gripper),
+    )
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -117,14 +117,14 @@ def generate_launch_description():
             choices=["True", "False"],
         )
     )
-    # ld.add_action(
-    #     DeclareLaunchArgument(
-    #         "include_gripper",
-    #         default_value="True",
-    #         description="Run the servo gripper",
-    #         choices=["True", "False"],
-    #     )
-    # )
+    ld.add_action(
+        DeclareLaunchArgument(
+            "include_gripper",
+            default_value="True",
+            description="Run the servo gripper",
+            choices=["True", "False"],
+        )
+    )
     ld.add_action(
         DeclareLaunchArgument(
             "arduino_serial_port",
@@ -139,7 +139,7 @@ def generate_launch_description():
     )
     ld.add_action(controller_manager_node)
     ld.add_action(spawn_joint_controller)
-    # ld.add_action(gripper_controller_spawner)
+    ld.add_action(gripper_controller_spawner)
     ld.add_action(robot_state_publisher_node)
     ld.add_action(joint_state_broadcaster)
     return ld
