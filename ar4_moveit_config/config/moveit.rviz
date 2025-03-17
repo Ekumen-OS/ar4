@@ -203,6 +203,21 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          gripper_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          gripper_jaw1_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          gripper_jaw2_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           world:
             Alpha: 1
             Show Axes: false
