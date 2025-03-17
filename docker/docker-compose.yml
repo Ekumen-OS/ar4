@@ -19,9 +19,47 @@ services:
     volumes:
       - ../:/workspace/src/ar4
       - /tmp/.X11-unix/:/tmp/.X11-unix/
+
   ar4_hardware:
     extends: ar4_gazebo
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
     group_add:
       - "dialout" # Group required for accesing /dev/ttyACM0
+
+  ar4_isaac:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.isaac
+    image: ar4_isaac
+    container_name: ar4_isaac
+    hostname: ar4_isaac
+    stdin_open: true
+    tty: true
+    runtime: nvidia
+    environment:
+      ACCEPT_EULA: Y
+      DISPLAY: $DISPLAY
+      FASTDDS_BUILTIN_TRANSPORTS: SHM
+      NVIDIA_DRIVER_CAPABILITIES: all
+      OMNI_KIT_ACCEPT_EULA: Y
+      PRIVACY_CONSENT: Y
+      QT_X11_NO_MITSHM: 1
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+      XAUTHORITY: /tmp/.docker.xauth
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # Mount necessary isaac sim directories
+      # See: https://docs.isaacsim.omniverse.nvidia.com/latest/installation/install_container.html#container-deployment
+      - ~/docker/isaac-sim/cache:/isaac-sim/kit/cache:rw
+      - ~/docker/isaac-sim/cache/.cache:/root/.cache:rw
+      - ~/docker/isaac-sim/cache/computecache:/root/.nv/ComputeCache:rw
+      - ~/docker/isaac-sim/cache/data:/isaac-sim/kit/data:rw
+      - ~/docker/isaac-sim/config:/root/.nvidia-omniverse/config:rw
+      - ~/docker/isaac-sim/data:/root/.local/share/ov/data:rw
+      - ~/docker/isaac-sim/documents:/root/Documents:rw
+      - ~/docker/isaac-sim/kit/logs:/isaac-sim/kit/logs:rw
+      - ~/docker/isaac-sim/logs:/root/.nvidia-omniverse/logs:rw
+      - ~/docker/isaac-sim/shadercache:/isaac-sim/kit/exts/omni.gpu_foundation/cache/nv_shadercache:rw
+      # Workspace
+      - ../:/workspace/src/ar4

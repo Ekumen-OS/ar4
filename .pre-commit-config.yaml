@@ -25,6 +25,7 @@ repos:
         exclude: ^ar4_description/config/ar4.yaml$
       - id: check-xml
       - id: end-of-file-fixer
+        exclude: 'ar4_isaac/usda/'
       - id: trailing-whitespace
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
