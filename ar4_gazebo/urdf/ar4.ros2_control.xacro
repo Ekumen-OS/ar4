@@ -35,11 +35,11 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
-      <!-- <joint name="gripper_jaw1_joint">
+      <joint name="gripper_jaw1_joint">
         <command_interface name="position"/>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
-      </joint> -->
+      </joint>
     </ros2_control>
 
     <gazebo>
