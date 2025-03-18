@@ -3,22 +3,25 @@ services:
     build:
       dockerfile: docker/Dockerfile
       context: ../
-      args:
-        USERID: ${USERID}
-        GROUPID: ${GROUPID}
     image: ar4_gazebo
     container_name: ar4_gazebo
     hostname: ar4_gazebo
+    user: ${USERID}:${GROUPID}
     stdin_open: true
     tty: true
     environment:
-      DISPLAY: $DISPLAY
-      QT_X11_NO_MITSHM: 1
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
     volumes:
-      - ../:/workspace/src/ar4
-      - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - ../:/home/developer/ws/src/project
+      - /dev:/dev
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ar_persistence:/home/developer/ws/persistence
 
   ar4_hardware:
     extends: ar4_gazebo
@@ -63,3 +66,5 @@ services:
       - ~/docker/isaac-sim/shadercache:/isaac-sim/kit/exts/omni.gpu_foundation/cache/nv_shadercache:rw
       # Workspace
       - ../:/workspace/src/ar4
+volumes:
+  ar_persistence:
