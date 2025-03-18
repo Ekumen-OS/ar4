@@ -1,22 +1,21 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>ar4_description</name>
-  <version>1.0.0</version>
-  <description>AR4 robot description</description>
-
-  <author>Dexter Ong</author>
-  <author>Yifei Cheng</author>
-  <author email="steven.desvars@creativa77.com.ar">Steven Desvars</author>
+  <name>ar4_gazebo_bringup</name>
+  <version>0.0.1</version>
+  <description>
+    Launch Gazebo simulation with Ar4 robot.
+  </description>
+  <author email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</author>
   <maintainer email="steven.desvars@creativa77.com.ar">Steven Desvars</maintainer>
   <maintainer email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</maintainer>
   <maintainer email="glpuga@ekumenlabs.com">Gerardo Puga</maintainer>
-
-  <license>MIT</license>
+  <license file="LICENSE">BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <exec_depend>ar4_common</exec_depend>
+  <exec_depend>ar4_gazebo_sim</exec_depend>
   <exec_depend>ros2launch</exec_depend>
-  <exec_depend>urdf_launch</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

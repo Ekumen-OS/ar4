@@ -31,56 +31,45 @@
 """launch file for integrating Gazebo with MoveIt for the AR4 robot."""
 
 from launch import LaunchDescription
+from launch_ros.actions import SetParameter
+from launch_ros.substitutions import FindPackageShare
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import PathJoinSubstitution
 
 
 def generate_launch_description():
     """Launch the AR4 robot in Gazebo and MoveIt."""
-    ar4_gazebo_pkg = FindPackageShare('ar4_gazebo')
-    ar4_moveit_config_pkg = FindPackageShare('ar4_moveit_config')
+    use_sim_time_param = SetParameter(name="use_sim_time", value=True)
 
-    ros_gz_bridge = IncludeLaunchDescription(
+    common_stack_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
                 [
-                    ar4_gazebo_pkg,
-                    'launch',
-                    'gz_ros_bridge.launch.py',
+                    FindPackageShare("ar4_common"),
+                    "launch",
+                    "main.launch.py",
                 ]
             )
         )
     )
 
-    gazebo_launch = IncludeLaunchDescription(
+    gz_sim_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
                 [
-                    ar4_gazebo_pkg,
-                    'launch',
-                    'ar4_in_empty_world.launch.py',
+                    FindPackageShare("ar4_gazebo_sim"),
+                    "launch",
+                    "main.launch.py",
                 ]
             )
         )
     )
 
-    moveit_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution(
-                [
-                    ar4_moveit_config_pkg,
-                    'launch',
-                    'demo.launch.py',
-                ]
-            )
-        )
+    return LaunchDescription(
+        [
+            use_sim_time_param,
+            common_stack_include,
+            gz_sim_include,
+        ]
     )
-
-    ld = LaunchDescription()
-    ld.add_action(gazebo_launch)
-    ld.add_action(moveit_launch)
-    ld.add_action(ros_gz_bridge)
-
-    return ld

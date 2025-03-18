@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- base model -->
+  <xacro:include filename="$(find ar4_description)/urdf/ar4_in_world.urdf.xacro" />.
+
+  <!-- gazebo extensions -->
+  <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/gazebo.xacro" />
+
+  <!-- ros2_control extensions -->
+  <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ros2_control.xacro" />
+
+</robot>

@@ -29,10 +29,10 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 cmake_minimum_required(VERSION 3.7)
-project(ar4_gazebo)
+project(ar4_realbot_bringup)
 
 find_package(ament_cmake REQUIRED)
 
-install(DIRECTORY config launch urdf DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
 ament_package()

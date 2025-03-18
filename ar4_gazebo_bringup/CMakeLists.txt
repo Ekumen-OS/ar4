@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # BSD 3-Clause License
 #
 # Copyright 2025 Ekumen, Inc.
@@ -30,32 +28,11 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+cmake_minimum_required(VERSION 3.7)
+project(ar4_gazebo_bringup)
 
-import os
-from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch.actions import ExecuteProcess
+find_package(ament_cmake REQUIRED)
 
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
-def generate_launch_description():
-    pkg_ar4_gazebo = get_package_share_directory('ar4_gazebo')
-    bridge_config_file_path = os.path.join(pkg_ar4_gazebo, 'config', 'bridge.yaml')
-
-    bridge_process = ExecuteProcess(
-        cmd=[
-            'ros2',
-            'run',
-            'ros_gz_bridge',
-            'parameter_bridge',
-            '--ros-args',
-            '-p',
-            f'config_file:={bridge_config_file_path}',
-        ],
-        shell=True,
-        output='screen',
-    )
-
-    ld = LaunchDescription()
-    ld.add_action(bridge_process)
-
-    return ld
+ament_package()
