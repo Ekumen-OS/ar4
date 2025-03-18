@@ -1,6 +1,9 @@
-# AR4
+# AR4 ROS 2 Software
 
-The [Annin Robotics AR4](https://www.anninrobotics.com/) robot is a 6DOF desktop size industrial robot that is a free, open plan low cost robot. This repository contains the necessary ROS 2 packages to plan and execute motions in Gazebo sim. It provides the arm description, simulation controllers and Moveit configuration needed to command it.
+The [Annin Robotics AR4](https://www.anninrobotics.com/) robot is a 6DOF desktop size industrial robot that is a free, open plan low cost robot. This repository contains the necessary ROS 2 packages to plan and execute motions in Gazebo sim.
+
+It provides a ROS 2 set of packages to be able to control the AR4 robot both in real hardware and
+a number of different simulation environments.
 
 <p align="center">
   <img src="docs/ar4.png" width=500 />
@@ -8,11 +11,53 @@ The [Annin Robotics AR4](https://www.anninrobotics.com/) robot is a 6DOF desktop
 
 ## Package Summary
 
-- [`ar4_gazebo`](./ar4_gazebo): Gazebo simulation for the ar4 arm.
-- [`ar4_description`](./ar4_description): Contains the URDF of the arm.
-- [`ar4_hardware_interface`](./ar4_hardware_interface): Contains the software required to connect the computer with the real robot.
-- [`ar4_moveit_config`](./ar4_moveit_config): Contains configuration and launch files to run and command the arm.
+These are the main packages providing launch files for the different use cases:
+
+- [`ar4_description`](./ar4_description): Contains the platform-agnostic parts of the URDF robot description.
+- [`ar4_gazebo_bringup`](./ar4_gazebo): Launch a Gazebo Sim simulation of AR4.
+- [`ar4_isaac_bringup`](./ar4_gazebo): **Not yet available.** Launch an Isaac Sim simulation of AR4.
+- [`ar4_mujoco_bringup`](./ar4_gazebo): **Not yet available.** Launch a Mujoco-based simulation of AR4.
+- [`ar4_realbot_bringup`](./ar4_gazebo): Launch drivers and control software for the real AR4 robot.
 - [`ar4_isaac`](./ar4_isaac): Isaac simulation for the ar4 arm.
+
+
+```mermaid
+graph TD
+      A[**ar4_moveit_config** <br> main.launch.py]
+      B[**ar4_common** <br> main.launch.py]
+      C[**ar4_description** <br> main.launch.py]
+      D[**ar4_gazebo_sim** <br> main.launch.py]
+      E[**ar4_gazebo_bringup** <br> main.launch.py]
+      F[**ar4_hardware_interface** <br> main.launch.py]
+      G[**ar4_realbot_bringup** <br> main.launch.py]
+
+      A --> F
+      C --> F
+
+      H[**ar4_isaac_bringup** <br> main.launch.py <br> ...not yet available...]
+      I[**...** <br> main.launch.py]
+
+      B --> H
+      I --> H
+
+      J[**ar4_mujoco_bringup** <br> main.launch.py <br> ...not yet available...]
+      K[**...** <br> main.launch.py]
+
+      B --> J
+      K --> J
+
+
+      A --> B
+
+      C --> D
+      C --> A
+
+      B --> E
+      D --> E
+
+      B --> G
+      F --> G
+```
 
 ## Installation
 
@@ -27,43 +72,28 @@ See: [Docker Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 Build and run the container for the use case you are interested in
 
 #### Gazebo
+
+Launch the docker container with the following command:
+
 ```bash
 ./docker/run.sh -s ar4_gazebo
 ```
+
+Then build and launch Gazebo bringup launch file:
+
+```bash
+colcon build --symlink-install --packages-up-to ar4_gazebo_bringup \
+ && source install/setup.bash \
+ && ros2 launch ar4_gazebo_bringup main.launch.py
+```
+
+![Ar4 Gazebo](docs/ar4.png)
+
 
 #### Hardware
 
 * [Hardware Interface Instructions](ar4_hardware_interface/README.md)
 
-## Build the packages
-
-Build the packages
-
-```
-colcon build
-```
-
-Source the built packages
-
-```
-source install/setup.bash
-```
-
----
-
-### Launch
-
-After building and sourcing the packages, run the specific launch file for your use case:
-
-#### Gazebo
-
-```
-ros2 launch ar4_gazebo moveit.launch.py
-```
-
-![Ar4 Gazebo](docs/ar4.png)
-
----
 
 ### Controlling the AR4 with MoveIt
 

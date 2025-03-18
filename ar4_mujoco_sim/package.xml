@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ar4_mujoco_sim</name>
+  <version>0.0.1</version>
+  <description>Launch Mujoco simulation of the AR4</description>
+  <author email="glpuga@ekumenlabs.com">Gerardo Puga</author>
+  <maintainer email="glpuga@ekumenlabs.com">Gerardo Puga</maintainer>
+  <license file="LICENSE">BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>ar4_moveit_config</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>mujoco_ros2_control</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
