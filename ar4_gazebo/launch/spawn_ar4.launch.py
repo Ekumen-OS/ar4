@@ -83,6 +83,7 @@ def generate_launch_description():
             '--set-state',
             'active',
             'arm_controller',
+            'gripper_controller',
         ],
         output='screen',
     )
