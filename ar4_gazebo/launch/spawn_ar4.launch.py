@@ -83,6 +83,17 @@ def generate_launch_description():
             '--set-state',
             'active',
             'arm_controller',
+        ],
+        output='screen',
+    )
+
+    load_gripper_controller = ExecuteProcess(
+        cmd=[
+            'ros2',
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
             'gripper_controller',
         ],
         output='screen',
@@ -121,6 +132,7 @@ def generate_launch_description():
                 on_exit=[
                     load_joint_state_broadcaster,
                     load_joint_trajectory_controller,
+                    load_gripper_controller,
                 ],
             )
         )

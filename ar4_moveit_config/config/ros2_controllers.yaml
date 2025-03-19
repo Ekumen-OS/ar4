@@ -5,11 +5,11 @@ controller_manager:
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    # gripper_controller:
-    #   type: position_controllers/GripperActionController
-
     gripper_controller:
-      type: joint_trajectory_controller/GripperActionController
+      type: position_controllers/GripperActionController
+
+    # gripper_controller:
+    #   type: joint_trajectory_controller/GripperActionController
 
 
     joint_state_broadcaster:
@@ -46,5 +46,4 @@ arm_controller:
 
 gripper_controller:
   ros__parameters:
-    joints:
-      - gripper_jaw1_joint
+    joint: gripper_jaw1_joint

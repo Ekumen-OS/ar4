@@ -1,16 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="ar_gripper_ros2_control" params="
-    name
-    plugin_name
-    serial_port
-  ">
-    <ros2_control name="${name}" type="system">
+    <ros2_control name="GripperGazeboSystem" type="system">
 
       <hardware>
-        <plugin>${plugin_name}</plugin>
-        <param name="serial_port">${serial_port}</param>
+        <plugin>ign_ros2_control/IgnitionSystem</plugin>
       </hardware>
 
       <joint name="gripper_jaw1_joint">
@@ -34,5 +28,5 @@
       </joint>
 
     </ros2_control>
-  </xacro:macro>
+
 </robot>

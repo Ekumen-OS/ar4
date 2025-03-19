@@ -32,10 +32,6 @@
         <joint name="gripper_jaw1_joint"/>
     </group>
 
-    <group name="ar4_arm_hand">
-        <group name="arm"/>
-        <group name="gripper"/>
-    </group>
     <group_state group="gripper" name="open">
         <joint name="gripper_jaw1_joint" value="0.035"/>
     </group_state>

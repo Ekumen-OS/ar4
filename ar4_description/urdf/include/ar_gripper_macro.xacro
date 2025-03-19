@@ -50,6 +50,7 @@
     </link>
     <link name="gripper_jaw2_link">
       <visual>
+        <!-- <origin rpy="0 3.14159265359 0" xyz="0 0 0" /> -->
         <geometry>
           <mesh filename="file://$(find ar4_description)/meshes/ar4_gripper/gripper_jaw2_link.stl" />
         </geometry>
@@ -58,6 +59,7 @@
         </material>
       </visual>
       <collision>
+        <!-- <origin rpy="0 3.14159265359 0" xyz="0 0 0" /> -->
         <geometry>
           <mesh filename="file://$(find ar4_description)/meshes/ar4_gripper/gripper_jaw2_link.stl" />
         </geometry>
