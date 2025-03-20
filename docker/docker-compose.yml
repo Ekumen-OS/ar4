@@ -40,7 +40,7 @@ services:
     user: ${USERID}:${GROUPID}
     stdin_open: true
     tty: true
-    # runtime: nvidia
+    runtime: nvidia
     environment:
       - ACCEPT_EULA=Y
       - DISPLAY
