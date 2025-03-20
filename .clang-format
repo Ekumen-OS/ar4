@@ -6,6 +6,9 @@ ColumnLimit: 120
 AlignAfterOpenBracket: AlwaysBreak
 QualifierAlignment: Left
 ---
+Language: Json
+BasedOnStyle: llvm
+---
 BasedOnStyle: Chromium
 Language: JavaScript
 ...

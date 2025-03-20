@@ -52,9 +52,9 @@ def generate_launch_description():
         "mj_ar4.urdf.xacro",
     )
 
-    robot_description_urdf = xacro.process_file(mjcf_equiv_robot_description_file).toprettyxml(
-        indent="  "
-    )
+    robot_description_urdf = xacro.process_file(
+        mjcf_equiv_robot_description_file
+    ).toprettyxml(indent="  ")
 
     rsp_robot_description_file = os.path.join(
         get_package_share_directory("ar4_description"),
@@ -62,10 +62,9 @@ def generate_launch_description():
         "ar4.urdf.xacro",
     )
 
-    rsp_robot_description_urdf = xacro.process_file(rsp_robot_description_file).toprettyxml(
-        indent="  "
-    )
-
+    rsp_robot_description_urdf = xacro.process_file(
+        rsp_robot_description_file
+    ).toprettyxml(indent="  ")
 
     mujoco_model = os.path.join(
         this_pkg_share,

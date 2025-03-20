@@ -20,7 +20,7 @@ Build the packages
 
 ```
 source /opt/ros/humble/setup.bash
-colcon build
+colcon build --packages-up-to ar4_isaac
 ```
 
 Source the built packages

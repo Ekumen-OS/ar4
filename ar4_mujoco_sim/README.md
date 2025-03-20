@@ -1,14 +1,12 @@
 # Description
-A Gazebo simulation of the AR4 Package.
 
-To build the package, run
-`colcon build`
+This package contains the simulation of the AR4 robot in Mujoco.
 
-To run the simulation, source and run
-`ros2 launch ar4_mujoco_sim ar4_sim.launch.py`
+## Instructions to import the model
 
-#### Launch file arguments
-- 'rsp':
-    - Run [`robot state publisher`](https://github.com/ros/robot_state_publisher) node. (default: 'false')
-- 'rviz':
-    - Start RViz. (default: 'false')
+The Mujoco model of the AR4 robot can be imported from the URDF description in the `ar4_description` package. The process requires running the two scripts in the `scripts/` folder in sequence.
+
+1. First run `stage1_create_urdf_from_xacro.sh` from **within** the development container. This script will generate the URDF file from the xacro description.
+1. Then run `stage2_create_mjcf_from_urdf.sh` from **outside** the development container (this script needs to create a new containerized environment running Ubuntu 24.04). This script will generate the Mujoco model from the URDF file.
+
+At this point you'll see the `urdf/` and `mjcf/` folders in the `ar4_mujoco_sim` package as updated. Commit those changes.

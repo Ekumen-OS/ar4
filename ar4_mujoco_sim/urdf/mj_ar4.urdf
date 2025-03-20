@@ -347,11 +347,11 @@
   </joint>
   .
 
-  
+
   <mujoco>
     <compiler balanceinertia="true" discardvisual="false" meshdir=""/>
   </mujoco>
-  <ros2_control name="GazeboSystem" type="system">
+  <ros2_control name="MujocoSystem" type="system">
     <hardware>
       <plugin>mujoco_ros2_control/MujocoSystem</plugin>
     </hardware>
