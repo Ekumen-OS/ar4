@@ -2,7 +2,7 @@ FROM osrf/ros:humble-desktop-full AS cacher
 
 WORKDIR /ws/src
 
-COPY . ar4/
+COPY . project/
 
 RUN mkdir -p /tmp/ws/src \
  && find ./ -name "package.xml" | xargs cp --parents -t /tmp/ws/src \
@@ -39,6 +39,7 @@ RUN apt update  \
     python3-pip \
     python3-rosdep \
     python3-setuptools \
+    python3-vcstool \
     python3.10 \
     screen \
     software-properties-common \
@@ -73,10 +74,10 @@ RUN pip install --no-cache-dir --extra-index-url https://pypi.nvidia.com \
 RUN mkdir -p /usr/local/lib/python3.10/dist-packages/omni/cache \
  && ln -s /usr/local/lib/python3.10/dist-packages/omni/cache /root/.isaac-sim-cache
 
-
 # Install ROS 2
 RUN apt update \
  && apt install --no-install-recommends -y \
+    python3-colcon-mixin \
     ros-humble-ros-base \
  && rm -rf /var/lib/apt/lists/*
 
@@ -104,10 +105,24 @@ RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-
 
 USER $USER
 
-ENV USER_WS /workspace
-RUN sudo mkdir -p $USER_WS/src && sudo chown -R $USER:$GROUP $USER_WS
+ENV USER_WS /home/${USER}/ws
+RUN mkdir -p $USER_WS/src
 
 WORKDIR $USER_WS
+
+#
+# install a colcon mixin that will use ccache for building C++ code
+RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml \
+ && colcon mixin update default
+COPY --chown=$USER:$GROUP docker/files/colcon_defaults.yaml /home/$USER/.colcon/defaults.yaml
+
+#
+# Install base system external dependencies
+COPY docker/files/dependencies.repos /tmp/dependencies.repos
+RUN cd src/ \
+ && mkdir -p external \
+ && cd external \
+ && vcs import < /tmp/dependencies.repos
 
 #
 # Install ROS project dependencies by copying the package.xml files (but not the source code,
@@ -117,11 +132,21 @@ RUN sudo apt update \
  && . /opt/ros/humble/setup.sh \
  && sudo rosdep init \
  && rosdep update \
- && rosdep install -i -y -r --from-path src \
+ && rosdep install -i -y --from-path src \
  && sudo rm -rf /var/lib/apt/lists/*
+
+#
+# setup a bashrc so that an environment is sourced whenever the developer enters
+# the container by running or attaching to it
+COPY docker/files/developer_rc /home/developer/.developer_rc
+RUN mkdir -p $USER_WS/persistence \
+ && chmod 777 $USER_WS/persistence \
+ && echo "source /home/developer/.developer_rc" >> /home/developer/.bashrc
 
 ENV WITHIN_DEV 1
 
-CMD ["/bin/bash"]
 COPY --link docker/isaac_entrypoint.sh /.isaac_entrypoint.sh
+
+CMD ["/bin/bash"]
+
 ENTRYPOINT ["fixuid", "-q", "/.isaac_entrypoint.sh"]

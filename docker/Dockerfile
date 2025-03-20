@@ -55,7 +55,6 @@ RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-
  && mkdir -p /etc/fixuid \
  && printf "user: $USER\ngroup: $GROUP\n" > /etc/fixuid/config.yml
 
-
 USER $USER
 
 ENV USER_WS /home/${USER}/ws
@@ -112,4 +111,6 @@ RUN mkdir -p $USER_WS/persistence \
 
 ENV WITHIN_DEV 1
 
-ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh", "bash"]
+CMD ["/bin/bash"]
+
+ENTRYPOINT ["fixuid", "-q", "/ros_entrypoint.sh"]
