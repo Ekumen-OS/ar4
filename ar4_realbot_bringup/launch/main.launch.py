@@ -28,7 +28,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""launch file for integrating Gazebo with MoveIt for the AR4 robot."""
 
 from launch import LaunchDescription
 from launch_ros.substitutions import FindPackageShare

@@ -93,7 +93,7 @@ def generate_launch_description():
         ],
     )
 
-    # this nodes is launched with the HAL-specific nodes because we need to load
+    # this node is launched with the HAL-specific nodes because we need to load
     # the simulation specific version
     robot_state_publisher_node = Node(
         package="robot_state_publisher",

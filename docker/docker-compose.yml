@@ -23,12 +23,20 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ar_persistence:/home/developer/ws/persistence
 
-  # ar4_hardware:
-  #   extends: ar4_gazebo
-  #   devices:
-  #     - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
-  #   group_add:
-  #     - "dialout" # Group required for accesing /dev/ttyACM0
+  # MuJoCo uses the very same docker configuration as Gazebo
+  ar4_mujoco:
+    extends: ar4_gazebo
+    hostname: ar4_mujoco
+    container_name: ar4_mujoco
+
+  ar4_hardware:
+    extends: ar4_gazebo
+    hostname: ar4_hardware
+    container_name: ar4_hardware
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
+    group_add:
+      - "dialout" # Group required for accesing /dev/ttyACM0
 
   ar4_isaac:
     build:

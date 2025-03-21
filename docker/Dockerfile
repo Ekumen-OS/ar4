@@ -77,7 +77,7 @@ RUN cd src/ \
  && vcs import < /tmp/dependencies.repos
 
 #
-# Install Mujoco, no packages available
+# Install MuJoCo, no packages available
 ENV MUJOCO_VERSION "3.2.7"
 RUN sudo wget https://github.com/google-deepmind/mujoco/releases/download/${MUJOCO_VERSION}/mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz \
  && sudo tar -C /opt -xzf mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz \
