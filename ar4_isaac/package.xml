@@ -10,9 +10,10 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <exec_depend>ar4_moveit_config</exec_depend>
   <exec_depend>controller_manager</exec_depend>
-  <exec_depend>topic_based_ros2_control</exec_depend>
   <exec_depend>ros2launch</exec_depend>
+  <exec_depend>topic_based_ros2_control</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

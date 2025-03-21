@@ -3,25 +3,36 @@ services:
     build:
       dockerfile: docker/Dockerfile
       context: ../
-      args:
-        USERID: ${USERID}
-        GROUPID: ${GROUPID}
     image: ar4_gazebo
     container_name: ar4_gazebo
     hostname: ar4_gazebo
+    user: ${USERID}:${GROUPID}
     stdin_open: true
     tty: true
     environment:
-      DISPLAY: $DISPLAY
-      QT_X11_NO_MITSHM: 1
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
+      - DISPLAY
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - XAUTHORITY=/tmp/.docker.xauth
     volumes:
-      - ../:/workspace/src/ar4
-      - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - ../:/home/developer/ws/src/project
+      - /dev:/dev
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ar_persistence:/home/developer/ws/persistence
+
+  # MuJoCo uses the very same docker configuration as Gazebo
+  ar4_mujoco:
+    extends: ar4_gazebo
+    hostname: ar4_mujoco
+    container_name: ar4_mujoco
 
   ar4_hardware:
     extends: ar4_gazebo
+    hostname: ar4_hardware
+    container_name: ar4_hardware
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
     group_add:
@@ -29,26 +40,31 @@ services:
 
   ar4_isaac:
     build:
-      context: ../
       dockerfile: docker/Dockerfile.isaac
+      context: ../
     image: ar4_isaac
     container_name: ar4_isaac
     hostname: ar4_isaac
+    user: ${USERID}:${GROUPID}
     stdin_open: true
     tty: true
     runtime: nvidia
     environment:
-      ACCEPT_EULA: Y
-      DISPLAY: $DISPLAY
-      FASTDDS_BUILTIN_TRANSPORTS: SHM
-      NVIDIA_DRIVER_CAPABILITIES: all
-      OMNI_KIT_ACCEPT_EULA: Y
-      PRIVACY_CONSENT: Y
-      QT_X11_NO_MITSHM: 1
-      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
-      XAUTHORITY: /tmp/.docker.xauth
+      - ACCEPT_EULA=Y
+      - DISPLAY
+      - FASTDDS_BUILTIN_TRANSPORTS=SHM
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - OMNI_KIT_ACCEPT_EULA=Y
+      - PRIVACY_CONSENT=Y
+      - QT_X11_NO_MITSHM=1
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - XAUTHORITY=/tmp/.docker.xauth
     volumes:
+      - ../:/home/developer/ws/src/project
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ar_persistence:/home/developer/ws/persistence
       # Mount necessary isaac sim directories
       # See: https://docs.isaacsim.omniverse.nvidia.com/latest/installation/install_container.html#container-deployment
       - ~/docker/isaac-sim/cache:/isaac-sim/kit/cache:rw
@@ -61,5 +77,5 @@ services:
       - ~/docker/isaac-sim/kit/logs:/isaac-sim/kit/logs:rw
       - ~/docker/isaac-sim/logs:/root/.nvidia-omniverse/logs:rw
       - ~/docker/isaac-sim/shadercache:/isaac-sim/kit/exts/omni.gpu_foundation/cache/nv_shadercache:rw
-      # Workspace
-      - ../:/workspace/src/ar4
+volumes:
+  ar_persistence:

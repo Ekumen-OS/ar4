@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ar4_mujoco_bringup</name>
+  <version>0.0.1</version>
+  <description>Launch AR4 software against a MuJoCo simulation of the robot</description>
+  <author email="glpuga@ekumenlabs.com">Gerardo Puga</author>
+  <maintainer email="glpuga@ekumenlabs.com">Gerardo Puga</maintainer>
+  <license file="LICENSE">BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>ar4_common</exec_depend>
+  <exec_depend>ar4_mujoco_sim</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

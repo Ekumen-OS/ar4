@@ -1,0 +1,2 @@
+mujoco==3.2.7
+urdf2mjcf==0.2.14

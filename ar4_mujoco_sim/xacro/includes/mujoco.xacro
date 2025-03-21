@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <mujoco>
+
+        <compiler
+            meshdir=""
+            balanceinertia="true"
+            discardvisual="false"
+        />
+
+    </mujoco>
+
+</robot>

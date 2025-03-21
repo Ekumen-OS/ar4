@@ -1,0 +1,19 @@
+mkdir -p $USER_WS/persistence/$(id -u)/ccache
+mkdir -p $USER_WS/persistence/$(id -u)/install
+mkdir -p $USER_WS/persistence/$(id -u)/build
+
+if [ ! -d "$HOME/.ccache" ]; then
+    ln -s $USER_WS/persistence/$(id -u)/ccache $HOME/.ccache
+    ln -s $USER_WS/persistence/$(id -u)/install $USER_WS/install
+    ln -s $USER_WS/persistence/$(id -u)/build $USER_WS/build
+fi
+
+. /opt/ros/humble/setup.bash
+
+ros2 daemon start
+
+echo
+echo "USER          : $USER ($(id -u))"
+echo "GROUP         : $GROUP ($(id -g))"
+echo "ROS_DOMAIN_ID : $ROS_DOMAIN_ID"
+echo

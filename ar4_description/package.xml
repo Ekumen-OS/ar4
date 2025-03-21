@@ -7,18 +7,16 @@
   <author>Dexter Ong</author>
   <author>Yifei Cheng</author>
   <author email="steven.desvars@creativa77.com.ar">Steven Desvars</author>
-
   <maintainer email="steven.desvars@creativa77.com.ar">Steven Desvars</maintainer>
   <maintainer email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</maintainer>
+  <maintainer email="glpuga@ekumenlabs.com">Gerardo Puga</maintainer>
 
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <exec_depend>joint_state_publisher</exec_depend>
-  <exec_depend>robot_state_publisher</exec_depend>
+
   <exec_depend>ros2launch</exec_depend>
-  <exec_depend>rviz2</exec_depend>
-  <exec_depend>xacro</exec_depend>
+  <exec_depend>urdf_launch</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
