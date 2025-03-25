@@ -47,6 +47,61 @@
   </xacro:if>
 </xacro:macro>
 
+<!-- ===================== Gripper base xacro ================================== -->
+  <xacro:macro name="gripper_base" params="parent *origin inertial visual collision">
+
+    <joint name="gripper_base_joint" type="fixed">
+      <origin xyz="0.0 0.0 0.0" rpy="${-pi/2} 0.0 ${pi}"/>
+      <parent link="${parent}"/>
+      <child link="gripper_base_link"/>
+    </joint>
+
+    <link name="gripper_base_link">
+      <xacro:insert_block name="origin"/>
+
+      <xacro:box_inertia m="${inertial['mass']}"
+                         x="${inertial['size']['dx']}"
+                         y="${inertial['size']['dy']}"
+                         z="${inertial['size']['dz']}"
+                         o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
+                         o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
+      </xacro:box_inertia>
+
+      <xacro:mesh_loop meshes="${['gripper_base']}" materials="${['grey']}" visual="${visual}" collision="${collision}" />
+
+    </link>
+
+  </xacro:macro>
+
+<!-- ===================== Gripper finger ================================== -->
+  <xacro:macro name="finger" params="number pitch_rotation mimic *origin inertial visual collision">
+
+    <joint name="finger_joint${number}" type="prismatic">
+      <origin xyz="0.0 -0.036 0" rpy="0.0 ${pitch_rotation} 0.0"/>
+      <parent link="gripper_base_link"/>
+      <child link="finger${number}"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="-0.014" upper="0" effort="100" velocity="1.0"/>
+      <xacro:if value="${mimic == 'true'}">
+        <mimic joint="finger_joint1" multiplier="1" offset="0"/>
+      </xacro:if>
+    </joint>
+
+    <link name="finger${number}">
+      <xacro:insert_block name="origin"/>
+
+      <xacro:box_inertia m="${inertial['mass']}"
+                         x="${inertial['size']['dx']}"
+                         y="${inertial['size']['dy']}"
+                         z="${inertial['size']['dz']}"
+                         o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
+                         o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
+      </xacro:box_inertia>
+
+      <xacro:mesh_loop meshes="${['gripper_finger']}" materials="${['black']}" visual="${visual}" collision="${collision}" />
+    </link>
+
+  </xacro:macro>
 
 
 <!-- ===================== Box inertia xacro ================================== -->

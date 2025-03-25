@@ -124,9 +124,29 @@
   </joint>
   <link name="dummy"/>
 
-  <xacro:if value="$(arg include_gripper)">
-    <xacro:include filename="$(find ${package_name})/urdf/include/ar_gripper_macro.xacro" />
-    <xacro:ar_gripper parent="link_6" />
-  </xacro:if>
+  <xacro:gripper_base parent="link_6"
+                      inertial="${robot_properties['gripper_base']['inertial']}"
+                      visual="${robot_properties['gripper_base']['visual']}"
+                      collision="${robot_properties['gripper_base']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:gripper_base>
+
+  <xacro:finger number="1"
+                pitch_rotation="0.0"
+                mimic="false"
+                inertial="${robot_properties['finger']['inertial']}"
+                visual="${robot_properties['finger']['visual']}"
+                collision="${robot_properties['finger']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:finger>
+
+  <xacro:finger number="2"
+                pitch_rotation="${-pi}"
+                mimic="true"
+                inertial="${robot_properties['finger']['inertial']}"
+                visual="${robot_properties['finger']['visual']}"
+                collision="${robot_properties['finger']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:finger>
 
 </robot>
