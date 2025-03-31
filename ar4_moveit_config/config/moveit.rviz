@@ -108,12 +108,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          gripper_jaw1_link:
+          finger_link_1:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          gripper_jaw2_link:
+          finger_link_2:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -208,12 +208,12 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          gripper_jaw1_link:
+          finger_link_1:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          gripper_jaw2_link:
+          finger_link_2:
             Alpha: 1
             Show Axes: false
             Show Trail: false

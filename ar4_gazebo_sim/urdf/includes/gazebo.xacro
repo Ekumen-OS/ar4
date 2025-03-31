@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ar_gripper.ros2_control.xacro" />
 
     <gazebo reference="base_link">
         <selfCollide>true</selfCollide>
@@ -23,10 +22,10 @@
     <gazebo reference="link_6">
         <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="gripper_jaw1_joint">
+    <gazebo reference="finger_link_1">
         <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="gripper_jaw2_joint">
+    <gazebo reference="finger_link_2">
         <selfCollide>true</selfCollide>
     </gazebo>
 

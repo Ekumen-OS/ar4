@@ -33,10 +33,10 @@
   <gazebo reference="link_6">
       <selfCollide>true</selfCollide>
   </gazebo>
-  <!-- <gazebo reference="gripper_jaw1_joint">
+  <!-- <gazebo reference="finger_link_1">
       <selfCollide>true</selfCollide>
   </gazebo>
-  <gazebo reference="gripper_jaw2_joint">
+  <gazebo reference="finger_link_2">
       <selfCollide>true</selfCollide>
   </gazebo> -->
 </robot>

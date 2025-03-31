@@ -42,8 +42,8 @@ arm_controller:
 
 # gripper_controller:
 #   ros__parameters:
-#     joint: gripper_jaw1_joint
+#     joint: finger_joint_1
 
 gripper_controller:
   ros__parameters:
-    joint: gripper_jaw1_joint
+    joint: finger_joint_1

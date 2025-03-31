@@ -24,4 +24,4 @@ moveit_simple_controller_manager:
     type: GripperCommand
     default: true
     joints:
-      - gripper_jaw1_joint
+      - finger_joint_1

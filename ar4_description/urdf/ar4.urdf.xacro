@@ -117,7 +117,7 @@
   <!-- Dummy joint to remove the  "Joint '*_mimic' not found in model 'ar4'" error-->
   <!-- See https://github.com/ros-controls/gazebo_ros2_control/issues/173 -->
 
-  <joint name="gripper_jaw2_joint_mimic" type="fixed">
+  <joint name="finger_joint_2_mimic" type="fixed">
     <parent link="base_link" />
     <child link="dummy" />
     <origin xyz="0 0 0" rpy="0 0 0" />
