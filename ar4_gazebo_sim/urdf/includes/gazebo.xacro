@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:include filename="$(find ar4_gazebo)/urdf/ar_gripper.ros2_control.xacro" />
+    <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ar_gripper.ros2_control.xacro" />
 
     <gazebo reference="base_link">
         <selfCollide>true</selfCollide>

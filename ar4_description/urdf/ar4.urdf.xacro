@@ -114,6 +114,16 @@
     <limit lower="${-1.0 * robot_parameters['j6_limit']}" upper="${robot_parameters['j6_limit']}" effort="100" velocity="1.0"/>
   </joint>
 
+  <!-- Dummy joint to remove the  "Joint '*_mimic' not found in model 'ar4'" error-->
+  <!-- See https://github.com/ros-controls/gazebo_ros2_control/issues/173 -->
+
+  <joint name="gripper_jaw2_joint_mimic" type="fixed">
+    <parent link="base_link" />
+    <child link="dummy" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  <link name="dummy"/>
+
   <xacro:if value="$(arg include_gripper)">
     <xacro:include filename="$(find ${package_name})/urdf/include/ar_gripper_macro.xacro" />
     <xacro:ar_gripper parent="link_6" />
