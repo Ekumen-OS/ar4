@@ -100,7 +100,7 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_headless)
-    ld.add_action(isaac_launch)
+    # ld.add_action(isaac_launch)
     ld.add_action(controllers_launch)
     ld.add_action(moveit_launch)
 
