@@ -11,6 +11,6 @@
   <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ros2_control.xacro" />
 
   <!-- ros2_control gripper extensions -->
-  <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ar_gripper.ros2_control.xacro" />
+  <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/gripper.ros2_control.xacro" />
 
 </robot>
