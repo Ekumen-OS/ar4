@@ -51,7 +51,7 @@
   <xacro:macro name="gripper_base" params="parent *origin inertial visual collision">
 
     <joint name="gripper_base_joint" type="fixed">
-      <origin xyz="0.0 0.0 0.0" rpy="${-pi/2} 0.0 ${pi}"/>
+      <origin xyz="0.0 0.0 0.0" rpy="${-pi/2} 0.0 0"/>
       <parent link="${parent}"/>
       <child link="gripper_base_link"/>
     </joint>
