@@ -8,7 +8,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <thread>
 
-#include "ar4_hardware_interface/arduino_nano_driver.hpp"
+#include "ar4_hardware_interface/arduino_nano_driver.hpp" // CHECK if 
 
 using namespace hardware_interface;
 

@@ -3,7 +3,7 @@ from launch_ros.descriptions import ParameterValue
 from launch_ros.parameter_descriptions import ParameterFile
 from launch_ros.substitutions import FindPackageShare
 
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition # Uncomented
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
@@ -13,7 +13,7 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 def generate_launch_description():
     serial_port = LaunchConfiguration("serial_port")
     calibrate = LaunchConfiguration("calibrate")
-    # include_gripper = LaunchConfiguration("include_gripper")
+    include_gripper = LaunchConfiguration("include_gripper") # Uncomented
     arduino_serial_port = LaunchConfiguration("arduino_serial_port")
     ar_model_config = LaunchConfiguration("ar_model")
 
@@ -34,9 +34,9 @@ def generate_launch_description():
             "calibrate:=",
             calibrate,
             " ",
-            # "include_gripper:=",
-            # include_gripper,
-            # " ",
+            "include_gripper:=", # Uncomented
+            include_gripper,     # Uncomented
+            " ",                 # Uncomented
             "arduino_serial_port:=",
             arduino_serial_port,
         ]
@@ -69,6 +69,19 @@ def generate_launch_description():
         ],
     )
 
+    # Uncommented block
+    gripper_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "gripper_controller",
+            "-c",
+            "/controller_manager",
+            "--controller-manager-timeout",
+            "60",
+        ],
+        condition=IfCondition(include_gripper),
+    )
     gripper_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -117,6 +130,7 @@ def generate_launch_description():
             choices=["True", "False"],
         )
     )
+    # Uncommented block
     ld.add_action(
         DeclareLaunchArgument(
             "include_gripper",
@@ -139,7 +153,7 @@ def generate_launch_description():
     )
     ld.add_action(controller_manager_node)
     ld.add_action(spawn_joint_controller)
-    ld.add_action(gripper_controller_spawner)
+    ld.add_action(gripper_controller_spawner) #Uncommented
     ld.add_action(robot_state_publisher_node)
     ld.add_action(joint_state_broadcaster)
     return ld
