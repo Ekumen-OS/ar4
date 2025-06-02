@@ -13,7 +13,6 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 def generate_launch_description():
     serial_port = LaunchConfiguration("serial_port")
     calibrate = LaunchConfiguration("calibrate")
-    # include_gripper = LaunchConfiguration("include_gripper")
     arduino_serial_port = LaunchConfiguration("arduino_serial_port")
     ar_model_config = LaunchConfiguration("ar_model")
 
@@ -34,9 +33,6 @@ def generate_launch_description():
             "calibrate:=",
             calibrate,
             " ",
-            # "include_gripper:=",
-            # include_gripper,
-            # " ",
             "arduino_serial_port:=",
             arduino_serial_port,
         ]
@@ -67,6 +63,7 @@ def generate_launch_description():
             "--controller-manager-timeout",
             "60",
         ],
+        output="screen",
     )
 
     gripper_controller_spawner = Node(
@@ -79,7 +76,7 @@ def generate_launch_description():
             "--controller-manager-timeout",
             "60",
         ],
-        condition=IfCondition(include_gripper),
+        output="screen",
     )
 
     robot_state_publisher_node = Node(
@@ -87,6 +84,7 @@ def generate_launch_description():
         executable="robot_state_publisher",
         output="both",
         parameters=[robot_description],
+        # output="screen",
     )
 
     joint_state_broadcaster = Node(
@@ -99,6 +97,7 @@ def generate_launch_description():
             "--controller-manager-timeout",
             "60",
         ],
+        output="screen",
     )
 
     ld = LaunchDescription()
@@ -114,14 +113,6 @@ def generate_launch_description():
             "calibrate",
             default_value="True",
             description="Calibrate the robot on startup",
-            choices=["True", "False"],
-        )
-    )
-    ld.add_action(
-        DeclareLaunchArgument(
-            "include_gripper",
-            default_value="True",
-            description="Run the servo gripper",
             choices=["True", "False"],
         )
     )
