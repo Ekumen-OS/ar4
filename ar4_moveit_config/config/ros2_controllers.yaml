@@ -5,12 +5,8 @@ controller_manager:
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    # gripper_controller:
-    #   type: position_controllers/GripperActionController
-
     gripper_controller:
-      type: joint_trajectory_controller/GripperActionController
-
+      type: position_controllers/GripperActionController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -39,11 +35,10 @@ arm_controller:
       joint_5: { trajectory: 0.3, goal: 0.03 }
       joint_6: { trajectory: 0.3, goal: 0.03 }
 
-# gripper_controller:
-#   ros__parameters:
-#     joint: gripper_jaw1_joint
-      - velocity
 gripper_controller:
   ros__parameters:
-    joints:
-      - gripper_jaw1_joint
+    joint: finger_joint_1
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

@@ -2,8 +2,6 @@
 <robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="package_name" value="ar4_description"/>
 
-  <xacro:arg name="include_gripper" default="true"/>
-
   <xacro:include filename="$(find ${package_name})/urdf/include/common_macros.urdf.xacro" />
   <xacro:property name="robot_properties_yaml_dir" value="$(find ${package_name})/config/link_properties.yaml" />
   <xacro:property name="robot_properties" value="${xacro.load_yaml(robot_properties_yaml_dir)}"/>
@@ -114,9 +112,39 @@
     <limit lower="${-1.0 * robot_parameters['j6_limit']}" upper="${robot_parameters['j6_limit']}" effort="100" velocity="1.0"/>
   </joint>
 
-  <xacro:if value="$(arg include_gripper)">
-    <xacro:include filename="$(find ${package_name})/urdf/include/ar_gripper_macro.xacro" />
-    <xacro:ar_gripper parent="link_6" />
-  </xacro:if>
+  <!-- Dummy joint to remove the  "Joint '*_mimic' not found in model 'ar4'" error-->
+  <!-- See https://github.com/ros-controls/gazebo_ros2_control/issues/173 -->
+
+  <joint name="finger_joint_2_mimic" type="fixed">
+    <parent link="base_link" />
+    <child link="dummy" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  <link name="dummy"/>
+
+  <xacro:gripper_base parent="link_6"
+                      inertial="${robot_properties['gripper_base']['inertial']}"
+                      visual="${robot_properties['gripper_base']['visual']}"
+                      collision="${robot_properties['gripper_base']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:gripper_base>
+
+  <xacro:finger number="1"
+                pitch_rotation="0.0"
+                mimic="false"
+                inertial="${robot_properties['finger']['inertial']}"
+                visual="${robot_properties['finger']['visual']}"
+                collision="${robot_properties['finger']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:finger>
+
+  <xacro:finger number="2"
+                pitch_rotation="${-pi}"
+                mimic="true"
+                inertial="${robot_properties['finger']['inertial']}"
+                visual="${robot_properties['finger']['visual']}"
+                collision="${robot_properties['finger']['collision']}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:finger>
 
 </robot>
