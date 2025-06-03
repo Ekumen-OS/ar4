@@ -16,24 +16,19 @@ bool ArduinoNanoDriver::init(std::string port, int baudrate) {
     RCLCPP_WARN(logger_, "Failed to connect to serial port %s", port.c_str());
     return false;
   } else {
-    serial_port_.set_option(boost::asio::serial_port_base::baud_rate(
-        static_cast<uint32_t>(baudrate)));
-    serial_port_.set_option(boost::asio::serial_port_base::parity(
-        boost::asio::serial_port_base::parity::none));
-    RCLCPP_INFO(logger_, "Successfully connected to serial port %s",
-                port.c_str());
+    serial_port_.set_option(boost::asio::serial_port_base::baud_rate(static_cast<uint32_t>(baudrate)));
+    serial_port_.set_option(boost::asio::serial_port_base::parity(boost::asio::serial_port_base::parity::none));
+    RCLCPP_INFO(logger_, "Successfully connected to serial port %s", port.c_str());
   }
 
-  RCLCPP_INFO(logger_, "Waiting for response from Arduino Nano on port %s",
-              port.c_str());
+  RCLCPP_INFO(logger_, "Waiting for response from Arduino Nano on port %s", port.c_str());
   std::this_thread::sleep_for(std::chrono::seconds(2));
   std::string msg = "ST\n";
   std::string reply = sendCommand(msg);
   if (!checkInit(reply)) {
     return false;
   }
-  RCLCPP_INFO(logger_, "Successfully initialised driver on port %s",
-              port.c_str());
+  RCLCPP_INFO(logger_, "Successfully initialised driver on port %s", port.c_str());
   return true;
 }
 
@@ -42,8 +37,7 @@ ArduinoNanoDriver::ArduinoNanoDriver() : serial_port_(io_service_) {}
 std::string ArduinoNanoDriver::sendCommand(std::string outMsg) {
   std::string errTransmit = "";
   if (!transmit(outMsg, errTransmit)) {
-    RCLCPP_ERROR(logger_, "Failed to transmit message: %s",
-                 errTransmit.c_str());
+    RCLCPP_ERROR(logger_, "Failed to transmit message: %s", errTransmit.c_str());
     return "";
   }
 
@@ -88,8 +82,7 @@ bool ArduinoNanoDriver::checkInit(std::string msg) {
   if (msg == version_) {
     return true;
   } else {
-    RCLCPP_ERROR(logger_, "Firmware version mismatch %s vs. %s", msg.c_str(),
-                 version_.c_str());
+    RCLCPP_ERROR(logger_, "Firmware version mismatch %s vs. %s", msg.c_str(), version_.c_str());
     return false;
   }
 }
@@ -108,8 +101,7 @@ bool ArduinoNanoDriver::writePosition(double position) {
   std::string msg = "SV0P" + std::to_string(static_cast<int>(position)) + "\n";
   std::string reply = sendCommand(msg);
   if (reply != "Done") {
-    RCLCPP_ERROR(logger_, "Failed to write position %f, got reply: %s",
-                 position, reply.c_str());
+    RCLCPP_ERROR(logger_, "Failed to write position %f, got reply: %s", position, reply.c_str());
     return false;
   }
   return true;
@@ -134,4 +126,4 @@ bool ArduinoNanoDriver::getCurrent(double& current) {
   }
 }
 
-}  //namespace ar4_hardware_interface {
+}  // namespace ar4_hardware_interface

@@ -18,20 +18,13 @@ class ARServoGripperHWInterface : public hardware_interface::SystemInterface {
  public:
   RCLCPP_SHARED_PTR_DEFINITIONS(ARServoGripperHWInterface);
 
-  hardware_interface::CallbackReturn on_init(
-      const hardware_interface::HardwareInfo& info) override;
-  std::vector<hardware_interface::StateInterface> export_state_interfaces()
-      override;
-  std::vector<hardware_interface::CommandInterface> export_command_interfaces()
-      override;
-  hardware_interface::CallbackReturn on_activate(
-      const rclcpp_lifecycle::State& previous_state) override;
-  hardware_interface::CallbackReturn on_deactivate(
-      const rclcpp_lifecycle::State& previous_state) override;
-  hardware_interface::return_type read(const rclcpp::Time& time,
-                                       const rclcpp::Duration& period) override;
-  hardware_interface::return_type write(
-      const rclcpp::Time& time, const rclcpp::Duration& period) override;
+  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo& info) override;
+  std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+  std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+  hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State& previous_state) override;
+  hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State& previous_state) override;
+  hardware_interface::return_type read(const rclcpp::Time& time, const rclcpp::Duration& period) override;
+  hardware_interface::return_type write(const rclcpp::Time& time, const rclcpp::Duration& period) override;
 
  private:
   rclcpp::Logger logger_ = rclcpp::get_logger("ar_servo_gripper_hw_interface");
@@ -52,20 +45,14 @@ class ARServoGripperHWInterface : public hardware_interface::SystemInterface {
   // std::unique_ptr<GripperOverCurrentProtection> overcurrent_protection_;
 
   int linear_pos_to_servo_angle(double linear_pos) {
-    double normalized_pos =
-        (linear_pos - closed_position_) /
-        static_cast<double>(open_position_ - closed_position_);
-    return static_cast<int>(closed_servo_angle_ +
-                            normalized_pos *
-                                (open_servo_angle_ - closed_servo_angle_));
+    double normalized_pos = (linear_pos - closed_position_) / static_cast<double>(open_position_ - closed_position_);
+    return static_cast<int>(closed_servo_angle_ + normalized_pos * (open_servo_angle_ - closed_servo_angle_));
   };
 
   double servo_angle_to_linear_pos(int angular_pos) {
     double normalized_pos =
-        (angular_pos - closed_servo_angle_) /
-        static_cast<double>(open_servo_angle_ - closed_servo_angle_);
-    return normalized_pos * (open_position_ - closed_position_) +
-           closed_position_;
+        (angular_pos - closed_servo_angle_) / static_cast<double>(open_servo_angle_ - closed_servo_angle_);
+    return normalized_pos * (open_position_ - closed_position_) + closed_position_;
   };
 };
 

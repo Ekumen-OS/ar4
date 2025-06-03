@@ -14,8 +14,7 @@ namespace ar4_hardware_interface {
 class ArduinoNanoDriver {
  public:
   bool init(std::string port, int baudrate);
-  void update(std::vector<double>& pos_commands,
-              std::vector<double>& joint_states);
+  void update(std::vector<double>& pos_commands, std::vector<double>& joint_states);
   bool getPosition(int& position);
   bool writePosition(double position);
   bool getCurrent(double& current);

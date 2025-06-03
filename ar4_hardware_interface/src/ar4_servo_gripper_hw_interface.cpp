@@ -4,11 +4,9 @@
 
 namespace ar4_hardware_interface {
 
-hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(
-    const hardware_interface::HardwareInfo& info) {
+hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(const hardware_interface::HardwareInfo& info) {
   RCLCPP_INFO(logger_, "Initializing hardware interface...");
-  if (hardware_interface::SystemInterface::on_init(info) !=
-      hardware_interface::CallbackReturn::SUCCESS) {
+  if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS) {
     return hardware_interface::CallbackReturn::ERROR;
   }
 
@@ -37,8 +35,7 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(
 
   // Load servo angle parameters
   if (info_.hardware_parameters.count("closed_servo_angle") > 0) {
-    closed_servo_angle_ =
-        std::stoi(info_.hardware_parameters.at("closed_servo_angle"));
+    closed_servo_angle_ = std::stoi(info_.hardware_parameters.at("closed_servo_angle"));
     RCLCPP_INFO(logger_, "Loaded closed_servo_angle: %d", closed_servo_angle_);
   } else {
     RCLCPP_ERROR(logger_, "Required parameter 'closed_servo_angle' not found");
@@ -46,8 +43,7 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(
   }
 
   if (info_.hardware_parameters.count("open_servo_angle") > 0) {
-    open_servo_angle_ =
-        std::stoi(info_.hardware_parameters.at("open_servo_angle"));
+    open_servo_angle_ = std::stoi(info_.hardware_parameters.at("open_servo_angle"));
     RCLCPP_INFO(logger_, "Loaded open_servo_angle: %d", open_servo_angle_);
   } else {
     RCLCPP_ERROR(logger_, "Required parameter 'open_servo_angle' not found");
@@ -57,9 +53,8 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(
   // Validate servo angle range
   if (closed_servo_angle_ >= open_servo_angle_) {
     RCLCPP_ERROR(
-        logger_,
-        "Invalid servo angle range: min (%d) must be less than max (%d)",
-        closed_servo_angle_, open_servo_angle_);
+        logger_, "Invalid servo angle range: min (%d) must be less than max (%d)", closed_servo_angle_,
+        open_servo_angle_);
     return hardware_interface::CallbackReturn::ERROR;
   }
 
@@ -93,8 +88,7 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_deactivate(
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-std::vector<hardware_interface::StateInterface>
-ARServoGripperHWInterface::export_state_interfaces() {
+std::vector<hardware_interface::StateInterface> ARServoGripperHWInterface::export_state_interfaces() {
   std::vector<hardware_interface::StateInterface> state_interfaces;
   for (size_t i = 0; i < info_.joints.size(); ++i) {
     state_interfaces.emplace_back(info_.joints[i].name, "position", &position_);
@@ -103,18 +97,17 @@ ARServoGripperHWInterface::export_state_interfaces() {
   return state_interfaces;
 }
 
-std::vector<hardware_interface::CommandInterface>
-ARServoGripperHWInterface::export_command_interfaces() {
+std::vector<hardware_interface::CommandInterface> ARServoGripperHWInterface::export_command_interfaces() {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   for (size_t i = 0; i < info_.joints.size(); ++i) {
-    command_interfaces.emplace_back(info_.joints[i].name, "position",
-                                    &position_command_);
+    command_interfaces.emplace_back(info_.joints[i].name, "position", &position_command_);
   }
   return command_interfaces;
 }
 
 hardware_interface::return_type ARServoGripperHWInterface::read(
-    const rclcpp::Time& time, const rclcpp::Duration& /*period*/) {
+    const rclcpp::Time& time,
+    const rclcpp::Duration& /*period*/) {
   int pos_deg;
   bool success = driver_.getPosition(pos_deg);
   if (!success) {
@@ -128,7 +121,8 @@ hardware_interface::return_type ARServoGripperHWInterface::read(
 }
 
 hardware_interface::return_type ARServoGripperHWInterface::write(
-    const rclcpp::Time& /*time*/, const rclcpp::Duration& /*period*/) {
+    const rclcpp::Time& /*time*/,
+    const rclcpp::Duration& /*period*/) {
   double position_command = position_command_;
 
   int pos_deg = linear_pos_to_servo_angle(position_command);
@@ -141,8 +135,7 @@ hardware_interface::return_type ARServoGripperHWInterface::write(
   return hardware_interface::return_type::OK;
 }
 
-}  // namespace namespace ar4_hardware_interface {
-
+}  // namespace ar4_hardware_interface
 
 #include "pluginlib/class_list_macros.hpp"
 
