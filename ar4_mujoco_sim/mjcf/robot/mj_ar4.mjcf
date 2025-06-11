@@ -127,6 +127,10 @@
     </body>
   </worldbody>
 
+  <equality>
+    <joint joint1="finger_joint_1" joint2="finger_joint_2" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+
   <actuator>
     <motor name="joint_1_ctrl" joint="joint_1" class="motor" />
     <motor name="joint_2_ctrl" joint="joint_2" class="motor" />
