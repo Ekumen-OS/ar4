@@ -10,4 +10,7 @@
   <!-- ros2_control extensions -->
   <xacro:include filename="$(find ar4_mujoco_sim)/xacro/includes/ros2_control.xacro" />
 
+  <!-- ros2_control gripper extensions -->
+  <xacro:include filename="$(find ar4_mujoco_sim)/xacro/includes/gripper.ros2_control.xacro" />
+
 </robot>
