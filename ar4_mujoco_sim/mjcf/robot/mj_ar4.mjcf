@@ -148,6 +148,7 @@
     <exclude body1="link_2" body2="link_3" />
     <exclude body1="link_3" body2="link_4" />
     <exclude body1="link_4" body2="link_5" />
+    <exclude body1="link_4" body2="link_6" />
     <exclude body1="link_5" body2="link_6" />
     <exclude body1="link_6" body2="gripper_base_link" />
     <exclude body1="gripper_base_link" body2="finger_link_1" />

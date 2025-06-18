@@ -378,7 +378,7 @@
   </link>
   .
 
-  
+
   <mujoco>
     <compiler balanceinertia="true" discardvisual="false" meshdir=""/>
   </mujoco>
