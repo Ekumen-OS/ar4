@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <!-- base model -->
   <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro" />.
+
+  <!-- ros2_control extensions -->
   <xacro:include filename="$(find ar4_isaac)/urdf/ar4.ros2_control.xacro" />
 
   <link name="world" />

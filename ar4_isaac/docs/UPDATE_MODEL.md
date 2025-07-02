@@ -42,7 +42,6 @@ For changes made to the robot's urdf or meshes to impact the Isaac Sim model it'
     - Import Inertia Tensor
     - Clear Stage
     - Self Collision
-    - Collision From Visuals
 
 7. Select the generated `urdf` in step 2 (with step 3 mods) as the input file
 
