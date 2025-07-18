@@ -20,7 +20,7 @@ Build the packages
 
 ```
 source /opt/ros/humble/setup.bash
-colcon build --packages-up-to ar4_isaac
+colcon build --packages-up-to ar4_isaac_bringup
 ```
 
 Source the built packages
@@ -31,7 +31,7 @@ source install/setup.bash
 
 ## Launch the simulation
 ```
-ros2 launch ar4_isaac ar4_in_empty_world.launch.py
+ros2 launch ar4_isaac_bringup main.launch.py
 ```
 ![AR4 in Isaac Sim](docs/pics/isaac_sim.png)
 

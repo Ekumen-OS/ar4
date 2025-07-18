@@ -28,47 +28,16 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""launch file for integrating MuJoCo with MoveIt for the AR4 robot."""
+cmake_minimum_required(VERSION 3.7)
+project(ar4_isaac_sim)
 
-from launch import LaunchDescription
-from launch_ros.actions import SetParameter
-from launch_ros.substitutions import FindPackageShare
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution
+find_package(ament_cmake REQUIRED)
 
+install(
+  DIRECTORY launch
+            scripts
+            urdf
+            usda
+  DESTINATION share/${PROJECT_NAME}/)
 
-def generate_launch_description():
-    use_sim_time_param = SetParameter(name="use_sim_time", value=True)
-
-    common_stack_include = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution(
-                [
-                    FindPackageShare("ar4_common"),
-                    "launch",
-                    "main.launch.py",
-                ]
-            )
-        )
-    )
-
-    mujoco_sim_include = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution(
-                [
-                    FindPackageShare("ar4_mujoco_sim"),
-                    "launch",
-                    "main.launch.py",
-                ]
-            )
-        )
-    )
-
-    return LaunchDescription(
-        [
-            use_sim_time_param,
-            common_stack_include,
-            mujoco_sim_include,
-        ]
-    )
+ament_package()

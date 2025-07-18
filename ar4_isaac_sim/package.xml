@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>ar4_isaac</name>
+  <name>ar4_isaac_sim</name>
   <version>0.0.1</version>
-  <description>Launch Isaac simulation with Ar4 robot.</description>
+  <description>
+    Launch Isaac simulation with Ar4 robot.\
+  </description>
   <author email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</author>
   <maintainer email="steven.desvars@creativa77.com.ar">Steven Desvars</maintainer>
   <maintainer email="santiago.mendez@creativa77.com.ar">Santiago Lopez mendez</maintainer>

@@ -13,10 +13,9 @@ These are the main packages providing launch files for the different use cases:
 
 - [`ar4_description`](./ar4_description): Contains the platform-agnostic parts of the URDF robot description.
 - [`ar4_gazebo_bringup`](./ar4_gazebo): Launch a Gazebo Sim simulation of AR4.
-- [`ar4_isaac_bringup`](./ar4_gazebo): **Not yet available.** Launch an Isaac Sim simulation of AR4.
-- [`ar4_mujoco_bringup`](./ar4_gazebo): **Not yet available.** Launch a MuJoCo-based simulation of AR4.
+- [`ar4_isaac_bringup`](./ar4_gazebo): Launch an Isaac Sim simulation of AR4.
+- [`ar4_mujoco_bringup`](./ar4_gazebo): Launch a MuJoCo-based simulation of AR4.
 - [`ar4_realbot_bringup`](./ar4_gazebo): Launch drivers and control software for the real AR4 robot.
-- [`ar4_isaac`](./ar4_isaac): Isaac simulation for the ar4 arm.
 
 
 ```mermaid

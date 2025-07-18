@@ -95,4 +95,4 @@ For changes made to the robot's urdf or meshes to impact the Isaac Sim model it'
 
     Finally save your output as `usda` overriding the existing ar4_layer. (Note: Select the type to `*.usda`)
 
-    File > Save As... > ar4_isaac/usda/layers/ar4_layer.usda
+    File > Save As... > ar4_isaac_sim/usda/layers/ar4_layer.usda

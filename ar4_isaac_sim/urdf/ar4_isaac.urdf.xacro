@@ -5,7 +5,7 @@
   <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro" />.
 
   <!-- ros2_control extensions -->
-  <xacro:include filename="$(find ar4_isaac)/urdf/ar4.ros2_control.xacro" />
+  <xacro:include filename="$(find ar4_isaac_sim)/urdf/ar4.ros2_control.xacro" />
 
   <link name="world" />
 
