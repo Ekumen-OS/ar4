@@ -37,6 +37,18 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
+
+      <!-- We put the gripper under the same ros2_control system because the TopicBasedSystem doesn't behave well with multiple instances-->
+      <joint name="finger_joint_1">
+        <command_interface name="position" />
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+      </joint>
+
     </ros2_control>
 
 </robot>

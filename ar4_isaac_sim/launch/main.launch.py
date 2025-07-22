@@ -28,34 +28,39 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""launch file for integrating Isaac with MoveIt for the AR4 robot."""
 
 import os
-from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.substitutions import LaunchConfiguration
 import xacro
 
-pkg_ar4_isaac = get_package_share_directory('ar4_isaac')
+from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import ExecuteProcess
+
+from launch_ros.actions import Node
 
 
 def get_robot_description():
-    robot_description_file = os.path.join(pkg_ar4_isaac, 'urdf', 'ar4_isaac.urdf.xacro')
-
-    return xacro.process_file(
-        robot_description_file,
-    ).toprettyxml(indent='  ')
+    robot_description_file = os.path.join(
+        get_package_share_directory("ar4_isaac_sim"),
+        "urdf",
+        "ar4_isaac.urdf.xacro",
+    )
+    return xacro.process_file(robot_description_file).toprettyxml(indent="  ")
 
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time')
+    pkg_ar4_isaac = get_package_share_directory('ar4_isaac_sim')
+    run_sim_path = os.path.join(pkg_ar4_isaac, 'scripts', 'run_sim.py')
 
-    use_sim_time_argument = DeclareLaunchArgument(
-        'use_sim_time',
-        default_value='true',
-        description='Use simulation clock if true',
+    isaac_process = ExecuteProcess(
+        cmd=[
+            '/isaac-sim/python.sh',
+            run_sim_path,
+            '--robot_model_path',
+            os.path.join(pkg_ar4_isaac, 'usda', 'ar4.usda'),
+        ],
+        shell=True,
+        output='screen',
     )
 
     robot_state_publisher_control = Node(
@@ -66,15 +71,8 @@ def generate_launch_description():
         parameters=[
             {
                 'robot_description': get_robot_description(),
-                'use_sim_time': use_sim_time,
             }
         ],
-    )
-
-    ros2_controllers_path = os.path.join(
-        get_package_share_directory("ar4_moveit_config"),
-        "config",
-        "ros2_controllers.yaml",
     )
 
     world2robot_tf_node = Node(
@@ -83,6 +81,12 @@ def generate_launch_description():
         name="static_transform_publisher",
         output="log",
         arguments=["--frame-id", "world", "--child-frame-id", "base_link"],
+    )
+
+    ros2_controllers_path = os.path.join(
+        get_package_share_directory("ar4_moveit_config"),
+        "config",
+        "ros2_controllers.yaml",
     )
 
     ros2_control_node = Node(
@@ -95,26 +99,19 @@ def generate_launch_description():
         output="screen",
     )
 
-    load_joint_trajectory_controller = ExecuteProcess(
-        cmd=[
-            'ros2',
-            'control',
-            'load_controller',
-            '--set-state',
-            'active',
-            'arm_controller',
-        ],
-        output='screen',
+    spawn_joint_trajectory_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_controller", "gripper_controller"],
+        output="screen",
     )
 
-    ld = LaunchDescription(
+    return LaunchDescription(
         [
-            world2robot_tf_node,
+            isaac_process,
             robot_state_publisher_control,
-            load_joint_trajectory_controller,
-            use_sim_time_argument,
+            world2robot_tf_node,
             ros2_control_node,
+            spawn_joint_trajectory_controller,
         ]
     )
-
-    return ld

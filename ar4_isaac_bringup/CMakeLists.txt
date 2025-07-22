@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # BSD 3-Clause License
 #
 # Copyright 2025 Ekumen, Inc.
@@ -30,54 +28,11 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+cmake_minimum_required(VERSION 3.7)
+project(ar4_isaac_bringup)
 
-import os
-from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.conditions import IfCondition, UnlessCondition
-from launch.substitutions import LaunchConfiguration
+find_package(ament_cmake REQUIRED)
 
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
-def generate_launch_description():
-    headless = LaunchConfiguration('headless')  # noqa F841
-    declare_headless = DeclareLaunchArgument(
-        'headless',
-        default_value='false',
-        description='Launch Isaac in headless mode',
-    )
-
-    pkg_ar4_isaac = get_package_share_directory('ar4_isaac')
-    run_sim_path = os.path.join(pkg_ar4_isaac, 'scripts', 'run_sim.py')
-
-    isaac_process = ExecuteProcess(
-        cmd=[
-            '/isaac-sim/python.sh',
-            run_sim_path,
-            '--robot_model_path',
-            os.path.join(pkg_ar4_isaac, 'usda', 'ar4.usda'),
-        ],
-        shell=True,
-        output='screen',
-        condition=UnlessCondition(LaunchConfiguration('headless')),
-    )
-
-    isaac_process_headless = ExecuteProcess(
-        cmd=[
-            '/isaac-sim/python.sh',
-            run_sim_path,
-            '--robot_model_path',
-            os.path.join(pkg_ar4_isaac, 'usda', 'ar4.usda'),
-            '--headless',
-        ],
-        shell=True,
-        output='screen',
-        condition=IfCondition(LaunchConfiguration('headless')),
-    )
-
-    ld = LaunchDescription()
-    ld.add_action(declare_headless)
-    ld.add_action(isaac_process)
-    ld.add_action(isaac_process_headless)
-
-    return ld
+ament_package()

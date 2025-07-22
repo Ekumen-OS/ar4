@@ -28,16 +28,43 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-cmake_minimum_required(VERSION 3.7)
-project(ar4_isaac)
+"""launch file for integrating Isaac with MoveIt for the AR4 robot."""
 
-find_package(ament_cmake REQUIRED)
+from launch import LaunchDescription
+from launch_ros.substitutions import FindPackageShare
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import PathJoinSubstitution
 
-install(
-  DIRECTORY launch
-            scripts
-            urdf
-            usda
-  DESTINATION share/${PROJECT_NAME}/)
 
-ament_package()
+def generate_launch_description():
+    common_stack_include = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution(
+                [
+                    FindPackageShare("ar4_common"),
+                    "launch",
+                    "main.launch.py",
+                ]
+            )
+        )
+    )
+
+    isaac_sim_include = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution(
+                [
+                    FindPackageShare("ar4_isaac_sim"),
+                    "launch",
+                    "main.launch.py",
+                ]
+            )
+        )
+    )
+
+    return LaunchDescription(
+        [
+            common_stack_include,
+            isaac_sim_include,
+        ]
+    )
