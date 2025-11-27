@@ -59,6 +59,12 @@ def generate_launch_description():
         "bridge.yaml",
     )
 
+    world_path = os.path.join(
+        get_package_share_directory("ar4_gazebo_sim"),
+        "worlds",
+        "world.sdf",
+    )
+
     gz_sim_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution(
@@ -70,7 +76,7 @@ def generate_launch_description():
             )
         ),
         launch_arguments={
-            "gz_args": "-r empty.sdf",
+            "gz_args": f"-r {world_path}",
         }.items(),
     )
 

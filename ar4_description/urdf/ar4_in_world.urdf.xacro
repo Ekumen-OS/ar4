@@ -11,4 +11,34 @@
     <origin xyz="0 0 0" rpy="0 0 ${-pi/2}" />
   </joint>
 
+
+  <link name="third_person_camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+               iyy="0.0001" iyz="0.0"
+               izz="0.0001"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_camera" type="fixed">
+    <origin rpy="0.0 0.78 3.14" xyz="0.60 0 0.5"/>
+    <parent link="base_link"/>
+    <child link="third_person_camera_link"/>
+  </joint>
+
 </robot>

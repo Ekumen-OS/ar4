@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <gazebo>
+        <plugin name='gz::sim::systems::Sensors' filename='ignition-gazebo-sensors-system'>
+            <render_engine>ogre2</render_engine>
+        </plugin>
+    </gazebo>
+
+    <gazebo reference="third_person_camera_link">
+        <sensor name="third_person_camera" type="camera">
+            <topic>camera/image_raw</topic>
+            <camera>
+                <horizontal_fov>1.57</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>600</height>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>100</far>
+                </clip>
+            </camera>
+            <always_on>1</always_on>
+            <update_rate>30</update_rate>
+            <visualize>true</visualize>
+        </sensor>
+    </gazebo>
+
+</robot>

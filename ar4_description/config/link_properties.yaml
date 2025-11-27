@@ -246,3 +246,34 @@ link_6:
       dr: 0.0
       dp: 0.0
       dY: 0.0
+
+third_person_camera_link:
+  inertial:
+    size:
+      dx: 0.04
+      dy: 0.02
+      dz: 0.02
+    mass: 0.013863
+    origin:
+      dx: 0.020
+      dy: 0.020
+      dz: 0.020
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.020
+      dy: 0.020
+      dz: 0.020
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.020
+      dy: 0.020
+      dz: 0.020
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0

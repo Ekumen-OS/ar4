@@ -7,6 +7,9 @@
   <!-- gazebo extensions -->
   <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/gazebo.xacro" />
 
+  <!-- sensors -->
+  <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/sensors.urdf.xacro" />
+
   <!-- ros2_control extensions -->
   <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ros2_control.xacro" />
 
