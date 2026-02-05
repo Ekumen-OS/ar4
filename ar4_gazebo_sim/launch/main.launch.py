@@ -121,7 +121,7 @@ def generate_launch_description():
     spawn_joint_trajectory_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_controller"],
+        arguments=["arm_controller", "gripper_controller"],
         output="screen",
     )
 

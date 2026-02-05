@@ -32,9 +32,11 @@ services:
   ar4_hardware:
     extends: ar4_gazebo
     hostname: ar4_hardware
+    network_mode: host
     container_name: ar4_hardware
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
+      - "/dev/ttyUSB0:/dev/ttyUSB0:rwm" # Serial port for the teensy
     group_add:
       - "dialout" # Group required for accesing /dev/ttyACM0
 

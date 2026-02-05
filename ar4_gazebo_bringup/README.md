@@ -15,7 +15,8 @@ ros2 launch ar4_gazebo_bringup main.launch.py
 
 #### Launch file arguments
 
-- 'rsp':
-    - Run [`robot state publisher`](https://github.com/ros/robot_state_publisher) node. (default: 'false')
-- 'rviz':
-    - Start RViz. (default: 'false')
+To see a detailed list of the arguments, run:
+
+```bash
+ros2 launch ar4_gazebo_bringup main.launch.py --show-args
+```

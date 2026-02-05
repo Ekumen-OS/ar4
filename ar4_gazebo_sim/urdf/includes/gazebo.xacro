@@ -22,6 +22,12 @@
     <gazebo reference="link_6">
         <selfCollide>true</selfCollide>
     </gazebo>
+    <gazebo reference="finger_link_1">
+        <selfCollide>true</selfCollide>
+    </gazebo>
+    <gazebo reference="finger_link_2">
+        <selfCollide>true</selfCollide>
+    </gazebo>
 
     <gazebo>
         <plugin filename="libign_ros2_control-system.so"

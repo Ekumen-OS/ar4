@@ -1,6 +1,6 @@
 #include "ar4_hardware_interface/arduino_nano_driver.hpp"
 
-#define FW_VERSION "0.0.1"
+#define FW_VERSION "0.1.0"
 
 namespace ar4_hardware_interface {
 
@@ -49,13 +49,12 @@ std::string ArduinoNanoDriver::sendCommand(std::string outMsg) {
 bool ArduinoNanoDriver::transmit(std::string msg, std::string& err) {
   boost::system::error_code ec;
   const auto sendBuffer = boost::asio::buffer(msg.c_str(), msg.size());
-
   boost::asio::write(serial_port_, sendBuffer, ec);
 
   if (!ec) {
     return true;
   } else {
-    err = "Error in transmit";
+    err = ec.message();
     return false;
   }
 }
@@ -102,10 +101,29 @@ bool ArduinoNanoDriver::writePosition(double position) {
   std::string msg = "SV0P" + std::to_string(static_cast<int>(position)) + "\n";
   std::string reply = sendCommand(msg);
   if (reply != "Done") {
-    RCLCPP_ERROR(logger_, "Failed to write position %f", position);
+    RCLCPP_ERROR(logger_, "Failed to write position %f, got reply: %s", position, reply.c_str());
     return false;
   }
   return true;
+}
+
+// Get the current reading from the Arduino Nano
+// This function assumes the Arduino Nano is set up to read a current sensor
+// and return the value as a string.
+bool ArduinoNanoDriver::getCurrent(double& current) {
+  std::string reply = sendCommand("CR\n");
+  if (reply == "") {
+    RCLCPP_ERROR(logger_, "Failed to get current reading");
+    return false;
+  }
+
+  try {
+    current = std::stod(reply);
+    return true;
+  } catch (const std::exception& e) {
+    RCLCPP_ERROR(logger_, "Failed to convert current reading: %s", e.what());
+    return false;
+  }
 }
 
 }  // namespace ar4_hardware_interface
