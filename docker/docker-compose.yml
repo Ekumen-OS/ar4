@@ -46,6 +46,9 @@ services:
     container_name: ar4_isaac
     hostname: ar4_isaac
     user: ${USERID}:${GROUPID}
+    # /isaac-sim belongs to the isaac-sim group (GID 1234) of the base image
+    group_add:
+      - "1234"
     stdin_open: true
     tty: true
     runtime: nvidia

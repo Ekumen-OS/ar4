@@ -109,10 +109,10 @@ def generate_launch_description():
 
     ld = LaunchDescription(
         [
+            use_sim_time_argument,
             world2robot_tf_node,
             robot_state_publisher_control,
             load_joint_trajectory_controller,
-            use_sim_time_argument,
             ros2_control_node,
         ]
     )

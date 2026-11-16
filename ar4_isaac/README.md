@@ -19,7 +19,7 @@ docker/run.sh -s ar4_isaac
 Build the packages
 
 ```
-source /opt/ros/humble/setup.bash
+source /opt/ros/jazzy/setup.bash
 colcon build --packages-up-to ar4_isaac
 ```
 
