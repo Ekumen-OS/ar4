@@ -72,26 +72,9 @@ RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mix
 COPY --chown=$USER:$GROUP docker/files/colcon_defaults.yaml /home/$USER/.colcon/defaults.yaml
 
 #
-# Install base system external dependencies
-COPY docker/files/dependencies.repos /tmp/dependencies.repos
-RUN cd src/ \
- && mkdir -p external \
- && cd external \
- && vcs import < /tmp/dependencies.repos
-
-#
-# Install MuJoCo, no packages available
-ENV MUJOCO_VERSION "3.2.7"
-RUN sudo wget https://github.com/google-deepmind/mujoco/releases/download/${MUJOCO_VERSION}/mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz \
- && sudo tar -C /opt -xzf mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz \
- && sudo rm mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz \
- && sudo apt update \
- && sudo apt install -y libglfw3-dev \
- && sudo rm -rf /var/lib/apt/lists/ \
- && pip install --break-system-packages mujoco urdf2mjcf
-ENV MUJOCO_DIR /opt/mujoco-${MUJOCO_VERSION}
-ENV LD_LIBRARY_PATH $MUJOCO_DIR/bin:${LD_LIBRARY_PATH}
-ENV PATH $MUJOCO_DIR/bin:${PATH}
+# MuJoCo itself comes with mujoco_ros2_control (installed by rosdep below); the Python
+# bindings are for working with the MJCF models.
+RUN pip install --break-system-packages mujoco urdf2mjcf
 
 #
 # Install ROS project dependencies by copying the package.xml files (but not the source code,

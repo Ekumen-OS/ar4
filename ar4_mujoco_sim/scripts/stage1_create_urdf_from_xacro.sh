@@ -15,7 +15,7 @@ pushd /home/developer/ws
 
 # Build the repository from scratch
 # rm -rf build/* install/*
-source /opt/ros/humble/setup.bash
+source /opt/ros/jazzy/setup.bash
 colcon build --symlink-install
 source install/setup.bash
 
