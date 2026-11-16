@@ -1,8 +1,8 @@
 # AR4 Teensy 4.1 arm firmware
 
 Firmware for the Teensy 4.1 that drives the AR4 (MK3) steppers, reads the joint encoders and limit switches, and talks
-to `ar4_hardware_interface` over USB serial. It is based on the
-[ar4_ros_driver](https://github.com/ycheng517/ar4_ros_driver) firmware (protocol version `0.0.1`).
+to `ar4_hardware_interface` over USB serial (protocol version `0.0.1`). It is derived from the `baseline_dev` sketch of
+[ar3_core](https://github.com/ongdexter/ar3_core) by Dexter Ong, MIT licensed like the rest of this package.
 
 ## Flashing
 
