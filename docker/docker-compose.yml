@@ -58,6 +58,10 @@ services:
       - FASTDDS_BUILTIN_TRANSPORTS=SHM
       - NVIDIA_DRIVER_CAPABILITIES=all
       - OMNI_KIT_ACCEPT_EULA=Y
+      # Render OpenGL apps (RViz) on the NVIDIA GPU; on hybrid-GPU hosts they would otherwise
+      # try the integrated GPU's Mesa driver, which this container cannot access
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      - __NV_PRIME_RENDER_OFFLOAD=1
       - PRIVACY_CONSENT=Y
       - QT_X11_NO_MITSHM=1
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
