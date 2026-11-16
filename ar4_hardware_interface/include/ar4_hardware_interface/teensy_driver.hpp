@@ -25,7 +25,7 @@ class TeensyDriver {
  private:
   bool initialised_;
   std::string version_;
-  boost::asio::io_service io_service_;
+  boost::asio::io_context io_context_;
   boost::asio::serial_port serial_port_;
   int num_joints_;
   std::vector<double> joint_positions_deg_;

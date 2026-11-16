@@ -22,7 +22,7 @@ class ArduinoNanoDriver {
 
  private:
   std::string version_;
-  boost::asio::io_service io_service_;
+  boost::asio::io_context io_context_;
   boost::asio::serial_port serial_port_;
   rclcpp::Logger logger_ = rclcpp::get_logger("arduino_nano_driver");
 

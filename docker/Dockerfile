@@ -1,4 +1,4 @@
-FROM osrf/ros:humble-desktop-full AS cacher
+FROM osrf/ros:jazzy-desktop-full AS cacher
 
 WORKDIR /ws/src
 
@@ -9,7 +9,7 @@ RUN mkdir -p /tmp/ws/src \
  && find ./ -name "COLCON_IGNORE" | xargs cp --parents -t /tmp/ws/src \
  || true
 
-FROM osrf/ros:humble-desktop-full
+FROM osrf/ros:jazzy-desktop-full
 
 # Install base system dependencies and development dependencies
 RUN apt update \
@@ -44,7 +44,10 @@ ARG GROUPID=1000
 ENV USER $USER
 ENV GROUP $GROUP
 
-RUN addgroup --gid $GROUPID $GROUP \
+# The Ubuntu 24.04 base image ships an 'ubuntu' user with UID/GID 1000; remove it so the
+# developer user can take those IDs.
+RUN (userdel -r ubuntu || true) \
+ && addgroup --gid $GROUPID $GROUP \
  && adduser --uid $USERID --ingroup $GROUP --home /home/$USER --shell /bin/sh --disabled-password --gecos "" $USER \
  && adduser $USER sudo \
  && echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers.d/$USER
@@ -85,8 +88,7 @@ RUN sudo wget https://github.com/google-deepmind/mujoco/releases/download/${MUJO
  && sudo apt update \
  && sudo apt install -y libglfw3-dev \
  && sudo rm -rf /var/lib/apt/lists/ \
- && pip install mujoco \
- && pip install urdf2mjcf
+ && pip install --break-system-packages mujoco urdf2mjcf
 ENV MUJOCO_DIR /opt/mujoco-${MUJOCO_VERSION}
 ENV LD_LIBRARY_PATH $MUJOCO_DIR/bin:${LD_LIBRARY_PATH}
 ENV PATH $MUJOCO_DIR/bin:${PATH}
@@ -96,9 +98,9 @@ ENV PATH $MUJOCO_DIR/bin:${PATH}
 # to avoid rebuilding the workspace every time the source code changes) and running rosdep install
 COPY --from=cacher --chown=$USER:$GROUP /tmp/ws/ $USER_WS/
 RUN sudo apt update \
- && . /opt/ros/humble/setup.sh \
+ && . /opt/ros/jazzy/setup.sh \
  && rosdep update \
- && rosdep install -i -y --from-path src \
+ && rosdep install -i -y --from-path src --skip-keys "ign_ros2_control topic_based_ros2_control" \
  && sudo rm -rf /var/lib/apt/lists/*
 
 #
