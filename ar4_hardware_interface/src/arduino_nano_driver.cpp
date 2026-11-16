@@ -32,7 +32,7 @@ bool ArduinoNanoDriver::init(std::string port, int baudrate) {
   return true;
 }
 
-ArduinoNanoDriver::ArduinoNanoDriver() : serial_port_(io_service_) {}
+ArduinoNanoDriver::ArduinoNanoDriver() : serial_port_(io_context_) {}
 
 std::string ArduinoNanoDriver::sendCommand(std::string outMsg) {
   std::string errTransmit = "";

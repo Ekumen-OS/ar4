@@ -1,77 +1,33 @@
 <?xml version="1.0"?>
 <robot name="ar4" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <xacro:arg name="headless" default="false" />
+
+  <!-- The MJCF model drives the joints with torque motors; mujoco_ros2_control closes the
+       position loop with the PID gains in config/mujoco_pid.yaml. -->
   <ros2_control name="MujocoSystem" type="system">
     <hardware>
-      <plugin>mujoco_ros2_control/MujocoSystem</plugin>
+      <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+      <param name="mujoco_model">$(find ar4_mujoco_sim)/mjcf/scene.xml</param>
+      <param name="pids_config_file">$(find ar4_mujoco_sim)/config/mujoco_pid.yaml</param>
+      <param name="headless">$(arg headless)</param>
+      <param name="auto_register_cameras">false</param>
     </hardware>
 
-    <joint name="joint_1">
-      <param name="position_kp">100</param>
-      <param name="position_ki">1</param>
-      <param name="position_kd">10</param>
-      <param name="position_i_max">10000</param>
-      <command_interface name="position_pid" />
+    <xacro:macro name="mujoco_joint" params="name">
+      <joint name="${name}">
+        <command_interface name="position" />
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+    </xacro:macro>
 
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint_2">
-      <param name="position_kp">100</param>
-      <param name="position_ki">1</param>
-      <param name="position_kd">10</param>
-      <param name="position_i_max">10000</param>
-      <command_interface name="position_pid" />
-
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint_3">
-      <param name="position_kp">100</param>
-      <param name="position_ki">1</param>
-      <param name="position_kd">10</param>
-      <param name="position_i_max">10000</param>
-      <command_interface name="position_pid" />
-
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint_4">
-      <param name="position_kp">100</param>
-      <param name="position_ki">1</param>
-      <param name="position_kd">10</param>
-      <param name="position_i_max">10000</param>
-      <command_interface name="position_pid" />
-
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint_5">
-      <param name="position_kp">100</param>
-      <param name="position_ki">1</param>
-      <param name="position_kd">10</param>
-      <param name="position_i_max">10000</param>
-      <command_interface name="position_pid" />
-
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint_6">
-      <param name="position_kp">100</param>
-      <param name="position_ki">1</param>
-      <param name="position_kd">10</param>
-      <param name="position_i_max">10000</param>
-      <command_interface name="position_pid" />
-
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
+    <xacro:mujoco_joint name="joint_1" />
+    <xacro:mujoco_joint name="joint_2" />
+    <xacro:mujoco_joint name="joint_3" />
+    <xacro:mujoco_joint name="joint_4" />
+    <xacro:mujoco_joint name="joint_5" />
+    <xacro:mujoco_joint name="joint_6" />
   </ros2_control>
 
 </robot>

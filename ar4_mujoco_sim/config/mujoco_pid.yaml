@@ -1,0 +1,60 @@
+# Position PID gains for the MJCF torque motors (ctrlrange +-25 Nm), used by
+# mujoco_ros2_control through the pids_config_file hardware parameter.
+/**:
+  ros__parameters:
+    pid_gains:
+      position:
+        joint_1:
+          p: 100.0
+          i: 1.0
+          d: 10.0
+          u_clamp_max: 25.0
+          u_clamp_min: -25.0
+          i_clamp_max: 25.0
+          i_clamp_min: -25.0
+          antiwindup_strategy: conditional_integration
+        joint_2:
+          p: 100.0
+          i: 1.0
+          d: 10.0
+          u_clamp_max: 25.0
+          u_clamp_min: -25.0
+          i_clamp_max: 25.0
+          i_clamp_min: -25.0
+          antiwindup_strategy: conditional_integration
+        joint_3:
+          p: 100.0
+          i: 1.0
+          d: 10.0
+          u_clamp_max: 25.0
+          u_clamp_min: -25.0
+          i_clamp_max: 25.0
+          i_clamp_min: -25.0
+          antiwindup_strategy: conditional_integration
+        joint_4:
+          p: 100.0
+          i: 1.0
+          d: 10.0
+          u_clamp_max: 25.0
+          u_clamp_min: -25.0
+          i_clamp_max: 25.0
+          i_clamp_min: -25.0
+          antiwindup_strategy: conditional_integration
+        joint_5:
+          p: 100.0
+          i: 1.0
+          d: 10.0
+          u_clamp_max: 25.0
+          u_clamp_min: -25.0
+          i_clamp_max: 25.0
+          i_clamp_min: -25.0
+          antiwindup_strategy: conditional_integration
+        joint_6:
+          p: 100.0
+          i: 1.0
+          d: 10.0
+          u_clamp_max: 25.0
+          u_clamp_min: -25.0
+          i_clamp_max: 25.0
+          i_clamp_min: -25.0
+          antiwindup_strategy: conditional_integration

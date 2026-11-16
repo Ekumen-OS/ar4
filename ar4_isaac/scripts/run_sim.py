@@ -37,6 +37,7 @@ It spawns an AR4 robot in the simulation.
 """
 
 import argparse
+import time
 from pathlib import Path
 
 from isaacsim import SimulationApp
@@ -52,8 +53,8 @@ def create_world(
     stage_units_per_meter: float,
 ):
     """Create a world with a ground plane and a dome light."""
-    from omni.isaac.core import World
-    import omni.isaac.core.utils.prims as prims_utils
+    from isaacsim.core.api import World
+    import isaacsim.core.utils.prims as prims_utils
 
     world = World(
         physics_dt=physics_dt,
@@ -65,22 +66,37 @@ def create_world(
     return world
 
 
-def set_rate(_: SimulationApp, sim_dt: float):
-    from omni.isaac.cortex.tools import SteadyRate
+class SteadyRate:
+    """Sleep so that consecutive calls to sleep() are dt seconds apart."""
 
-    rate_hz = 1.0 / sim_dt
-    rate = SteadyRate(rate_hz)
-    return rate
+    def __init__(self, dt: float):
+        """Create a rate of dt seconds."""
+        self._dt = dt
+        self._next = time.monotonic() + dt
+
+    def sleep(self):
+        """Sleep until dt seconds after the previous call."""
+        remaining = self._next - time.monotonic()
+        if remaining > 0.0:
+            time.sleep(remaining)
+            self._next += self._dt
+        else:
+            # Running behind, do not try to catch up
+            self._next = time.monotonic() + self._dt
+
+
+def set_rate(_: SimulationApp, sim_dt: float):
+    return SteadyRate(sim_dt)
 
 
 def enable_ros2_ext(_: SimulationApp):
-    from omni.isaac.core.utils.extensions import enable_extension
+    from isaacsim.core.utils.extensions import enable_extension
 
-    enable_extension("omni.isaac.ros2_bridge")
+    enable_extension("isaacsim.ros2.bridge")
 
 
 def spawn_ar4(_: SimulationApp, robot_model_path: Path):
-    import omni.isaac.core.utils.prims as prims_utils
+    import isaacsim.core.utils.prims as prims_utils
 
     prims_utils.create_prim(
         prim_path="/World/ar4",

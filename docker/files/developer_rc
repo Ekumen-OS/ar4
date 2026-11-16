@@ -8,7 +8,7 @@ if [ ! -d "$HOME/.ccache" ]; then
     ln -s $USER_WS/persistence/$(id -u)/build $USER_WS/build
 fi
 
-. /opt/ros/humble/setup.bash
+. /opt/ros/jazzy/setup.bash
 
 ros2 daemon start
 

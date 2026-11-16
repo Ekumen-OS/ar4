@@ -47,13 +47,15 @@ def generate_launch_description():
         [FindPackageShare("ar4_moveit_config"), "config", "ros2_controllers.yaml"]
     )
 
+    # Since Jazzy the controller manager reads the robot description from the topic published by
+    # robot_state_publisher instead of a parameter.
     controller_manager_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[
-            robot_description,
             ParameterFile(joint_controllers_cfg, allow_substs=True),
         ],
+        remappings=[("~/robot_description", "/robot_description")],
         output="screen",
     )
 
@@ -62,6 +64,21 @@ def generate_launch_description():
         executable="spawner",
         arguments=[
             "arm_controller",
+            "-c",
+            "/controller_manager",
+            "--controller-manager-timeout",
+            "60",
+        ],
+    )
+
+    # Loaded inactive: it claims the same joints as arm_controller. Switch to it to stream joint
+    # positions (teleoperation, learned policies) on /forward_position_controller/commands.
+    spawn_forward_position_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "forward_position_controller",
+            "--inactive",
             "-c",
             "/controller_manager",
             "--controller-manager-timeout",
@@ -139,6 +156,7 @@ def generate_launch_description():
     )
     ld.add_action(controller_manager_node)
     ld.add_action(spawn_joint_controller)
+    ld.add_action(spawn_forward_position_controller)
     # ld.add_action(gripper_controller_spawner)
     ld.add_action(robot_state_publisher_node)
     ld.add_action(joint_state_broadcaster)

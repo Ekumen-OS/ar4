@@ -14,8 +14,12 @@ This module contains the hardware interface for the AR4 robot.
 ## Run the hardware interface
 
 ```
-ros2 launch ar4_hardware_interface ar4_hardware.launch.py calibrate:=True
+ros2 launch ar4_hardware_interface main.launch.py calibrate:=True
 ```
+
+The Teensy must run the [`teensy_arm`](ar4_firmware/teensy_arm/README.md) firmware. To bring up the
+whole real-robot stack (hardware interface, MoveIt and RViz), use
+[`ar4_realbot_bringup`](../ar4_realbot_bringup/README.md) instead.
 
 ## Launch moveit
 ```
@@ -26,12 +30,27 @@ ros2 launch ar4_moveit_config demo.launch.py
 
 **Important Note:** The gripper is still WIP and might not work
 
-## Position Controller
+## Controllers
 
-The hardware_interface implements a Position Joint Trajectory Controller from
-the [ros_control](http://wiki.ros.org/ros_control) framework. It serves as an
-interface between the higher level planning (MoveIt) and the actuator driver
-(Teensy driver).
+The hardware interface exposes position command interfaces for `joint_1` to `joint_6`. The launch
+file loads two controllers on them (configured in `ar4_moveit_config/config/ros2_controllers.yaml`):
+
+- `arm_controller` (`joint_trajectory_controller/JointTrajectoryController`), **active** by
+  default. MoveIt executes its plans through it.
+- `forward_position_controller` (`forward_command_controller/ForwardCommandController`), loaded
+  **inactive** because it claims the same joints. It takes one target per message on
+  `/forward_position_controller/commands` (`std_msgs/Float64MultiArray`, radians, joints 1 to 6),
+  for streaming positions from teleoperation or a learned policy.
+
+Switch between them with:
+
+```
+ros2 control switch_controllers --deactivate arm_controller --activate forward_position_controller
+ros2 control switch_controllers --deactivate forward_position_controller --activate arm_controller
+```
+
+The firmware limits the joint speed and acceleration, so streamed targets are followed smoothly
+but with some lag.
 
 ## Joint Encoder Calibration
 

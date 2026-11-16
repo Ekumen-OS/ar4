@@ -110,7 +110,7 @@ over "ar4"
         {
             custom bool inputs:resetOnStop
             custom int64 inputs:swhFrameNumber
-            token node:type = "omni.isaac.core_nodes.IsaacReadSimulationTime"
+            token node:type = "isaacsim.core.nodes.IsaacReadSimulationTime"
             int node:typeVersion = 1
             custom double outputs:simulationTime
             uniform token ui:nodegraph:node:expansionState = "open"
@@ -134,7 +134,7 @@ over "ar4"
             custom double inputs:timeStamp
             prepend double inputs:timeStamp.connect = </ar4/controller/isaac_read_simulation_time.outputs:simulationTime>
             custom string inputs:topicName
-            token node:type = "omni.isaac.ros2_bridge.ROS2PublishClock"
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishClock"
             int node:typeVersion = 1
             uniform token ui:nodegraph:node:expansionState = "open"
             uniform float2 ui:nodegraph:node:pos = (545.7171, -115.455795)
@@ -166,7 +166,7 @@ over "ar4"
             custom double inputs:timeStamp
             prepend double inputs:timeStamp.connect = </ar4/controller/isaac_read_simulation_time.outputs:simulationTime>
             custom string inputs:topicName
-            token node:type = "omni.isaac.ros2_bridge.ROS2PublishJointState"
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishJointState"
             int node:typeVersion = 1
             uniform token ui:nodegraph:node:expansionState = "open"
             uniform float2 ui:nodegraph:node:pos = (628.20197, 148.5262)
@@ -187,7 +187,7 @@ over "ar4"
             custom string inputs:qosProfile
             custom uint64 inputs:queueSize
             custom string inputs:topicName
-            token node:type = "omni.isaac.ros2_bridge.ROS2SubscribeJointState"
+            token node:type = "isaacsim.ros2.bridge.ROS2SubscribeJointState"
             int node:typeVersion = 2
             custom double[] outputs:effortCommand
             custom uint outputs:execOut (
@@ -232,7 +232,7 @@ over "ar4"
             )
             custom double[] inputs:velocityCommand
             prepend double[] inputs:velocityCommand.connect = </ar4/controller/ros2_subscribe_joint_state.outputs:velocityCommand>
-            token node:type = "omni.isaac.core_nodes.IsaacArticulationController"
+            token node:type = "isaacsim.core.nodes.IsaacArticulationController"
             int node:typeVersion = 1
             uniform token ui:nodegraph:node:expansionState = "open"
             uniform float2 ui:nodegraph:node:pos = (792.1969, 525.1658)
@@ -327,7 +327,7 @@ over "ar4"
             prepend apiSchemas = ["NodeGraphNodeAPI"]
         )
         {
-            token node:type = "omni.isaac.core_nodes.IsaacRealTimeFactor"
+            token node:type = "isaacsim.core.nodes.IsaacRealTimeFactor"
             int node:typeVersion = 1
             custom float outputs:rtf
             uniform token ui:nodegraph:node:expansionState = "open"
@@ -354,7 +354,7 @@ over "ar4"
             custom string inputs:qosProfile
             custom uint64 inputs:queueSize
             custom string inputs:topicName = "real_time_factor"
-            token node:type = "omni.isaac.ros2_bridge.ROS2Publisher"
+            token node:type = "isaacsim.ros2.bridge.ROS2Publisher"
             int node:typeVersion = 1
             custom uint outputs:execOut (
                 customData = {

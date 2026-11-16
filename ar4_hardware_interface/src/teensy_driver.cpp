@@ -40,7 +40,7 @@ void TeensyDriver::init(std::string port, int baudrate, int num_joints) {
   enc_calibrations_.resize(num_joints_);
 }
 
-TeensyDriver::TeensyDriver() : serial_port_(io_service_) {}
+TeensyDriver::TeensyDriver() : serial_port_(io_context_) {}
 
 void TeensyDriver::setStepperSpeed(std::vector<double>& max_speed, std::vector<double>& max_accel) {
   std::string outMsg = "SS";

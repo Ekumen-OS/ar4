@@ -34,7 +34,8 @@ project(ar4_mujoco_sim)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY launch
+  DIRECTORY config
+            launch
             meta
             mjcf
             urdf

@@ -1,0 +1,5 @@
+repositories:
+  topic_based_ros2_control:
+    type: git
+    url: https://github.com/PickNikRobotics/topic_based_ros2_control.git
+    version: 6bd8d55e1c4ad3188770fe5c8b93b942bcede4a2

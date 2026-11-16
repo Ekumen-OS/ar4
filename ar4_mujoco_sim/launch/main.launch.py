@@ -39,37 +39,17 @@ import xacro
 import os
 
 
-def get_robot_description():
-    return
-
-
 def generate_launch_description():
-    this_pkg_share = get_package_share_directory("ar4_mujoco_sim")
-
-    mjcf_equiv_robot_description_file = os.path.join(
-        this_pkg_share,
+    # The AR4 description plus the ros2_control tag that points mujoco_ros2_control at the
+    # MJCF scene.
+    robot_description_file = os.path.join(
+        get_package_share_directory("ar4_mujoco_sim"),
         "xacro",
         "mj_ar4.urdf.xacro",
     )
 
-    robot_description_urdf = xacro.process_file(
-        mjcf_equiv_robot_description_file
-    ).toprettyxml(indent="  ")
-
-    rsp_robot_description_file = os.path.join(
-        get_package_share_directory("ar4_description"),
-        "urdf",
-        "ar4.urdf.xacro",
-    )
-
-    rsp_robot_description_urdf = xacro.process_file(
-        rsp_robot_description_file
-    ).toprettyxml(indent="  ")
-
-    mujoco_model = os.path.join(
-        this_pkg_share,
-        "mjcf",
-        "scene.xml",
+    robot_description_urdf = xacro.process_file(robot_description_file).toprettyxml(
+        indent="  "
     )
 
     controller_config_file = os.path.join(
@@ -78,19 +58,14 @@ def generate_launch_description():
         "ros2_controllers.yaml",
     )
 
-    mujoco_ros2_control_params = {
-        "robot_description": robot_description_urdf,
-        "mujoco_model_path": mujoco_model,
-    }
-
+    # Runs the simulation and the controller manager. It reads the robot description from
+    # the /robot_description topic published by robot_state_publisher.
     mujoco_sim_node = Node(
         package="mujoco_ros2_control",
-        executable="mujoco_ros2_control",
+        executable="ros2_control_node",
         output="screen",
-        parameters=[
-            mujoco_ros2_control_params,
-            controller_config_file,
-        ],
+        parameters=[controller_config_file],
+        remappings=[("~/robot_description", "/robot_description")],
     )
 
     # this node is launched with the HAL-specific nodes because we need to load
@@ -102,7 +77,7 @@ def generate_launch_description():
         output="screen",
         parameters=[
             {
-                "robot_description": rsp_robot_description_urdf,
+                "robot_description": robot_description_urdf,
             }
         ],
     )
