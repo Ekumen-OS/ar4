@@ -12,11 +12,10 @@ https://github.com/user-attachments/assets/0edf4c30-70d1-4992-a5ee-e3e813877bb5
 The following packages provide launch files for various deployment scenarios:
 
 - [`ar4_description`](./ar4_description): Platform-agnostic URDF robot description.
-- [`ar4_gazebo_bringup`](./ar4_gazebo): Gazebo simulation environment for the AR4.
-- [`ar4_isaac_bringup`](./ar4_gazebo): **Not yet available.** Isaac Sim simulation environment for the AR4.
-- [`ar4_mujoco_bringup`](./ar4_gazebo): **Not yet available.** MuJoCo-based simulation environment for the AR4.
-- [`ar4_realbot_bringup`](./ar4_gazebo): Hardware drivers and control software for the physical AR4 robot.
-- [`ar4_isaac`](./ar4_isaac): Isaac Sim integration for the AR4 manipulator.
+- [`ar4_gazebo_bringup`](./ar4_gazebo_bringup): Gazebo simulation environment for the AR4.
+- [`ar4_mujoco_bringup`](./ar4_mujoco_bringup): MuJoCo simulation environment for the AR4.
+- [`ar4_isaac`](./ar4_isaac): Isaac Sim simulation environment for the AR4.
+- [`ar4_realbot_bringup`](./ar4_realbot_bringup): Hardware drivers and control software for the physical AR4 robot.
 
 
 ```mermaid
@@ -32,11 +31,9 @@ graph TD
       A --> F
       C --> F
 
-      H[**ar4_isaac_bringup** <br> main.launch.py]
-      I[**ar4_isaac_sim** <br> main.launch.py]
+      H[**ar4_isaac** <br> moveit.launch.py]
 
-      B --> H
-      I --> H
+      A --> H
 
       J[**ar4_mujoco_bringup** <br> main.launch.py]
       K[**ar4_mujoco_sim** <br> main.launch.py]
@@ -59,7 +56,14 @@ graph TD
 
 ## Prerequisites
 
-A functional ROS 2 environment is required to build and execute the packages in this repository. Environment specifications vary depending on the target deployment (real hardware, Gazebo, Isaac Sim, or MuJoCo).
+The packages target **ROS 2 Jazzy** on **Ubuntu 24.04**. Environment specifications vary depending on the target deployment:
+
+| Deployment | Simulator / driver |
+| --- | --- |
+| Real hardware | `ar4_hardware_interface` (Teensy 4.1 running the [`teensy_arm`](ar4_hardware_interface/ar4_firmware/teensy_arm/README.md) firmware) |
+| Gazebo | Gazebo Harmonic with `gz_ros2_control` |
+| MuJoCo | [`mujoco_ros2_control`](https://github.com/ros-controls/mujoco_ros2_control) |
+| Isaac Sim | Isaac Sim 6.1 (requires an NVIDIA GPU) |
 
 Development Docker images are provided to facilitate initial setup and serve as reference environments. These images include all necessary dependencies for the repository contents.
 

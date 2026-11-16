@@ -2,6 +2,8 @@
 
 For changes made to the robot's urdf or meshes to impact the Isaac Sim model it's required to update the USD description.
 
+> **Note:** the UI steps and screenshots below were written for Isaac Sim 4.2. The repository now uses Isaac Sim 6.1, where some menus and dialogs have moved; adapt the steps accordingly.
+
 1. Open the docker container
 
     ```bash
@@ -28,7 +30,7 @@ For changes made to the robot's urdf or meshes to impact the Isaac Sim model it'
     ```
 
     ```bash
-    /isaac_sim/runapp.sh
+    /isaac-sim/isaac-sim.sh
     ```
 
 5. Open the URDF importer
