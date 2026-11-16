@@ -3,7 +3,7 @@
 
   <ros2_control name="GazeboSystem" type="system">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="joint_1">
       <command_interface name="position" />

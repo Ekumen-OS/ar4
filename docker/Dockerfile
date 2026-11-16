@@ -100,7 +100,7 @@ COPY --from=cacher --chown=$USER:$GROUP /tmp/ws/ $USER_WS/
 RUN sudo apt update \
  && . /opt/ros/jazzy/setup.sh \
  && rosdep update \
- && rosdep install -i -y --from-path src --skip-keys "ign_ros2_control topic_based_ros2_control" \
+ && rosdep install -i -y --from-path src --skip-keys "topic_based_ros2_control" \
  && sudo rm -rf /var/lib/apt/lists/*
 
 #

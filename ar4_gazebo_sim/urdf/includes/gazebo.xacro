@@ -24,8 +24,8 @@
     </gazebo>
 
     <gazebo>
-        <plugin filename="libign_ros2_control-system.so"
-            name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <plugin filename="gz_ros2_control-system"
+            name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find ar4_moveit_config)/config/ros2_controllers.yaml</parameters>
         </plugin>
     </gazebo>
