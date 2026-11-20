@@ -246,3 +246,65 @@ link_6:
       dr: 0.0
       dp: 0.0
       dY: 0.0
+
+gripper_base:
+  inertial:
+    size:
+      dx: 0.035
+      dy: 0.02
+      dz: 0.02
+    mass: 0.08
+    origin:
+      dx: 0.0
+      dy: -0.025
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+
+finger:
+  inertial:
+    size:
+      dx: 0.007
+      dy: 0.015
+      dz: 0.02
+    mass: 0.01
+    origin:
+      dx: -0.005
+      dy: -0.015
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  visual:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0
+  collision:
+    origin:
+      dx: 0.0
+      dy: 0.0
+      dz: 0.0
+      dr: 0.0
+      dp: 0.0
+      dY: 0.0

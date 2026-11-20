@@ -5,7 +5,7 @@
 
 int main() {
   ar4_hardware_interface::ArduinoNanoDriver driver;
-  bool success = driver.init("/dev/ttyUSB0", 9600);
+  bool success = driver.init("/dev/ttyUSB0", 115200);
   if (!success) {
     return -1;
   }
