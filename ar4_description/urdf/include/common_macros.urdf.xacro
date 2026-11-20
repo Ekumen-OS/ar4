@@ -3,7 +3,7 @@
 <!-- ===================== Arm link xacro ================================== -->
 
 <xacro:include filename="$(find ${package_name})/urdf/include/materials.xacro" />
-<xacro:macro name="link" params="link_name *origin inertial visual collision meshes:=^ materials:=^">
+<xacro:macro name="link" params="link_name *origin inertial visual collision visual_meshes:=^ materials:=^ collision_meshes:=^">
   <link name="${link_name}">
     <xacro:insert_block name="origin"/>
 
@@ -15,12 +15,13 @@
                        o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
     </xacro:box_inertia>
 
-    <xacro:mesh_loop meshes="${meshes}" materials="${materials}" visual="${visual}" collision="${collision}" />
+    <xacro:mesh_loop_visuals meshes="${visual_meshes}" materials="${materials}" visual="${visual}" />
+    <xacro:mesh_loop_collisions meshes="${collision_meshes}" collision="${collision}" />
   </link>
 </xacro:macro>
 
-<!-- Recursive macro to iterate over meshes -->
-<xacro:macro name="mesh_loop" params="meshes:=^ materials:=^ visual collision">
+<!-- Recursive macro to iterate over visual meshes -->
+<xacro:macro name="mesh_loop_visuals" params="meshes:=^ materials:=^ visual">
   <xacro:if value="${meshes}">
     <xacro:property name="mesh" value="${meshes.pop(0)}"/>
     <xacro:property name="material" value="${materials.pop(0)}"/>
@@ -34,6 +35,16 @@
       <material name="${material}"/>
     </visual>
 
+    <!-- Recursive call to process the remaining list -->
+    <xacro:mesh_loop_visuals meshes="${meshes}" materials="${materials}" visual="${visual}" />
+  </xacro:if>
+</xacro:macro>
+
+<!-- Recursive macro to iterate over collision meshes -->
+<xacro:macro name="mesh_loop_collisions" params="meshes:=^ collision">
+  <xacro:if value="${meshes}">
+    <xacro:property name="mesh" value="${meshes.pop(0)}"/>
+
     <collision>
       <origin rpy="${collision['origin']['dr']} ${collision['origin']['dp']} ${collision['origin']['dY']}"
               xyz="${collision['origin']['dx']} ${collision['origin']['dy']} ${collision['origin']['dz']}"/>
@@ -43,10 +54,67 @@
     </collision>
 
     <!-- Recursive call to process the remaining list -->
-    <xacro:mesh_loop meshes="${meshes}" materials="${materials}" visual="${visual}" collision="${collision}" />
+    <xacro:mesh_loop_collisions meshes="${meshes}" collision="${collision}" />
   </xacro:if>
 </xacro:macro>
 
+<!-- ===================== Gripper base xacro ================================== -->
+  <xacro:macro name="gripper_base" params="parent *origin inertial visual collision">
+
+    <joint name="gripper_base_joint" type="fixed">
+      <origin xyz="0.0 0.0 0.0" rpy="${-pi/2} 0.0 0"/>
+      <parent link="${parent}"/>
+      <child link="gripper_base_link"/>
+    </joint>
+
+    <link name="gripper_base_link">
+      <xacro:insert_block name="origin"/>
+
+      <xacro:box_inertia m="${inertial['mass']}"
+                         x="${inertial['size']['dx']}"
+                         y="${inertial['size']['dy']}"
+                         z="${inertial['size']['dz']}"
+                         o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
+                         o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
+      </xacro:box_inertia>
+
+      <xacro:mesh_loop_visuals meshes="${['gripper_base']}" materials="${['grey']}" visual="${visual}" />
+      <xacro:mesh_loop_collisions meshes="${['gripper_base_collision']}" collision="${collision}" />
+
+    </link>
+
+  </xacro:macro>
+
+<!-- ===================== Gripper finger ================================== -->
+  <xacro:macro name="finger" params="number pitch_rotation mimic *origin inertial visual collision">
+
+    <joint name="finger_joint_${number}" type="prismatic">
+      <origin xyz="0.0 -0.036 0" rpy="0.0 ${pitch_rotation} 0.0"/>
+      <parent link="gripper_base_link"/>
+      <child link="finger_link_${number}"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="-0.014" upper="0" effort="100" velocity="1.0"/>
+      <xacro:if value="${mimic}">
+        <mimic joint="finger_joint_1" multiplier="1" offset="0"/>
+      </xacro:if>
+    </joint>
+
+    <link name="finger_link_${number}">
+      <xacro:insert_block name="origin"/>
+
+      <xacro:box_inertia m="${inertial['mass']}"
+                         x="${inertial['size']['dx']}"
+                         y="${inertial['size']['dy']}"
+                         z="${inertial['size']['dz']}"
+                         o_xyz="${inertial['origin']['dx']} ${inertial['origin']['dy']} ${inertial['origin']['dz']}"
+                         o_rpy="${inertial['origin']['dr']} ${inertial['origin']['dp']} ${inertial['origin']['dY']}">
+      </xacro:box_inertia>
+
+      <xacro:mesh_loop_visuals meshes="${['gripper_finger']}" materials="${['black']}" visual="${visual}" />
+      <xacro:mesh_loop_collisions meshes="${['gripper_finger_collision']}" collision="${collision}" />
+    </link>
+
+  </xacro:macro>
 
 
 <!-- ===================== Box inertia xacro ================================== -->
