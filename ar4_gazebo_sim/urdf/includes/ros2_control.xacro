@@ -35,6 +35,16 @@
       <state_interface name="position" />
       <state_interface name="velocity" />
     </joint>
+    <joint name="finger_joint_1">
+      <command_interface name="position" />
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+    <!-- Mimics finger_joint_1 (the URDF mimic tag): state only. -->
+    <joint name="finger_joint_2">
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
   </ros2_control>
 
 </robot>

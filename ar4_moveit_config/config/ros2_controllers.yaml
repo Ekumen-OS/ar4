@@ -52,6 +52,7 @@ forward_position_controller:
 gripper_controller:
   ros__parameters:
     joint: finger_joint_1
+    goal_tolerance: 0.001 # m; the default (0.01) is most of the 14 mm stroke
     command_interfaces:
       - position
     state_interfaces:

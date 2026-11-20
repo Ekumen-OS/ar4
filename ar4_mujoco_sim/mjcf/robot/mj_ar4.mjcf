@@ -5,6 +5,11 @@
         <joint armature="0.1" frictionloss="0.1" actuatorfrcrange="-25.0 25.0" />
         <motor ctrlrange="-25.0 25.0" />
       </default>
+      <!-- Gripper fingers: the armature slows the light slides enough for the 100 Hz position PID. -->
+      <default class="finger">
+        <joint armature="0.05" frictionloss="0.01" actuatorfrcrange="-5.0 5.0" />
+        <motor ctrlrange="-5.0 5.0" />
+      </default>
       <default class="visual">
         <geom material="visualgeom" contype="0" conaffinity="0" group="2" />
       </default>
@@ -102,13 +107,13 @@
                     <geom name="gripper_base_link_collision" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="gripper_base_collision.stl" class="collision" />
                     <geom name="gripper_base_link_visual" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="grey" type="mesh" mesh="gripper_base.stl" class="visual" />
                     <body name="finger_link_1" pos="0.0 -0.036 0" quat="1.0 0.0 0.0 0.0">
-                      <joint name="finger_joint_1" type="slide" class="motor" range="-0.014 0" axis="1 0 0" />
+                      <joint name="finger_joint_1" type="slide" class="finger" range="-0.014 0" axis="1 0 0" />
                       <inertial pos="-0.005 -0.015 0.0" quat="1.0 0.0 0.0 0.0" mass="0.01" diaginertia="5.208333333333334e-07 3.741666666666667e-07 2.2833333333333335e-07" />
                       <geom name="finger_link_1_collision" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="gripper_finger_collision.stl" class="collision" />
                       <geom name="finger_link_1_visual" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="black" type="mesh" mesh="gripper_finger.stl" class="visual" />
                     </body>
                     <body name="finger_link_2" pos="0.0 -0.036 0" quat="6.123233995736766e-17 0.0 -1.0 0.0">
-                      <joint name="finger_joint_2" type="slide" class="motor" range="-0.014 0" axis="1 0 0" />
+                      <joint name="finger_joint_2" type="slide" class="finger" range="-0.014 0" axis="1 0 0" />
                       <inertial pos="-0.005 -0.015 0.0" quat="1.0 0.0 0.0 0.0" mass="0.01" diaginertia="5.208333333333334e-07 3.741666666666667e-07 2.2833333333333335e-07" />
                       <geom name="finger_link_2_collision" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="gripper_finger_collision.stl" class="collision" />
                       <geom name="finger_link_2_visual" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" material="black" type="mesh" mesh="gripper_finger.stl" class="visual" />
@@ -138,8 +143,8 @@
     <motor name="joint_4_ctrl" joint="joint_4" class="motor" />
     <motor name="joint_5_ctrl" joint="joint_5" class="motor" />
     <motor name="joint_6_ctrl" joint="joint_6" class="motor" />
-    <motor name="finger_joint_1_ctrl" joint="finger_joint_1" class="motor" />
-    <motor name="finger_joint_2_ctrl" joint="finger_joint_2" class="motor" />
+    <!-- finger_joint_2 follows finger_joint_1 through the equality constraint. -->
+    <motor name="finger_joint_1_ctrl" joint="finger_joint_1" class="finger" />
   </actuator>
 
   <contact>
