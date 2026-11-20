@@ -1,6 +1,7 @@
-joint_1: 0
-joint_2: 0
-joint_3: 0
-joint_4: 0
-joint_5: 0
-joint_6: 0
+joint_1: 7
+joint_2: -7.5
+joint_3: 2.5
+joint_4: 1
+joint_5: 6.5
+joint_6: -14
+finger_joint_1: 0

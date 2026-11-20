@@ -3,10 +3,10 @@
   <xacro:arg name="serial_port" default="/dev/ttyACM0"/>
   <xacro:arg name="arduino_serial_port" default="/dev/ttyUSB0"/>
   <xacro:arg name="calibrate" default="True"/>
-  <xacro:arg name="include_gripper" default="false"/>
   <xacro:arg name="ar_model" default="ar4"/>
   <xacro:include filename="$(find ar4_description)/urdf/ar4.urdf.xacro"/>
   <xacro:include filename="$(find ar4_hardware_interface)/urdf/ar4.ros2_control_hardware.xacro"/>
+  <xacro:include filename="$(find ar4_hardware_interface)/urdf/gripper.ros2_control.xacro"/>
 
   <link name="world" />
   <joint name="base_joint" type="fixed">
@@ -21,6 +21,13 @@
     serial_port="$(arg serial_port)"
     calibrate="$(arg calibrate)"
     joint_offset_parameters_file="$(find ar4_hardware_interface)/config/joint_offsets/ar4.yaml"
+  />
+
+  <xacro:ar_gripper_ros2_control
+    name="ar_servo_gripper"
+    plugin_name="ar4_hardware_interface/ARServoGripperHWInterface"
+    serial_port="$(arg arduino_serial_port)"
+    driver_parameters_file="$(find ar4_hardware_interface)/config/gripper_driver.yaml"
   />
 
 </robot>

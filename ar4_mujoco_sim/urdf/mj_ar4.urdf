@@ -40,12 +40,6 @@
       </geometry>
       <material name="grey"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 0.0 1.5708" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/base_link.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -53,12 +47,6 @@
       </geometry>
       <material name="blue"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 0.0 1.5708" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/base_link_bottom.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -69,7 +57,7 @@
     <collision>
       <origin rpy="0.0 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/base_link_motor.stl"/>
+        <mesh filename="meshes/base_link_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -87,12 +75,6 @@
       </geometry>
       <material name="grey"/>
     </visual>
-    <collision>
-      <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_1.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -103,7 +85,7 @@
     <collision>
       <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/link_1_motor.stl"/>
+        <mesh filename="meshes/link_1_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -128,12 +110,6 @@
       </geometry>
       <material name="grey"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_2.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -141,12 +117,6 @@
       </geometry>
       <material name="black"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_2_motor.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -154,12 +124,6 @@
       </geometry>
       <material name="white"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_2_cover.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -170,7 +134,7 @@
     <collision>
       <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/link_2_cover_logo.stl"/>
+        <mesh filename="meshes/link_2_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -195,12 +159,6 @@
       </geometry>
       <material name="grey"/>
     </visual>
-    <collision>
-      <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_3.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -208,12 +166,6 @@
       </geometry>
       <material name="black"/>
     </visual>
-    <collision>
-      <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_3_motor.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -224,7 +176,7 @@
     <collision>
       <origin rpy="3.1415 0.0 1.5708" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/link_3_misc.stl"/>
+        <mesh filename="meshes/link_3_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -249,12 +201,6 @@
       </geometry>
       <material name="grey"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_4.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -265,7 +211,7 @@
     <collision>
       <origin rpy="0.0 3.1415 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/link_4_motor.stl"/>
+        <mesh filename="meshes/link_4_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -290,12 +236,6 @@
       </geometry>
       <material name="grey"/>
     </visual>
-    <collision>
-      <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="meshes/link_5.stl"/>
-      </geometry>
-    </collision>
     <visual>
       <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
@@ -306,7 +246,7 @@
     <collision>
       <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/link_5_motor.stl"/>
+        <mesh filename="meshes/link_5_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -334,7 +274,7 @@
     <collision>
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="meshes/link_6.stl"/>
+        <mesh filename="meshes/link_6_collision.stl"/>
       </geometry>
     </collision>
   </link>
@@ -345,6 +285,97 @@
     <axis xyz="0 0 1"/>
     <limit effort="100" lower="-2.705260340591211" upper="2.705260340591211" velocity="1.0"/>
   </joint>
+  <!-- Dummy joint to remove the  "Joint '*_mimic' not found in model 'ar4'" error-->
+  <!-- See https://github.com/ros-controls/gazebo_ros2_control/issues/173 -->
+  <joint name="finger_joint_2_mimic" type="fixed">
+    <parent link="base_link"/>
+    <child link="dummy"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="dummy"/>
+  <joint name="gripper_base_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0.0 0" xyz="0.0 0.0 0.0"/>
+    <parent link="link_6"/>
+    <child link="gripper_base_link"/>
+  </joint>
+  <link name="gripper_base_link">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <mass value="0.08"/>
+      <inertia ixx="5.333333333333334e-06" ixy="0.0" ixz="0.0" iyy="1.0833333333333335e-05" iyz="0.0" izz="1.0833333333333335e-05"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.025 0.0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gripper_base.stl"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gripper_base_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="finger_joint_1" type="prismatic">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.036 0"/>
+    <parent link="gripper_base_link"/>
+    <child link="finger_link_1"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="100" lower="-0.014" upper="0" velocity="1.0"/>
+  </joint>
+  <link name="finger_link_1">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="5.208333333333334e-07" ixy="0.0" ixz="0.0" iyy="3.741666666666667e-07" iyz="0.0" izz="2.2833333333333335e-07"/>
+      <origin rpy="0.0 0.0 0.0" xyz="-0.005 -0.015 0.0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gripper_finger.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gripper_finger_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="finger_joint_2" type="prismatic">
+    <origin rpy="0.0 -3.141592653589793 0.0" xyz="0.0 -0.036 0"/>
+    <parent link="gripper_base_link"/>
+    <child link="finger_link_2"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="100" lower="-0.014" upper="0" velocity="1.0"/>
+    <mimic joint="finger_joint_1" multiplier="1" offset="0"/>
+  </joint>
+  <link name="finger_link_2">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="5.208333333333334e-07" ixy="0.0" ixz="0.0" iyy="3.741666666666667e-07" iyz="0.0" izz="2.2833333333333335e-07"/>
+      <origin rpy="0.0 0.0 0.0" xyz="-0.005 -0.015 0.0"/>
+    </inertial>
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gripper_finger.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gripper_finger_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
   .
 
 
@@ -408,6 +439,30 @@
       <command_interface name="position_pid"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+  <ros2_control name="GripperMujocoSystem" type="system">
+    <hardware>
+      <plugin>mujoco_ros2_control/MujocoSystem</plugin>
+    </hardware>
+    <joint name="finger_joint_1">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+    </joint>
+    <joint name="finger_joint_2">
+      <param name="mimic">finger_joint_1</param>
+      <param name="multiplier">1</param>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity">
+        <param name="initial_value">0.0</param>
+      </state_interface>
     </joint>
   </ros2_control>
 </robot>

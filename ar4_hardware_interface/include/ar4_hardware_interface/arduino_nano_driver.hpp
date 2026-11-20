@@ -17,6 +17,7 @@ class ArduinoNanoDriver {
   void update(std::vector<double>& pos_commands, std::vector<double>& joint_states);
   bool getPosition(int& position);
   bool writePosition(double position);
+  bool getCurrent(double& current);
 
   ArduinoNanoDriver();
 
