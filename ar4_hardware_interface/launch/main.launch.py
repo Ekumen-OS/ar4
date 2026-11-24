@@ -142,8 +142,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "include_gripper",
             default_value="True",
-            description="Load the servo gripper hardware (Arduino Nano on arduino_serial_port). The robot "
-            "description and the MoveIt config always include the gripper.",
+            description="Load the servo gripper hardware (Arduino Nano on arduino_serial_port). "
+            "The robot description and the MoveIt config always include the gripper.",
             choices=["True", "False"],
         )
     )
