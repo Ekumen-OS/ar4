@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <ar4_hardware_interface/ar4_servo_gripper_hw_interface.hpp>
 #include <sstream>
 
@@ -11,8 +12,37 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(
     return hardware_interface::CallbackReturn::ERROR;
   }
 
+  // Finger travel (m, finger_joint_1) and the servo angles (deg) at its two ends; the mapping is linear.
+  const auto& hw = info_.hardware_parameters;
+  for (const char* name : {"closed_position", "open_position", "closed_servo_angle", "open_servo_angle"}) {
+    if (hw.count(name) == 0) {
+      RCLCPP_ERROR(logger_, "Required parameter '%s' not found", name);
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+  }
+  closed_position_ = std::stod(hw.at("closed_position"));
+  open_position_ = std::stod(hw.at("open_position"));
+  closed_servo_angle_ = std::stoi(hw.at("closed_servo_angle"));
+  open_servo_angle_ = std::stoi(hw.at("open_servo_angle"));
+  RCLCPP_INFO(
+      logger_, "Gripper: %.4f m (closed) = %d deg, %.4f m (open) = %d deg", closed_position_, closed_servo_angle_,
+      open_position_, open_servo_angle_);
+
+  if (closed_position_ == open_position_) {
+    RCLCPP_ERROR(logger_, "closed_position and open_position must differ");
+    return hardware_interface::CallbackReturn::ERROR;
+  }
+
+  // Validate servo angle range
+  if (closed_servo_angle_ >= open_servo_angle_) {
+    RCLCPP_ERROR(
+        logger_, "Invalid servo angle range: min (%d) must be less than max (%d)", closed_servo_angle_,
+        open_servo_angle_);
+    return hardware_interface::CallbackReturn::ERROR;
+  }
+
   std::string serial_port = info_.hardware_parameters.at("serial_port");
-  int baud_rate = 9600;
+  int baud_rate = 115200;
   bool success = driver_.init(serial_port, baud_rate);
   if (!success) {
     return hardware_interface::CallbackReturn::ERROR;
@@ -31,7 +61,9 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_activate(
   if (!success) {
     return hardware_interface::CallbackReturn::ERROR;
   }
-  position_ = angular_to_linear_pos(pos_deg);
+  position_ = servo_angle_to_linear_pos(pos_deg);
+  // Hold the gripper where it is until a controller commands it (the command would otherwise start at 0, closed).
+  position_command_ = position_;
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -43,8 +75,6 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_deactivate(
 
 std::vector<hardware_interface::StateInterface> ARServoGripperHWInterface::export_state_interfaces() {
   std::vector<hardware_interface::StateInterface> state_interfaces;
-
-  RCLCPP_INFO(logger_, "Debug: Exporting state interfaces for joint %s", info_.joints[0].name.c_str());
   for (size_t i = 0; i < info_.joints.size(); ++i) {
     state_interfaces.emplace_back(info_.joints[i].name, "position", &position_);
     state_interfaces.emplace_back(info_.joints[i].name, "velocity", &velocity_);
@@ -54,8 +84,11 @@ std::vector<hardware_interface::StateInterface> ARServoGripperHWInterface::expor
 
 std::vector<hardware_interface::CommandInterface> ARServoGripperHWInterface::export_command_interfaces() {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
-  for (size_t i = 0; i < info_.joints.size(); ++i) {
-    command_interfaces.emplace_back(info_.joints[i].name, "position", &position_command_);
+  // Only finger_joint_1 is commanded; finger_joint_2 mimics it and has state interfaces only.
+  for (const auto& joint : info_.joints) {
+    if (!joint.command_interfaces.empty()) {
+      command_interfaces.emplace_back(joint.name, "position", &position_command_);
+    }
   }
   return command_interfaces;
 }
@@ -66,9 +99,10 @@ hardware_interface::return_type ARServoGripperHWInterface::read(
   int pos_deg;
   bool success = driver_.getPosition(pos_deg);
   if (!success) {
+    RCLCPP_ERROR(logger_, "Failed to read position from servo");
     return hardware_interface::return_type::ERROR;
   }
-  position_ = angular_to_linear_pos(pos_deg);
+  position_ = servo_angle_to_linear_pos(pos_deg);
   std::string logInfo = "Gripper Pos: " + std::to_string(position_);
   RCLCPP_DEBUG_THROTTLE(logger_, clock_, 500, logInfo.c_str());
   return hardware_interface::return_type::OK;
@@ -77,8 +111,10 @@ hardware_interface::return_type ARServoGripperHWInterface::read(
 hardware_interface::return_type ARServoGripperHWInterface::write(
     const rclcpp::Time& /*time*/,
     const rclcpp::Duration& /*period*/) {
-  int pos_deg = linear_to_angular_pos(position_command_);
-  std::string logInfo = "Gripper Cmd: " + std::to_string(position_command_);
+  double position_command = position_command_;
+
+  int pos_deg = linear_pos_to_servo_angle(position_command);
+  std::string logInfo = "Gripper Cmd: " + std::to_string(pos_deg);
   RCLCPP_DEBUG_THROTTLE(logger_, clock_, 500, logInfo.c_str());
   bool success = driver_.writePosition(pos_deg);
   if (!success) {

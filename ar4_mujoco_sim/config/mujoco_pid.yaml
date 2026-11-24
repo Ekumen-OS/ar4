@@ -58,3 +58,13 @@
           i_clamp_max: 25.0
           i_clamp_min: -25.0
           antiwindup_strategy: conditional_integration
+        # Gripper finger (slide, m): gains for the MJCF finger armature at the 100 Hz controller rate.
+        finger_joint_1:
+          p: 100.0
+          i: 0.0
+          d: 4.0
+          u_clamp_max: 5.0
+          u_clamp_min: -5.0
+          i_clamp_max: 0.0
+          i_clamp_min: 0.0
+          antiwindup_strategy: conditional_integration

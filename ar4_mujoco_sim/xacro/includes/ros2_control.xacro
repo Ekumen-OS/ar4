@@ -28,6 +28,12 @@
     <xacro:mujoco_joint name="joint_4" />
     <xacro:mujoco_joint name="joint_5" />
     <xacro:mujoco_joint name="joint_6" />
+    <xacro:mujoco_joint name="finger_joint_1" />
+    <!-- Mimics finger_joint_1 (MJCF equality constraint), so state only. -->
+    <joint name="finger_joint_2">
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
   </ros2_control>
 
 </robot>

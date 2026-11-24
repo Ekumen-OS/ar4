@@ -32,9 +32,14 @@ services:
   ar4_hardware:
     extends: ar4_gazebo
     hostname: ar4_hardware
+    network_mode: host
     container_name: ar4_hardware
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0:rwm" # Serial port for the teensy
+    # The gripper's Arduino Nano (/dev/ttyUSB*, reached through the /dev mount) is optional: allow USB serial
+    # devices by type instead of mapping one that may not exist.
+    device_cgroup_rules:
+      - "c 188:* rmw"
     group_add:
       - "dialout" # Group required for accesing /dev/ttyACM0
 

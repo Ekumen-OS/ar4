@@ -2,9 +2,12 @@
 
 #include <math.h>
 
+#include <algorithm>
 #include <boost/scoped_ptr.hpp>
 #include <chrono>
+#include <cmath>
 #include <hardware_interface/system_interface.hpp>
+#include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <thread>
 
@@ -29,22 +32,29 @@ class ARServoGripperHWInterface : public hardware_interface::SystemInterface {
  private:
   rclcpp::Logger logger_ = rclcpp::get_logger("ar_servo_gripper_hw_interface");
   rclcpp::Clock clock_ = rclcpp::Clock(RCL_ROS_TIME);
-  double servo_arm_length_ = 0.023;  // meters
-  // offset in degrees for the zero position, in case the servo can't reach
-  // 0 degrees due to mechanical tolerance issues.
-  double zero_deg_offset_ = 2;
+  int closed_servo_angle_ = 0;  // deg, loaded from parameters
+  int open_servo_angle_ = 0;    // deg, loaded from parameters
 
   ArduinoNanoDriver driver_;
+  // finger_joint_1 positions (m) at the closed and open servo angles, loaded from parameters
+  double closed_position_ = 0.0;
+  double open_position_ = 0.0;
   double position_ = 0.0;
   double velocity_ = 0.0;
   double position_command_ = 0.0;
 
-  int linear_to_angular_pos(double linear_pos) {
-    return static_cast<int>(asin(-linear_pos / servo_arm_length_) * 180 / M_PI + zero_deg_offset_);
+  int linear_pos_to_servo_angle(double linear_pos) {
+    // Commands outside the travel are clamped, so the servo is never driven past either end.
+    double normalized_pos = std::clamp((linear_pos - closed_position_) / (open_position_ - closed_position_), 0.0, 1.0);
+    return static_cast<int>(
+        std::lround(closed_servo_angle_ + normalized_pos * (open_servo_angle_ - closed_servo_angle_)));
   };
 
-  double angular_to_linear_pos(int angular_pos) {
-    return -servo_arm_length_ * sin((angular_pos - zero_deg_offset_) * M_PI / 180);
+  double servo_angle_to_linear_pos(int angular_pos) {
+    double normalized_pos =
+        (angular_pos - closed_servo_angle_) / static_cast<double>(open_servo_angle_ - closed_servo_angle_);
+    return normalized_pos * (open_position_ - closed_position_) + closed_position_;
   };
 };
+
 }  // namespace ar4_hardware_interface

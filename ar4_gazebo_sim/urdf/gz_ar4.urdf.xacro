@@ -10,4 +10,5 @@
   <!-- ros2_control extensions -->
   <xacro:include filename="$(find ar4_gazebo_sim)/urdf/includes/ros2_control.xacro" />
 
+
 </robot>

@@ -37,6 +37,14 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
+
+      <!-- The gripper is in the same system: TopicBasedSystem doesn't behave well with several instances.
+           finger_joint_2 follows finger_joint_1 through the USD's PhysX mimic joint. -->
+      <joint name="finger_joint_1">
+        <command_interface name="position" />
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
     </ros2_control>
 
 </robot>

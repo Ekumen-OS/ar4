@@ -1,6 +1,6 @@
 #include "ar4_hardware_interface/arduino_nano_driver.hpp"
 
-#define FW_VERSION "0.0.1"
+#define FW_VERSION "0.1.0"
 
 namespace ar4_hardware_interface {
 
@@ -49,13 +49,12 @@ std::string ArduinoNanoDriver::sendCommand(std::string outMsg) {
 bool ArduinoNanoDriver::transmit(std::string msg, std::string& err) {
   boost::system::error_code ec;
   const auto sendBuffer = boost::asio::buffer(msg.c_str(), msg.size());
-
   boost::asio::write(serial_port_, sendBuffer, ec);
 
   if (!ec) {
     return true;
   } else {
-    err = "Error in transmit";
+    err = ec.message();
     return false;
   }
 }
@@ -102,7 +101,7 @@ bool ArduinoNanoDriver::writePosition(double position) {
   std::string msg = "SV0P" + std::to_string(static_cast<int>(position)) + "\n";
   std::string reply = sendCommand(msg);
   if (reply != "Done") {
-    RCLCPP_ERROR(logger_, "Failed to write position %f", position);
+    RCLCPP_ERROR(logger_, "Failed to write position %f, got reply: %s", position, reply.c_str());
     return false;
   }
   return true;
