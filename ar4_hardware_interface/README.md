@@ -28,7 +28,14 @@ ros2 launch ar4_moveit_config demo.launch.py
 
 ## AR4 Gripper
 
-**Important Note:** The gripper is still WIP and might not work
+The servo gripper is driven by an Arduino Nano (`ar4_firmware/firmware_gripper_arduino.ino`) on
+`arduino_serial_port` (default `/dev/ttyUSB0`). `config/gripper_driver.yaml` maps the finger travel
+(`finger_joint_1`, -0.014 m open to 0 closed) onto the servo angles. The `gripper_controller`
+(`GripperActionController`) takes goals on `/gripper_controller/gripper_cmd`.
+
+`include_gripper:=False` skips the gripper hardware and its controller, for an arm without the Nano.
+It affects only the hardware: the robot description and the MoveIt config still include the gripper,
+so its joints have no state and MoveIt can't plan with them.
 
 ## Controllers
 

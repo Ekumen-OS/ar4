@@ -107,23 +107,4 @@ bool ArduinoNanoDriver::writePosition(double position) {
   return true;
 }
 
-// Get the current reading from the Arduino Nano
-// This function assumes the Arduino Nano is set up to read a current sensor
-// and return the value as a string.
-bool ArduinoNanoDriver::getCurrent(double& current) {
-  std::string reply = sendCommand("CR\n");
-  if (reply == "") {
-    RCLCPP_ERROR(logger_, "Failed to get current reading");
-    return false;
-  }
-
-  try {
-    current = std::stod(reply);
-    return true;
-  } catch (const std::exception& e) {
-    RCLCPP_ERROR(logger_, "Failed to convert current reading: %s", e.what());
-    return false;
-  }
-}
-
 }  // namespace ar4_hardware_interface

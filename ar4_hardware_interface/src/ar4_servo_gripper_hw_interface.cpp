@@ -62,6 +62,8 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_activate(
     return hardware_interface::CallbackReturn::ERROR;
   }
   position_ = servo_angle_to_linear_pos(pos_deg);
+  // Hold the gripper where it is until a controller commands it (the command would otherwise start at 0, closed).
+  position_command_ = position_;
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -82,14 +84,17 @@ std::vector<hardware_interface::StateInterface> ARServoGripperHWInterface::expor
 
 std::vector<hardware_interface::CommandInterface> ARServoGripperHWInterface::export_command_interfaces() {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
-  for (size_t i = 0; i < info_.joints.size(); ++i) {
-    command_interfaces.emplace_back(info_.joints[i].name, "position", &position_command_);
+  // Only finger_joint_1 is commanded; finger_joint_2 mimics it and has state interfaces only.
+  for (const auto& joint : info_.joints) {
+    if (!joint.command_interfaces.empty()) {
+      command_interfaces.emplace_back(joint.name, "position", &position_command_);
+    }
   }
   return command_interfaces;
 }
 
 hardware_interface::return_type ARServoGripperHWInterface::read(
-    const rclcpp::Time& time,
+    const rclcpp::Time& /*time*/,
     const rclcpp::Duration& /*period*/) {
   int pos_deg;
   bool success = driver_.getPosition(pos_deg);

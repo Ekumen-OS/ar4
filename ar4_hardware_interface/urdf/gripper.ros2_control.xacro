@@ -33,9 +33,8 @@
           <param name="initial_value">0.0</param>
         </state_interface>
       </joint>
+      <!-- Mimics finger_joint_1 (the URDF mimic tag), so state only. -->
       <joint name="finger_joint_2">
-        <param name="mimic">finger_joint_1</param>
-        <param name="multiplier">1</param>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
         </state_interface>
