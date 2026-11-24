@@ -5,6 +5,7 @@ from launch_ros.substitutions import FindPackageShare
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 
@@ -12,6 +13,7 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 def generate_launch_description():
     serial_port = LaunchConfiguration("serial_port")
     calibrate = LaunchConfiguration("calibrate")
+    include_gripper = LaunchConfiguration("include_gripper")
     arduino_serial_port = LaunchConfiguration("arduino_serial_port")
     ar_model_config = LaunchConfiguration("ar_model")
 
@@ -34,6 +36,9 @@ def generate_launch_description():
             " ",
             "arduino_serial_port:=",
             arduino_serial_port,
+            " ",
+            "include_gripper:=",
+            include_gripper,
         ]
     )
     robot_description = {"robot_description": ParameterValue(robot_description_content)}
@@ -94,6 +99,7 @@ def generate_launch_description():
             "60",
         ],
         output="screen",
+        condition=IfCondition(include_gripper),
     )
 
     robot_state_publisher_node = Node(
@@ -101,7 +107,6 @@ def generate_launch_description():
         executable="robot_state_publisher",
         output="both",
         parameters=[robot_description],
-        # output="screen",
     )
 
     joint_state_broadcaster = Node(
@@ -131,6 +136,14 @@ def generate_launch_description():
             default_value="True",
             description="Calibrate the robot on startup",
             choices=["True", "False"],
+        )
+    )
+    ld.add_action(
+        DeclareLaunchArgument(
+            "include_gripper",
+            default_value="true",
+            description="Load the servo gripper (Arduino Nano on arduino_serial_port)",
+            choices=["true", "false"],
         )
     )
     ld.add_action(

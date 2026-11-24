@@ -12,41 +12,24 @@ hardware_interface::CallbackReturn ARServoGripperHWInterface::on_init(
     return hardware_interface::CallbackReturn::ERROR;
   }
 
-  // Extract position limits from robot description
-  // @TODO: Review that code, it is compiling, we hardcode the values by the moment.
-  // if (!info_.limits.empty()) {
-  //   for (const auto& limit_pair : info_.limits) {
-  //     if (limit_pair.first == "finger_joint_1") {
-  //       if (limit_pair.second.has_position_limits) {
-  //         closed_position_ = limit_pair.second.min_position;
-  //         open_position_ = limit_pair.second.max_position;
-  //         RCLCPP_INFO(logger_, "Using joint limits: closed = %f m, open = %f m",
-  //                     closed_position_, open_position_);
-  //       }
-  //     }
-  //   }
-  // }
-  closed_position_ = 0.000;
-  open_position_ = -0.02;
-
-  if (closed_position_ == 0.0 && open_position_ == 0.0) {
-    return hardware_interface::CallbackReturn::ERROR;
+  // Finger travel (m, finger_joint_1) and the servo angles (deg) at its two ends; the mapping is linear.
+  const auto& hw = info_.hardware_parameters;
+  for (const char* name : {"closed_position", "open_position", "closed_servo_angle", "open_servo_angle"}) {
+    if (hw.count(name) == 0) {
+      RCLCPP_ERROR(logger_, "Required parameter '%s' not found", name);
+      return hardware_interface::CallbackReturn::ERROR;
+    }
   }
+  closed_position_ = std::stod(hw.at("closed_position"));
+  open_position_ = std::stod(hw.at("open_position"));
+  closed_servo_angle_ = std::stoi(hw.at("closed_servo_angle"));
+  open_servo_angle_ = std::stoi(hw.at("open_servo_angle"));
+  RCLCPP_INFO(
+      logger_, "Gripper: %.4f m (closed) = %d deg, %.4f m (open) = %d deg", closed_position_, closed_servo_angle_,
+      open_position_, open_servo_angle_);
 
-  // Load servo angle parameters
-  if (info_.hardware_parameters.count("closed_servo_angle") > 0) {
-    closed_servo_angle_ = std::stoi(info_.hardware_parameters.at("closed_servo_angle"));
-    RCLCPP_INFO(logger_, "Loaded closed_servo_angle: %d", closed_servo_angle_);
-  } else {
-    RCLCPP_ERROR(logger_, "Required parameter 'closed_servo_angle' not found");
-    return hardware_interface::CallbackReturn::ERROR;
-  }
-
-  if (info_.hardware_parameters.count("open_servo_angle") > 0) {
-    open_servo_angle_ = std::stoi(info_.hardware_parameters.at("open_servo_angle"));
-    RCLCPP_INFO(logger_, "Loaded open_servo_angle: %d", open_servo_angle_);
-  } else {
-    RCLCPP_ERROR(logger_, "Required parameter 'open_servo_angle' not found");
+  if (closed_position_ == open_position_) {
+    RCLCPP_ERROR(logger_, "closed_position and open_position must differ");
     return hardware_interface::CallbackReturn::ERROR;
   }
 

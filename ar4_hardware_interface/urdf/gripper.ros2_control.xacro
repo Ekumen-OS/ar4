@@ -15,15 +15,16 @@
       <hardware>
         <plugin>${plugin_name}</plugin>
         <param name="serial_port">${serial_port}</param>
-        <param name="use_overcurrent_protection">${driver_parameters['use_overcurrent_protection']}</param>
+        <param name="closed_position">${driver_parameters['closed_position']}</param>
+        <param name="open_position">${driver_parameters['open_position']}</param>
         <param name="closed_servo_angle">${driver_parameters['closed_servo_angle']}</param>
         <param name="open_servo_angle">${driver_parameters['open_servo_angle']}</param>
       </hardware>
 
       <joint name="finger_joint_1">
         <command_interface name="position">
-          <param name="min">0</param>
-          <param name="max">{35*pi/180}</param>
+          <param name="min">${driver_parameters['open_position']}</param>
+          <param name="max">${driver_parameters['closed_position']}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>

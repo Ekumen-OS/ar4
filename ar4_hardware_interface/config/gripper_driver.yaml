@@ -1,5 +1,6 @@
-use_overcurrent_protection: false
-
-# Servo angle configuration (in degrees)
+# Servo gripper (Arduino Nano). finger_joint_1 travel in metres (ar4_description: -0.014 open .. 0 closed) and
+# the servo angles in degrees at each end; positions in between map linearly.
+closed_position: 0.0
+open_position: -0.014
 closed_servo_angle: 0
-open_servo_angle: 70
+open_servo_angle: 50

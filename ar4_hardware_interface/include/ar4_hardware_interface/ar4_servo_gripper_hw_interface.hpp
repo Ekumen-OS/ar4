@@ -2,8 +2,10 @@
 
 #include <math.h>
 
+#include <algorithm>
 #include <boost/scoped_ptr.hpp>
 #include <chrono>
+#include <cmath>
 #include <hardware_interface/system_interface.hpp>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
@@ -30,24 +32,22 @@ class ARServoGripperHWInterface : public hardware_interface::SystemInterface {
  private:
   rclcpp::Logger logger_ = rclcpp::get_logger("ar_servo_gripper_hw_interface");
   rclcpp::Clock clock_ = rclcpp::Clock(RCL_ROS_TIME);
-  int closed_servo_angle_ = 0;  // will be loaded from parameters
-  int open_servo_angle_ = 0;    // will be loaded from parameters
+  int closed_servo_angle_ = 0;  // deg, loaded from parameters
+  int open_servo_angle_ = 0;    // deg, loaded from parameters
 
   ArduinoNanoDriver driver_;
-  // closed and open positions in physical space
-  double closed_position_;
-  double open_position_;
+  // finger_joint_1 positions (m) at the closed and open servo angles, loaded from parameters
+  double closed_position_ = 0.0;
+  double open_position_ = 0.0;
   double position_ = 0.0;
   double velocity_ = 0.0;
-  double current_ = 0.0;
   double position_command_ = 0.0;
 
-  // // Overcurrent protection (optional)
-  // std::unique_ptr<GripperOverCurrentProtection> overcurrent_protection_;
-
   int linear_pos_to_servo_angle(double linear_pos) {
-    double normalized_pos = (linear_pos - closed_position_) / static_cast<double>(open_position_ - closed_position_);
-    return static_cast<int>(closed_servo_angle_ + normalized_pos * (open_servo_angle_ - closed_servo_angle_));
+    // Commands outside the travel are clamped, so the servo is never driven past either end.
+    double normalized_pos = std::clamp((linear_pos - closed_position_) / (open_position_ - closed_position_), 0.0, 1.0);
+    return static_cast<int>(
+        std::lround(closed_servo_angle_ + normalized_pos * (open_servo_angle_ - closed_servo_angle_)));
   };
 
   double servo_angle_to_linear_pos(int angular_pos) {
