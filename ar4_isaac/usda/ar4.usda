@@ -142,6 +142,11 @@ over "ar4"
     {
         over "joint_5"
         {
+            # J5 = 0 points the tool forward (ar4_description): Rx(90 deg) Rz(-90 deg) instead of Rx(90 deg),
+            # so every pose reads 90 deg higher than the imported model's, and so does the range.
+            quatf physics:localRot0 = (0.5, 0.5, 0.5, -0.5)
+            float physics:lowerLimit = -15
+            float physics:upperLimit = 195
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
             float drive:angular:physics:damping = 10000

@@ -91,8 +91,9 @@
               <geom name="link_4_collision" pos="0.0 0.0 0.0" quat="4.632679487995776e-05 0.0 0.999999998926914 0.0" type="mesh" mesh="link_4_collision.stl" class="collision" />
               <geom name="link_4_visual_0" pos="0.0 0.0 0.0" quat="4.632679487995776e-05 0.0 0.999999998926914 0.0" material="grey" type="mesh" mesh="link_4.stl" class="visual" />
               <geom name="link_4_visual_1" pos="0.0 0.0 0.0" quat="4.632679487995776e-05 0.0 0.999999998926914 0.0" material="black" type="mesh" mesh="link_4_motor.stl" class="visual" />
-              <body name="link_5" pos="0 0 0.22263" quat="0.7071054825112363 0.7071080798594735 0.0 0.0">
-                <joint name="joint_5" type="hinge" class="motor" range="-1.8325957145940461 1.8325957145940461" axis="0 0 1" />
+              <!-- J5 = 0 points the tool forward: Rx(90 deg) Rz(-90 deg), range 90 deg higher than Annin's. -->
+              <body name="link_5" pos="0 0 0.22263" quat="0.5 0.5 0.5 -0.5">
+                <joint name="joint_5" type="hinge" class="motor" range="-0.2617993877991494 3.4033920413889422" axis="0 0 1" />
                 <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="0.11562" diaginertia="7.708e-05 0.000158014 0.00011176600000000001" />
                 <geom name="link_5_collision" pos="0.0 0.0 0.0" quat="0.7071054825112363 0.0 -0.7071080798594735 0.0" type="mesh" mesh="link_5_collision.stl" class="collision" />
                 <geom name="link_5_visual_0" pos="0.0 0.0 0.0" quat="0.7071054825112363 0.0 -0.7071080798594735 0.0" material="grey" type="mesh" mesh="link_5.stl" class="visual" />
