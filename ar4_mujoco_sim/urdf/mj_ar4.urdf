@@ -251,11 +251,11 @@
     </collision>
   </link>
   <joint name="joint_5" type="revolute">
-    <origin rpy="1.5708 0 0" xyz="0 0 0.22263"/>
+    <origin rpy="1.5707963267948966 1.5707963267948966 0" xyz="0 0 0.22263"/>
     <parent link="link_4"/>
     <child link="link_5"/>
     <axis xyz="0 0 1"/>
-    <limit effort="100" lower="-1.8325957145940461" upper="1.8325957145940461" velocity="1.0"/>
+    <limit effort="100" lower="-0.2617993877991494" upper="3.4033920413889422" velocity="1.0"/>
   </joint>
   <link name="link_6">
     <origin rpy="0 0 0" xyz="0 0 0"/>

@@ -76,14 +76,26 @@
     upAxis = "Z"
 )
 
+# Physics overrides (as in Kairos' AR4): the imported drives had no damping and allowed 3000 Nm, so the arm
+# overshot its targets and contacts blew up the solver (non-finite transforms). Joint speeds are capped at the
+# URDF limits (0.5 rad/s on J1-J4, 1.0 rad/s on J5-J6; the import set 5000 deg/s). Adjacent link meshes
+# overlap at many poses, so self-collision is off.
 over "ar4"
 {
+    bool physxArticulation:enabledSelfCollisions = 0
+    int physxArticulation:solverPositionIterationCount = 32
+    int physxArticulation:solverVelocityIterationCount = 4
+
     over "base_link"
     {
         over "joint_1"
         {
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 100000
+            float drive:angular:physics:maxForce = 50
+            float physxJoint:maxJointVelocity = 28.6479
         }
     }
 
@@ -93,6 +105,10 @@ over "ar4"
         {
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 100000
+            float drive:angular:physics:maxForce = 50
+            float physxJoint:maxJointVelocity = 28.6479
         }
     }
 
@@ -102,6 +118,10 @@ over "ar4"
         {
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 100000
+            float drive:angular:physics:maxForce = 50
+            float physxJoint:maxJointVelocity = 28.6479
         }
     }
 
@@ -111,6 +131,10 @@ over "ar4"
         {
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 100000
+            float drive:angular:physics:maxForce = 15
+            float physxJoint:maxJointVelocity = 28.6479
         }
     }
 
@@ -118,8 +142,17 @@ over "ar4"
     {
         over "joint_5"
         {
+            # J5 = 0 points the tool forward (ar4_description): Rx(90 deg) Rz(-90 deg) instead of Rx(90 deg),
+            # so every pose reads 90 deg higher than the imported model's, and so does the range.
+            quatf physics:localRot0 = (0.5, 0.5, 0.5, -0.5)
+            float physics:lowerLimit = -15
+            float physics:upperLimit = 195
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 100000
+            float drive:angular:physics:maxForce = 15
+            float physxJoint:maxJointVelocity = 57.2958
         }
     }
 
@@ -129,11 +162,25 @@ over "ar4"
         {
             float state:angular:physics:position = 0
             float state:angular:physics:velocity = 0
+            float drive:angular:physics:damping = 10000
+            float drive:angular:physics:stiffness = 100000
+            float drive:angular:physics:maxForce = 15
+            float physxJoint:maxJointVelocity = 57.2958
         }
     }
 
     over "link_6"
     {
+    }
+
+    over "gripper_base_link"
+    {
+        over "finger_joint_1"
+        {
+            float drive:linear:physics:damping = 10000
+            float drive:linear:physics:stiffness = 1000000
+            float drive:linear:physics:maxForce = 30
+        }
     }
 }
 

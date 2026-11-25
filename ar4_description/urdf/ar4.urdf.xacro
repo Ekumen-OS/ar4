@@ -94,12 +94,15 @@
               collision_meshes="${['link_5_collision']}">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:link>
+  <!-- J5 = 0 points the tool forward, along the forearm. Annin's convention (and the firmware's) has it square
+       to the forearm: the frame here is Rx(90 deg) Rz(-90 deg) instead of Rx(90 deg), so every physical pose
+       reads 90 deg higher than in Annin's convention, and so does the range (-105 .. 105 deg there). -->
   <joint name="joint_5" type="revolute">
-    <origin rpy="1.5708 0 0" xyz="0 0 0.22263"/>
+    <origin rpy="${pi / 2} ${pi / 2} 0" xyz="0 0 0.22263"/>
     <parent link="link_4"/>
     <child link="link_5"/>
     <axis xyz="0 0 1"/>
-    <limit lower="${-105.0 / 180.0 * pi}" upper="${105.0 / 180.0 * pi}" effort="100" velocity="1.0"/>
+    <limit lower="${-15.0 / 180.0 * pi}" upper="${195.0 / 180.0 * pi}" effort="100" velocity="1.0"/>
   </joint>
 
   <xacro:link link_name="link_6"

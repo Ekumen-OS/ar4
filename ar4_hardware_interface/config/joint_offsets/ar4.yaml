@@ -2,5 +2,6 @@ joint_1: 0
 joint_2: 0
 joint_3: 0
 joint_4: 0
-joint_5: 0
+# J5 = 0 points the tool forward (ar4_description); the firmware keeps Annin's zero, square to the forearm.
+joint_5: 90
 joint_6: 0
